@@ -1,0 +1,50 @@
+{
+  "name": "raidweave-platform-core",
+  "version": "0.8.6.1",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "sync:contracts": "node scripts/sync-contracts.mjs",
+    "dev": "npm run sync:contracts && next dev",
+    "build": "npm run sync:contracts && next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run sync:contracts && vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "npm run sync:contracts && node scripts/run-playwright.mjs e2e/platform.spec.ts",
+    "test:e2e:phase8-6-1": "npm run sync:contracts && node scripts/run-playwright.mjs e2e/phase8-6-1.spec.ts",
+    "test:e2e:visual": "npm run sync:contracts && node scripts/run-playwright.mjs e2e/visual-authenticity.spec.ts",
+    "test:a11y": "npm run sync:contracts && node scripts/run-playwright.mjs e2e/visual-authenticity.spec.ts --grep Accessibility",
+    "test:all": "npm run typecheck && npm run test && npm run test:sanctuaire && npm run test:gigalodon && npm run test:reliability && npm run build && npm run test:e2e && npm run test:e2e:phase8-6-1 && npm run test:e2e:visual",
+    "start:test": "node --env-file=scripts/test.env node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100",
+    "test:reliability": "npm run sync:contracts && tsx scripts/reliability.ts",
+    "test:sanctuaire": "npm run sync:contracts && tsx scripts/sanctuaire-simulation.ts",
+    "test:gigalodon": "npm run sync:contracts && tsx scripts/gigalodon-simulation.ts"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.3.14",
+    "ajv": "8.20.0",
+    "ajv-formats": "^3.0.1",
+    "next": "16.2.9",
+    "pg": "8.16.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "4.1.12"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "1.61.1",
+    "@types/node": "24.10.1",
+    "@types/pg": "8.15.5",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "tsx": "4.22.4",
+    "typescript": "5.9.3",
+    "vitest": "4.1.9"
+  },
+  "overrides": {
+    "postcss": "8.5.15"
+  }
+}

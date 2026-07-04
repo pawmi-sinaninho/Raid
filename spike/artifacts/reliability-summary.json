@@ -1,0 +1,325 @@
+{
+  "generatedAt": "2026-06-26T20:39:07.871Z",
+  "runs": 10,
+  "passedRuns": 10,
+  "simulatedClientsPerRun": 16,
+  "totalQuickUpdates": 500,
+  "totalAcceptedQuickUpdates": 500,
+  "allConverged": true,
+  "allRecoveryPassed": true,
+  "allExclusiveClaimsSingleWinner": true,
+  "allConflictsExplicit": true,
+  "latencyMsAcrossRuns": {
+    "medianP50": 3,
+    "worstP95": 8,
+    "worstMax": 26
+  },
+  "quickUpdateDurationMs": {
+    "min": 245,
+    "max": 346,
+    "average": 267
+  },
+  "finalRevisionInvariant": true,
+  "runsDetail": [
+    {
+      "generatedAt": "2026-06-26T20:38:57.609Z",
+      "clients": 16,
+      "quickUpdates": 50,
+      "quickUpdateDurationMs": 260,
+      "acceptedQuickUpdates": 50,
+      "exclusiveClaimStatuses": [
+        200,
+        409
+      ],
+      "conflictStatuses": [
+        200,
+        409
+      ],
+      "finalRevision": 72,
+      "finalProgress": 50,
+      "eventCount": 72,
+      "timerElapsedObservedMs": 254,
+      "sseDeliveries": 841,
+      "latencySamples": 825,
+      "latencyMs": {
+        "p50": 3,
+        "p95": 6,
+        "max": 21
+      },
+      "converged": true,
+      "recoveryPassed": true,
+      "spectatorWriteDenied": true,
+      "run": 1
+    },
+    {
+      "generatedAt": "2026-06-26T20:38:58.705Z",
+      "clients": 16,
+      "quickUpdates": 50,
+      "quickUpdateDurationMs": 245,
+      "acceptedQuickUpdates": 50,
+      "exclusiveClaimStatuses": [
+        200,
+        409
+      ],
+      "conflictStatuses": [
+        200,
+        409
+      ],
+      "finalRevision": 72,
+      "finalProgress": 50,
+      "eventCount": 72,
+      "timerElapsedObservedMs": 256,
+      "sseDeliveries": 841,
+      "latencySamples": 825,
+      "latencyMs": {
+        "p50": 3,
+        "p95": 6,
+        "max": 15
+      },
+      "converged": true,
+      "recoveryPassed": true,
+      "spectatorWriteDenied": true,
+      "run": 2
+    },
+    {
+      "generatedAt": "2026-06-26T20:38:59.804Z",
+      "clients": 16,
+      "quickUpdates": 50,
+      "quickUpdateDurationMs": 254,
+      "acceptedQuickUpdates": 50,
+      "exclusiveClaimStatuses": [
+        200,
+        409
+      ],
+      "conflictStatuses": [
+        200,
+        409
+      ],
+      "finalRevision": 72,
+      "finalProgress": 50,
+      "eventCount": 72,
+      "timerElapsedObservedMs": 255,
+      "sseDeliveries": 841,
+      "latencySamples": 825,
+      "latencyMs": {
+        "p50": 3,
+        "p95": 5,
+        "max": 19
+      },
+      "converged": true,
+      "recoveryPassed": true,
+      "spectatorWriteDenied": true,
+      "run": 3
+    },
+    {
+      "generatedAt": "2026-06-26T20:39:00.911Z",
+      "clients": 16,
+      "quickUpdates": 50,
+      "quickUpdateDurationMs": 253,
+      "acceptedQuickUpdates": 50,
+      "exclusiveClaimStatuses": [
+        200,
+        409
+      ],
+      "conflictStatuses": [
+        200,
+        409
+      ],
+      "finalRevision": 72,
+      "finalProgress": 50,
+      "eventCount": 72,
+      "timerElapsedObservedMs": 255,
+      "sseDeliveries": 841,
+      "latencySamples": 825,
+      "latencyMs": {
+        "p50": 3,
+        "p95": 5,
+        "max": 19
+      },
+      "converged": true,
+      "recoveryPassed": true,
+      "spectatorWriteDenied": true,
+      "run": 4
+    },
+    {
+      "generatedAt": "2026-06-26T20:39:02.008Z",
+      "clients": 16,
+      "quickUpdates": 50,
+      "quickUpdateDurationMs": 245,
+      "acceptedQuickUpdates": 50,
+      "exclusiveClaimStatuses": [
+        200,
+        409
+      ],
+      "conflictStatuses": [
+        200,
+        409
+      ],
+      "finalRevision": 72,
+      "finalProgress": 50,
+      "eventCount": 72,
+      "timerElapsedObservedMs": 255,
+      "sseDeliveries": 841,
+      "latencySamples": 825,
+      "latencyMs": {
+        "p50": 3,
+        "p95": 5,
+        "max": 18
+      },
+      "converged": true,
+      "recoveryPassed": true,
+      "spectatorWriteDenied": true,
+      "run": 5
+    },
+    {
+      "generatedAt": "2026-06-26T20:39:03.111Z",
+      "clients": 16,
+      "quickUpdates": 50,
+      "quickUpdateDurationMs": 254,
+      "acceptedQuickUpdates": 50,
+      "exclusiveClaimStatuses": [
+        200,
+        409
+      ],
+      "conflictStatuses": [
+        200,
+        409
+      ],
+      "finalRevision": 72,
+      "finalProgress": 50,
+      "eventCount": 72,
+      "timerElapsedObservedMs": 255,
+      "sseDeliveries": 841,
+      "latencySamples": 825,
+      "latencyMs": {
+        "p50": 3,
+        "p95": 6,
+        "max": 21
+      },
+      "converged": true,
+      "recoveryPassed": true,
+      "spectatorWriteDenied": true,
+      "run": 6
+    },
+    {
+      "generatedAt": "2026-06-26T20:39:04.221Z",
+      "clients": 16,
+      "quickUpdates": 50,
+      "quickUpdateDurationMs": 253,
+      "acceptedQuickUpdates": 50,
+      "exclusiveClaimStatuses": [
+        200,
+        409
+      ],
+      "conflictStatuses": [
+        200,
+        409
+      ],
+      "finalRevision": 72,
+      "finalProgress": 50,
+      "eventCount": 72,
+      "timerElapsedObservedMs": 255,
+      "sseDeliveries": 841,
+      "latencySamples": 825,
+      "latencyMs": {
+        "p50": 3,
+        "p95": 5,
+        "max": 17
+      },
+      "converged": true,
+      "recoveryPassed": true,
+      "spectatorWriteDenied": true,
+      "run": 7
+    },
+    {
+      "generatedAt": "2026-06-26T20:39:05.341Z",
+      "clients": 16,
+      "quickUpdates": 50,
+      "quickUpdateDurationMs": 275,
+      "acceptedQuickUpdates": 50,
+      "exclusiveClaimStatuses": [
+        200,
+        409
+      ],
+      "conflictStatuses": [
+        200,
+        409
+      ],
+      "finalRevision": 72,
+      "finalProgress": 50,
+      "eventCount": 72,
+      "timerElapsedObservedMs": 255,
+      "sseDeliveries": 841,
+      "latencySamples": 825,
+      "latencyMs": {
+        "p50": 3,
+        "p95": 5,
+        "max": 15
+      },
+      "converged": true,
+      "recoveryPassed": true,
+      "spectatorWriteDenied": true,
+      "run": 8
+    },
+    {
+      "generatedAt": "2026-06-26T20:39:06.530Z",
+      "clients": 16,
+      "quickUpdates": 50,
+      "quickUpdateDurationMs": 281,
+      "acceptedQuickUpdates": 50,
+      "exclusiveClaimStatuses": [
+        200,
+        409
+      ],
+      "conflictStatuses": [
+        200,
+        409
+      ],
+      "finalRevision": 72,
+      "finalProgress": 50,
+      "eventCount": 72,
+      "timerElapsedObservedMs": 257,
+      "sseDeliveries": 841,
+      "latencySamples": 825,
+      "latencyMs": {
+        "p50": 3,
+        "p95": 7,
+        "max": 20
+      },
+      "converged": true,
+      "recoveryPassed": true,
+      "spectatorWriteDenied": true,
+      "run": 9
+    },
+    {
+      "generatedAt": "2026-06-26T20:39:07.804Z",
+      "clients": 16,
+      "quickUpdates": 50,
+      "quickUpdateDurationMs": 346,
+      "acceptedQuickUpdates": 50,
+      "exclusiveClaimStatuses": [
+        200,
+        409
+      ],
+      "conflictStatuses": [
+        200,
+        409
+      ],
+      "finalRevision": 72,
+      "finalProgress": 50,
+      "eventCount": 72,
+      "timerElapsedObservedMs": 255,
+      "sseDeliveries": 841,
+      "latencySamples": 825,
+      "latencyMs": {
+        "p50": 4,
+        "p95": 8,
+        "max": 26
+      },
+      "converged": true,
+      "recoveryPassed": true,
+      "spectatorWriteDenied": true,
+      "run": 10
+    }
+  ]
+}

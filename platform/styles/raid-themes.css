@@ -1,0 +1,7 @@
+.sanctuaire,.theme-sanctuaire{--raid:var(--sanct-route);--raid-strong:var(--sanct-strong);--raid-canvas:#070d09;--raid-sheet:#111713;--raid-line:color-mix(in srgb,var(--sanct-route) 34%,var(--line))}
+.gigalodon,.theme-gigalodon{--raid:var(--giga-route);--raid-strong:var(--giga-strong);--raid-canvas:#061015;--raid-sheet:#0c151a;--raid-line:color-mix(in srgb,var(--giga-route) 34%,var(--line))}
+.raid-shell{background-color:var(--raid-canvas);background-image:radial-gradient(circle at 10% -10%,color-mix(in srgb,var(--raid) 7%,transparent),transparent 36rem)}
+.sanctuaire .workbench-sheet:nth-child(4n+2){--workbench-accent:var(--rose)}
+.sanctuaire .workbench-sheet:nth-child(4n+3){--workbench-accent:var(--brass)}
+.sanctuaire .workbench-sheet:nth-child(4n+4){--workbench-accent:var(--glass)}
+.gigalodon .material-sheet{--raid-sheet:var(--sheet-cool)}

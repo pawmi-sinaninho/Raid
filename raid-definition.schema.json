@@ -1,0 +1,1372 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raid-command-center.local/schemas/raid-definition.schema.json",
+  "title": "DOFUS Raid Command Center – Raid Definition",
+  "description": "Versioned, machine-readable definition of one supported raid. Runtime session state is intentionally excluded.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "slug",
+    "names",
+    "gameVersion",
+    "definitionVersion",
+    "participation",
+    "timer",
+    "stateModel",
+    "phases",
+    "tasks",
+    "dependencies",
+    "scoreRules",
+    "warnings",
+    "automations",
+    "dataTransfers",
+    "sourceReferences",
+    "openQuestions",
+    "creationCostGuildKamas",
+    "scoreConfiguration"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "names": {
+      "$ref": "#/$defs/localizedText"
+    },
+    "gameVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "definitionVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "validFrom": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "status": {
+      "enum": [
+        "DRAFT",
+        "PILOT",
+        "ACTIVE",
+        "RETIRED"
+      ]
+    },
+    "sourceDocument": {
+      "type": "string"
+    },
+    "participation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimum",
+        "maximum",
+        "supportedRoles",
+        "anonymousJoin"
+      ],
+      "properties": {
+        "minimum": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maximum": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "supportedRoles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "CAPTAIN",
+              "EDITOR",
+              "PARTICIPANT",
+              "SPECTATOR"
+            ]
+          }
+        },
+        "anonymousJoin": {
+          "type": "boolean"
+        },
+        "teamTemplates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/teamTemplate"
+          }
+        }
+      }
+    },
+    "timer": {
+      "$ref": "#/$defs/timerDefinition"
+    },
+    "stateModel": {
+      "$ref": "#/$defs/stateModel"
+    },
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/phase"
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/task"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/dependency"
+      }
+    },
+    "scoreRules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/scoreRule"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/warningRule"
+      }
+    },
+    "automations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/automation"
+      }
+    },
+    "dataTransfers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/dataTransfer"
+      }
+    },
+    "sourceReferences": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/sourceReference"
+      }
+    },
+    "openQuestions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/openQuestion"
+      }
+    },
+    "uiConfiguration": {
+      "$ref": "#/$defs/uiConfiguration"
+    },
+    "creationCostGuildKamas": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lookupTables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "description",
+          "sourceStatus",
+          "values"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "sourceStatus": {
+            "enum": [
+              "OFFICIAL_CONFIRMED",
+              "GUIDE_CONFIRMED",
+              "LIVE_CONFIRMED",
+              "LIVE_REQUIRED",
+              "PLAYER_CORRECTED",
+              "PRODUCT_RULE"
+            ]
+          },
+          "values": {}
+        }
+      }
+    },
+    "scoreConfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowNegative",
+        "sourceStatus"
+      ],
+      "properties": {
+        "maximum": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "rewardTrackMaximum": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "allowNegative": {
+          "type": "boolean"
+        },
+        "sourceStatus": {
+          "enum": [
+            "OFFICIAL_CONFIRMED",
+            "GUIDE_CONFIRMED",
+            "LIVE_CONFIRMED",
+            "LIVE_REQUIRED",
+            "PLAYER_CORRECTED",
+            "PRODUCT_RULE"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "localizedText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fr"
+      ],
+      "properties": {
+        "fr": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "de": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "teamTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "participantCount",
+        "teams"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "participantCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "teams": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "recommendedSize",
+              "responsibilities"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "recommendedSize": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "responsibilities": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "timerDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "durationSeconds",
+        "startTrigger",
+        "expiryBehaviour",
+        "serverAuthoritative"
+      ],
+      "properties": {
+        "durationSeconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "startTrigger": {
+          "type": "string"
+        },
+        "expiryBehaviour": {
+          "type": "string"
+        },
+        "serverAuthoritative": {
+          "type": "boolean"
+        },
+        "pauseAllowed": {
+          "type": "boolean"
+        },
+        "adjustmentRoles": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "CAPTAIN",
+              "EDITOR"
+            ]
+          }
+        },
+        "sourceStatus": {
+          "enum": [
+            "OFFICIAL_CONFIRMED",
+            "GUIDE_CONFIRMED",
+            "LIVE_CONFIRMED",
+            "LIVE_REQUIRED",
+            "PLAYER_CORRECTED",
+            "PRODUCT_RULE"
+          ]
+        },
+        "testRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "stateModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sessionStatuses",
+        "taskStatuses",
+        "taskTransitions",
+        "raidSpecificFields"
+      ],
+      "properties": {
+        "sessionStatuses": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "taskStatuses": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "LOCKED",
+              "READY",
+              "CLAIMED",
+              "ACTIVE",
+              "WAITING",
+              "BLOCKED",
+              "FAILED",
+              "COMPLETED",
+              "SKIPPED"
+            ]
+          }
+        },
+        "taskTransitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/transition"
+          }
+        },
+        "raidSpecificFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dataField"
+          }
+        }
+      }
+    },
+    "transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to",
+        "trigger",
+        "allowedRoles"
+      ],
+      "properties": {
+        "from": {
+          "enum": [
+            "LOCKED",
+            "READY",
+            "CLAIMED",
+            "ACTIVE",
+            "WAITING",
+            "BLOCKED",
+            "FAILED",
+            "COMPLETED",
+            "SKIPPED"
+          ]
+        },
+        "to": {
+          "enum": [
+            "LOCKED",
+            "READY",
+            "CLAIMED",
+            "ACTIVE",
+            "WAITING",
+            "BLOCKED",
+            "FAILED",
+            "COMPLETED",
+            "SKIPPED"
+          ]
+        },
+        "trigger": {
+          "type": "string"
+        },
+        "allowedRoles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "SYSTEM",
+              "CAPTAIN",
+              "EDITOR",
+              "PARTICIPANT"
+            ]
+          }
+        },
+        "createsEvent": {
+          "type": "boolean"
+        },
+        "requiresConfirmation": {
+          "type": "boolean"
+        }
+      }
+    },
+    "dataField": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "type",
+        "description",
+        "sourceStatus"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "string",
+            "integer",
+            "number",
+            "boolean",
+            "timestamp",
+            "enum",
+            "array",
+            "object",
+            "participantId",
+            "teamId",
+            "taskId"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "nullable": {
+          "type": "boolean"
+        },
+        "default": {},
+        "enumValues": {
+          "type": "array",
+          "items": {}
+        },
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        },
+        "sourceStatus": {
+          "enum": [
+            "OFFICIAL_CONFIRMED",
+            "GUIDE_CONFIRMED",
+            "LIVE_CONFIRMED",
+            "LIVE_REQUIRED",
+            "PLAYER_CORRECTED",
+            "PRODUCT_RULE"
+          ]
+        },
+        "verificationStatus": {
+          "enum": [
+            "VERIFIED_OFFICIAL",
+            "VERIFIED_GUIDE",
+            "LIVE_TESTED",
+            "UNCONFIRMED",
+            "PRODUCT_DEFINED"
+          ]
+        }
+      }
+    },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "order",
+        "names",
+        "description",
+        "entryMode"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9-]+$"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "names": {
+          "$ref": "#/$defs/localizedText"
+        },
+        "description": {
+          "type": "string"
+        },
+        "entryMode": {
+          "enum": [
+            "SEQUENTIAL",
+            "PARALLEL",
+            "CONTINUOUS",
+            "OPTIONAL"
+          ]
+        },
+        "parentPhaseId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "completionTaskId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "uiGroup": {
+          "type": "string"
+        }
+      }
+    },
+    "assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "minimumParticipants",
+        "maximumParticipants"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "NONE",
+            "INDIVIDUAL",
+            "TEAM",
+            "INDIVIDUAL_OR_TEAM",
+            "CAPTAIN"
+          ]
+        },
+        "minimumParticipants": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maximumParticipants": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "exclusiveClaim": {
+          "type": "boolean"
+        },
+        "recommendedParticipants": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "requiredRoleLabel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "completion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "criteria"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "MANUAL",
+            "FORM_SUBMIT",
+            "COUNTER_TARGET",
+            "ALL_SUBTASKS",
+            "AUTOMATIC_RULE",
+            "CAPTAIN_CONFIRMATION"
+          ]
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confirmationPolicy": {
+          "enum": [
+            "NONE",
+            "SELF",
+            "SECOND_PERSON",
+            "CAPTAIN",
+            "SYSTEM"
+          ]
+        },
+        "resultFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dataField"
+          }
+        }
+      }
+    },
+    "effect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "description"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "SET_STATE",
+            "INCREMENT",
+            "DECREMENT",
+            "ADD_SCORE",
+            "REMOVE_SCORE",
+            "UNLOCK_TASK",
+            "LOCK_TASK",
+            "SET_TASK_STATUS",
+            "CREATE_WARNING",
+            "CLEAR_WARNING",
+            "TRANSFER_DATA",
+            "START_TIMER",
+            "STOP_TIMER",
+            "END_SESSION",
+            "LOG_EVENT",
+            "RESET_SEQUENCE",
+            "CLEAR_INVENTORY",
+            "CUSTOM"
+          ]
+        },
+        "target": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {},
+        "description": {
+          "type": "string"
+        },
+        "sourceStatus": {
+          "enum": [
+            "OFFICIAL_CONFIRMED",
+            "GUIDE_CONFIRMED",
+            "LIVE_CONFIRMED",
+            "LIVE_REQUIRED",
+            "PLAYER_CORRECTED",
+            "PRODUCT_RULE"
+          ]
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "phaseId",
+        "order",
+        "names",
+        "type",
+        "priority",
+        "optional",
+        "initialStatus",
+        "assignment",
+        "instructions",
+        "completion",
+        "effects",
+        "failureEffects",
+        "sourceStatus",
+        "testRefs",
+        "uiHints"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9-]+$"
+        },
+        "phaseId": {
+          "type": "string"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "names": {
+          "$ref": "#/$defs/localizedText"
+        },
+        "type": {
+          "enum": [
+            "SESSION",
+            "ASSIGNMENT",
+            "CHECK",
+            "PUZZLE",
+            "COMBAT",
+            "TRACKER",
+            "GATE",
+            "COUNTER",
+            "RESOURCE",
+            "TIMER",
+            "NAVIGATION",
+            "REPORT",
+            "OPTIONAL"
+          ]
+        },
+        "priority": {
+          "enum": [
+            "P0",
+            "P1",
+            "P2",
+            "OPTIONAL"
+          ]
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "initialStatus": {
+          "enum": [
+            "LOCKED",
+            "READY",
+            "CLAIMED",
+            "ACTIVE",
+            "WAITING",
+            "BLOCKED",
+            "FAILED",
+            "COMPLETED",
+            "SKIPPED"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "assignment": {
+          "$ref": "#/$defs/assignment"
+        },
+        "inputFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dataField"
+          }
+        },
+        "instructions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "completion": {
+          "$ref": "#/$defs/completion"
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        },
+        "failureEffects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        },
+        "mechanicNotes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sourceStatus": {
+          "enum": [
+            "OFFICIAL_CONFIRMED",
+            "GUIDE_CONFIRMED",
+            "LIVE_CONFIRMED",
+            "LIVE_REQUIRED",
+            "PLAYER_CORRECTED",
+            "PRODUCT_RULE"
+          ]
+        },
+        "verificationStatus": {
+          "enum": [
+            "VERIFIED_OFFICIAL",
+            "VERIFIED_GUIDE",
+            "LIVE_TESTED",
+            "UNCONFIRMED",
+            "PRODUCT_DEFINED"
+          ]
+        },
+        "testRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "uiHints": {
+          "$ref": "#/$defs/uiHints"
+        }
+      }
+    },
+    "uiHints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primaryComponent",
+        "participantSummary",
+        "captainSummary"
+      ],
+      "properties": {
+        "primaryComponent": {
+          "enum": [
+            "TASK_CARD",
+            "MISSION_CARD",
+            "FORM",
+            "COUNTER",
+            "BOARD",
+            "TIMER",
+            "LEDGER",
+            "CHECKLIST",
+            "BOSS_TRACKER",
+            "GATE",
+            "RADAR_ONLY"
+          ]
+        },
+        "participantSummary": {
+          "type": "string"
+        },
+        "captainSummary": {
+          "type": "string"
+        },
+        "showMechanicOnDemand": {
+          "type": "boolean"
+        },
+        "criticalFields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "quickActions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "toTaskId",
+        "mode",
+        "conditions",
+        "onSatisfied",
+        "sourceStatus"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "fromTaskIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "toTaskId": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "ALL",
+            "ANY",
+            "CONDITION_ONLY",
+            "MANUAL"
+          ]
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        },
+        "onSatisfied": {
+          "enum": [
+            "SET_READY",
+            "SET_ACTIVE",
+            "COMPLETE",
+            "SHOW_RECOMMENDATION"
+          ]
+        },
+        "sourceStatus": {
+          "enum": [
+            "OFFICIAL_CONFIRMED",
+            "GUIDE_CONFIRMED",
+            "LIVE_CONFIRMED",
+            "LIVE_REQUIRED",
+            "PLAYER_CORRECTED",
+            "PRODUCT_RULE"
+          ]
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "operator",
+        "value"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "TASK_STATUS",
+            "STATE_VALUE",
+            "PARTICIPANT_COUNT",
+            "TEAM_READY",
+            "RESOURCE_VALUE",
+            "TIMER_REMAINING",
+            "MANUAL_CONFIRMATION",
+            "RESULT_PRESENT"
+          ]
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "taskId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operator": {
+          "enum": [
+            "EQ",
+            "NE",
+            "GT",
+            "GTE",
+            "LT",
+            "LTE",
+            "IN",
+            "CONTAINS",
+            "PRESENT",
+            "ALL_TRUE"
+          ]
+        },
+        "value": {},
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "scoreRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "trigger",
+        "operation",
+        "value",
+        "sourceStatus"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        },
+        "operation": {
+          "enum": [
+            "ADD",
+            "SUBTRACT",
+            "SET",
+            "LOOKUP_THRESHOLD"
+          ]
+        },
+        "value": {},
+        "cap": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "sourceStatus": {
+          "enum": [
+            "OFFICIAL_CONFIRMED",
+            "GUIDE_CONFIRMED",
+            "LIVE_CONFIRMED",
+            "LIVE_REQUIRED",
+            "PLAYER_CORRECTED",
+            "PRODUCT_RULE"
+          ]
+        },
+        "testRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "warningRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "severity",
+        "condition",
+        "message",
+        "audience",
+        "sourceStatus"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "INFO",
+            "YELLOW",
+            "ORANGE",
+            "RED"
+          ]
+        },
+        "condition": {
+          "$ref": "#/$defs/condition"
+        },
+        "message": {
+          "type": "string"
+        },
+        "audience": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "CAPTAIN",
+              "EDITOR",
+              "AFFECTED_TEAM",
+              "AFFECTED_PARTICIPANT",
+              "ALL"
+            ]
+          }
+        },
+        "recommendedAction": {
+          "type": "string"
+        },
+        "sourceStatus": {
+          "enum": [
+            "OFFICIAL_CONFIRMED",
+            "GUIDE_CONFIRMED",
+            "LIVE_CONFIRMED",
+            "LIVE_REQUIRED",
+            "PLAYER_CORRECTED",
+            "PRODUCT_RULE"
+          ]
+        },
+        "testRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "automation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "trigger",
+        "actions",
+        "sourceStatus"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        },
+        "guardConditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        },
+        "sourceStatus": {
+          "enum": [
+            "OFFICIAL_CONFIRMED",
+            "GUIDE_CONFIRMED",
+            "LIVE_CONFIRMED",
+            "LIVE_REQUIRED",
+            "PLAYER_CORRECTED",
+            "PRODUCT_RULE"
+          ]
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "dataTransfer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "sourcePath",
+        "targetPaths",
+        "trigger",
+        "validation",
+        "sourceStatus"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sourcePath": {
+          "type": "string"
+        },
+        "targetPaths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "trigger": {
+          "type": "string"
+        },
+        "validation": {
+          "type": "string"
+        },
+        "sourceStatus": {
+          "enum": [
+            "OFFICIAL_CONFIRMED",
+            "GUIDE_CONFIRMED",
+            "LIVE_CONFIRMED",
+            "LIVE_REQUIRED",
+            "PLAYER_CORRECTED",
+            "PRODUCT_RULE"
+          ]
+        }
+      }
+    },
+    "sourceReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "title",
+        "url",
+        "checkedAt"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "OFFICIAL",
+            "GUIDE",
+            "PROJECT",
+            "LIVE_TEST"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "checkedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "openQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "question",
+        "impact",
+        "status",
+        "configurationStrategy",
+        "testRefs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        },
+        "impact": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "OPEN",
+            "CONFIGURABLE_UNTIL_VERIFIED",
+            "RESOLVED"
+          ]
+        },
+        "configurationStrategy": {
+          "type": "string"
+        },
+        "testRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "uiConfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "captainPrimaryView": {
+          "type": "string"
+        },
+        "participantPrimaryView": {
+          "type": "string"
+        },
+        "raidMapOrientation": {
+          "enum": [
+            "HORIZONTAL",
+            "VERTICAL",
+            "HYBRID"
+          ]
+        },
+        "primaryMetrics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "radarWarningIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

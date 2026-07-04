@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "name": "RAIDWEAVE Visual Authenticity Tokens",
+    "version": "0.8.5",
+    "status": "implementation-contract",
+    "supersedes": "design-tokens.v0.4.json where keys conflict"
+  },
+  "font": {
+    "display": { "family": "Gillius ADF No2", "fallback": "sans-serif", "weights": [600, 700] },
+    "ui": { "family": "Andika", "fallback": "system-ui, sans-serif", "weights": [400, 600, 700] },
+    "mono": { "family": "Go Mono", "fallback": "ui-monospace, monospace", "weights": [400, 700] },
+    "editorialAccent": { "family": "EB Garamond SC", "fallback": "serif", "weights": [400, 600] }
+  },
+  "color": {
+    "canvas": "#080B0A",
+    "canvasCool": "#061015",
+    "sheet": "#121714",
+    "sheetCool": "#0C151A",
+    "plate": "#181E1A",
+    "plateCool": "#0E1B21",
+    "note": "#171A16",
+    "strap": "#0D1210",
+    "inset": "#0A0F0C",
+    "lineMuted": "#2B342E",
+    "line": "#354038",
+    "lineStrong": "#59665D",
+    "textPrimary": "#F2F0E6",
+    "textSecondary": "#B8B9AD",
+    "textMuted": "#777D78",
+    "focus": "#C9E8FF",
+    "semantic": {
+      "success": "#68C98A",
+      "info": "#6CA8E8",
+      "active": "#55D9D4",
+      "claimed": "#B49BEA",
+      "waiting": "#E0BD63",
+      "blocked": "#D9974E",
+      "danger": "#E8645F",
+      "locked": "#7E8882"
+    },
+    "sanctuaire": {
+      "route": "#9FC862",
+      "routeStrong": "#B8DF73",
+      "brass": "#C9AD68",
+      "rose": "#C984A8",
+      "glass": "#78C3AD",
+      "canvas": "#070D09"
+    },
+    "gigalodon": {
+      "route": "#4CD4D1",
+      "routeStrong": "#70E8E3",
+      "lumen": "#F0BD58",
+      "pressure": "#7A75C7",
+      "depth": "#5F85C8",
+      "canvas": "#061015"
+    }
+  },
+  "material": {
+    "sheet": { "border": "1px solid {color.line}", "shadow": "none", "textureOpacity": 0.025 },
+    "plate": { "border": "1px solid {color.lineStrong}", "shadow": "none", "textureOpacity": 0.018 },
+    "note": { "borderLeftWidth": 3, "shadow": "0 10px 24px rgba(0,0,0,.18)", "maxRotationDegrees": 1.5 },
+    "overlay": { "shadow": "0 18px 52px rgba(0,0,0,.36)" }
+  },
+  "edgeProfile": {
+    "sheet": "cut-top-right-bottom-left",
+    "plate": "small-pressure-cut",
+    "note": "square-with-pin",
+    "strap": "square-horizontal",
+    "input": "6px",
+    "button": "cut-top-right"
+  },
+  "space": {
+    "1": 4,
+    "2": 8,
+    "3": 12,
+    "4": 16,
+    "5": 20,
+    "6": 24,
+    "8": 32,
+    "10": 40,
+    "12": 48,
+    "16": 64
+  },
+  "layout": {
+    "mobileSide": 14,
+    "desktopSide": 18,
+    "captainRadar": 286,
+    "gigalodonDepthRoute": 235,
+    "touchMinimum": 44,
+    "headerDesktop": 54,
+    "headerMobile": 48,
+    "bottomNav": 66
+  },
+  "motion": {
+    "press": 80,
+    "fast": 140,
+    "missionChange": 140,
+    "routeOpen": 300,
+    "drawer": 220,
+    "criticalPulseCount": 0
+  },
+  "constraints": {
+    "maxAdjacentIdenticalCards": 3,
+    "maxThemeAccentsPerWorkArea": 2,
+    "maxFontFamiliesPerScreen": 3,
+    "maxNoteRotationDegrees": 1.5,
+    "glowAllowedFor": ["gigalodon-lumen", "active-route-once"],
+    "pillAllowedFor": ["filter", "role", "compact-status"],
+    "darkFirst": true
+  },
+  "breakpoint": {
+    "mobile": 390,
+    "tablet": 768,
+    "desktop": 1200,
+    "wide": 1600
+  }
+}

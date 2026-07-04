@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAIDWEAVE Realtime Spike</title>
+  <style>
+    body{font-family:system-ui,sans-serif;max-width:900px;margin:40px auto;padding:0 20px;line-height:1.5;background:#111;color:#eee}
+    code,pre{font-family:ui-monospace,monospace} pre{background:#1d1d1d;padding:16px;overflow:auto;border:1px solid #333}
+    .tag{display:inline-block;padding:3px 8px;border:1px solid #555;border-radius:999px;margin-right:6px}
+  </style>
+</head>
+<body>
+  <h1>RAIDWEAVE – Realtime Spike</h1>
+  <p><span class="tag">Phase 5</span><span class="tag">Diagnoseoberfläche</span><span class="tag">kein Produktdesign</span></p>
+  <p>Dieser Server stellt den technischen Prototypen bereit. Die automatisierten 16-Client-Tests sind über <code>npm run verify</code> ausführbar.</p>
+  <h2>Geprüfte Kernpunkte</h2>
+  <ul>
+    <li>anonymer Beitritt und Recovery-Token</li>
+    <li>Server-Sent Events für Push-Synchronisation</li>
+    <li>atomare Taskzähler und revisionsbasierte Konflikte</li>
+    <li>exklusive Taskübernahme</li>
+    <li>serverautoritärer Timer</li>
+    <li>SQLite-Persistenz und Eventlog</li>
+  </ul>
+  <h2>API-Startpunkt</h2>
+  <pre>POST /sessions
+GET  /sessions/:id/stream
+POST /sessions/:id/tasks/:taskId/claim
+POST /sessions/:id/tasks/:taskId/transition
+POST /sessions/:id/tasks/:taskId/result
+POST /sessions/:id/tasks/:taskId/increment</pre>
+  <p>Das Runbook enthält vollständige Start- und Prüfschritte.</p>
+</body>
+</html>

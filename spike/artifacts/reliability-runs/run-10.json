@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-06-26T20:39:07.804Z",
+  "clients": 16,
+  "quickUpdates": 50,
+  "quickUpdateDurationMs": 346,
+  "acceptedQuickUpdates": 50,
+  "exclusiveClaimStatuses": [
+    200,
+    409
+  ],
+  "conflictStatuses": [
+    200,
+    409
+  ],
+  "finalRevision": 72,
+  "finalProgress": 50,
+  "eventCount": 72,
+  "timerElapsedObservedMs": 255,
+  "sseDeliveries": 841,
+  "latencySamples": 825,
+  "latencyMs": {
+    "p50": 4,
+    "p95": 8,
+    "max": 26
+  },
+  "converged": true,
+  "recoveryPassed": true,
+  "spectatorWriteDenied": true
+}

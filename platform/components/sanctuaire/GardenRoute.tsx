@@ -1,0 +1,6 @@
+import { RaidIcon } from "@/components/icons/RaidIcon";
+
+export function GardenRoute({ activePhase, puzzle, guardians, corridor, final, raidLife, lastCause }: { activePhase:string;puzzle:string;guardians:string;corridor:string;final:string;raidLife:number;lastCause?:string }) {
+  const nodes=[{label:"Énigmes",value:puzzle,icon:"garden"},{label:"Gardiens",value:guardians,icon:"guardian"},{label:"Corridor",value:corridor,icon:"route"},{label:"Finales",value:final,icon:"crown"}] as const;
+  return <section className="garden-route material-sheet"><header><div><span className="kicker">Carte du raid</span><h2>Le chemin vers les deux finales</h2></div><div className="life-seal" aria-label={`${raidLife} vies sur 20`}><RaidIcon name="life"/><span>Vies</span><strong>{raidLife}/20</strong>{lastCause&&<small>{lastCause}</small>}</div></header><div className="garden-route-path">{nodes.map((node)=><div key={node.label} className={`garden-route-node ${activePhase===node.label.toUpperCase()?"active":""}`} aria-current={activePhase===node.label.toUpperCase()?"step":undefined}><RaidIcon name={node.icon}/><span><strong>{node.label}</strong><small>{node.value}</small></span></div>)}</div></section>;
+}

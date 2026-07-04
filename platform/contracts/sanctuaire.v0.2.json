@@ -1,0 +1,5772 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "sanctuaire-jardins-eternels",
+  "slug": "sanctuaire-des-jardins-eternels",
+  "names": {
+    "fr": "Sanctuaire des Jardins éternels",
+    "en": "Sanctuary of the Eternal Gardens",
+    "de": "Sanctuaire der Ewigen Gärten"
+  },
+  "gameVersion": "3.6.4.3",
+  "definitionVersion": "0.2.1",
+  "validFrom": "2026-06-24",
+  "status": "DRAFT",
+  "sourceDocument": "SANCTUAIRE_TASK_GRAPH.md",
+  "participation": {
+    "minimum": 8,
+    "maximum": 16,
+    "supportedRoles": [
+      "CAPTAIN",
+      "EDITOR",
+      "PARTICIPANT",
+      "SPECTATOR"
+    ],
+    "anonymousJoin": true,
+    "teamTemplates": [
+      {
+        "id": "san-8",
+        "participantCount": 8,
+        "teams": [
+          {
+            "name": "Boote",
+            "recommendedSize": 2,
+            "responsibilities": [
+              "Papierboote",
+              "Bataille navale"
+            ]
+          },
+          {
+            "name": "Schach",
+            "recommendedSize": 2,
+            "responsibilities": [
+              "Figuren",
+              "Schachkampf"
+            ]
+          },
+          {
+            "name": "Monochrome",
+            "recommendedSize": 2,
+            "responsibilities": [
+              "Podeste",
+              "Blumen",
+              "Farbe"
+            ]
+          },
+          {
+            "name": "Clos",
+            "recommendedSize": 2,
+            "responsibilities": [
+              "Gärten",
+              "Zielmonster"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "san-12",
+        "participantCount": 12,
+        "teams": [
+          {
+            "name": "Boote",
+            "recommendedSize": 2,
+            "responsibilities": [
+              "Papierboote",
+              "Bataille navale"
+            ]
+          },
+          {
+            "name": "Schach",
+            "recommendedSize": 4,
+            "responsibilities": [
+              "Figuren",
+              "Schachkampf"
+            ]
+          },
+          {
+            "name": "Monochrome",
+            "recommendedSize": 2,
+            "responsibilities": [
+              "Podeste",
+              "Blumen",
+              "Farbe"
+            ]
+          },
+          {
+            "name": "Clos",
+            "recommendedSize": 4,
+            "responsibilities": [
+              "Gärten",
+              "Zielmonster"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "san-16",
+        "participantCount": 16,
+        "teams": [
+          {
+            "name": "Boote",
+            "recommendedSize": 2,
+            "responsibilities": [
+              "Papierboote",
+              "Bataille navale"
+            ]
+          },
+          {
+            "name": "Schach",
+            "recommendedSize": 4,
+            "responsibilities": [
+              "Figuren",
+              "Schachkampf"
+            ]
+          },
+          {
+            "name": "Monochrome",
+            "recommendedSize": 4,
+            "responsibilities": [
+              "Podeste",
+              "Blumen",
+              "Farbe"
+            ]
+          },
+          {
+            "name": "Clos",
+            "recommendedSize": 6,
+            "responsibilities": [
+              "Gärten",
+              "Zielmonster",
+              "Manuskript optional"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "timer": {
+    "durationSeconds": 7200,
+    "startTrigger": "Captain bestätigt S0-020 und startet den Live-Modus.",
+    "expiryBehaviour": "Raid endet ausserhalb eines laufenden finalen Kampfes gemäss In-Game-Verhalten; parallele Finalfälle bleiben live zu prüfen.",
+    "serverAuthoritative": true,
+    "pauseAllowed": false,
+    "adjustmentRoles": [
+      "CAPTAIN"
+    ],
+    "sourceStatus": "GUIDE_CONFIRMED",
+    "testRefs": [
+      "COM-006",
+      "SAN-P1-011"
+    ]
+  },
+  "stateModel": {
+    "sessionStatuses": [
+      "LOBBY",
+      "LIVE",
+      "ENDED",
+      "FAILED"
+    ],
+    "taskStatuses": [
+      "LOCKED",
+      "READY",
+      "CLAIMED",
+      "ACTIVE",
+      "WAITING",
+      "BLOCKED",
+      "FAILED",
+      "COMPLETED",
+      "SKIPPED"
+    ],
+    "taskTransitions": [
+      {
+        "from": "LOCKED",
+        "to": "READY",
+        "trigger": "dependency_satisfied",
+        "allowedRoles": [
+          "SYSTEM"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": false
+      },
+      {
+        "from": "READY",
+        "to": "CLAIMED",
+        "trigger": "claim",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR",
+          "PARTICIPANT"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": false
+      },
+      {
+        "from": "CLAIMED",
+        "to": "ACTIVE",
+        "trigger": "start",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR",
+          "PARTICIPANT"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": false
+      },
+      {
+        "from": "READY",
+        "to": "ACTIVE",
+        "trigger": "captain_start_without_claim",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": false
+      },
+      {
+        "from": "ACTIVE",
+        "to": "WAITING",
+        "trigger": "waiting_for_dependency_or_person",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR",
+          "PARTICIPANT"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": false
+      },
+      {
+        "from": "ACTIVE",
+        "to": "BLOCKED",
+        "trigger": "report_blocker",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR",
+          "PARTICIPANT"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": false
+      },
+      {
+        "from": "WAITING",
+        "to": "ACTIVE",
+        "trigger": "resume",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR",
+          "PARTICIPANT"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": false
+      },
+      {
+        "from": "BLOCKED",
+        "to": "ACTIVE",
+        "trigger": "blocker_resolved",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR",
+          "PARTICIPANT"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": false
+      },
+      {
+        "from": "ACTIVE",
+        "to": "COMPLETED",
+        "trigger": "complete_with_valid_result",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR",
+          "PARTICIPANT",
+          "SYSTEM"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": false
+      },
+      {
+        "from": "ACTIVE",
+        "to": "FAILED",
+        "trigger": "record_failure",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR",
+          "PARTICIPANT"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": true
+      },
+      {
+        "from": "FAILED",
+        "to": "READY",
+        "trigger": "retry",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": false
+      },
+      {
+        "from": "READY",
+        "to": "SKIPPED",
+        "trigger": "skip_optional",
+        "allowedRoles": [
+          "CAPTAIN",
+          "EDITOR"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": true
+      },
+      {
+        "from": "COMPLETED",
+        "to": "ACTIVE",
+        "trigger": "undo_or_correct",
+        "allowedRoles": [
+          "CAPTAIN"
+        ],
+        "createsEvent": true,
+        "requiresConfirmation": true
+      }
+    ],
+    "raidSpecificFields": [
+      {
+        "path": "sanctuaire.raidLife",
+        "type": "integer",
+        "description": "Aktuelles Raid-Leben",
+        "sourceStatus": "OFFICIAL_CONFIRMED",
+        "required": true,
+        "default": 20,
+        "minimum": 0,
+        "maximum": 20
+      },
+      {
+        "path": "sanctuaire.raidLifeHistory",
+        "type": "array",
+        "description": "Ursachenprotokoll jeder Lebensänderung",
+        "sourceStatus": "PRODUCT_RULE"
+      },
+      {
+        "path": "sanctuaire.puzzleStates",
+        "type": "object",
+        "description": "Rätselzustände",
+        "sourceStatus": "PRODUCT_RULE"
+      },
+      {
+        "path": "sanctuaire.guardianStates",
+        "type": "object",
+        "description": "Wächterzustände",
+        "sourceStatus": "PRODUCT_RULE"
+      },
+      {
+        "path": "sanctuaire.corridorTarget",
+        "type": "integer",
+        "description": "Konfigurierbares Korridorziel: Guide-Baseline 10 Räume × 6 Monster = 60",
+        "sourceStatus": "GUIDE_CONFIRMED",
+        "default": 60,
+        "minimum": 1
+      },
+      {
+        "path": "sanctuaire.corridorTargetSourceStatus",
+        "type": "string",
+        "description": "Guide bestätigt; noch nicht durch RAIDWEAVE live bestätigt",
+        "sourceStatus": "GUIDE_CONFIRMED",
+        "default": "GUIDE_CONFIRMED"
+      },
+      {
+        "path": "sanctuaire.corridorCompleted",
+        "type": "integer",
+        "description": "Abgeschlossene Solokämpfe",
+        "sourceStatus": "PRODUCT_RULE",
+        "default": 0,
+        "minimum": 0
+      },
+      {
+        "path": "sanctuaire.corridorAssignments",
+        "type": "array",
+        "description": "Solokampfzuweisungen",
+        "sourceStatus": "PRODUCT_RULE"
+      },
+      {
+        "path": "sanctuaire.queen",
+        "type": "object",
+        "description": "Reine-Tracker",
+        "sourceStatus": "PRODUCT_RULE"
+      },
+      {
+        "path": "sanctuaire.princess",
+        "type": "object",
+        "description": "Princesse-Tracker",
+        "sourceStatus": "PRODUCT_RULE"
+      }
+    ]
+  },
+  "phases": [
+    {
+      "id": "S0",
+      "order": 0,
+      "names": {
+        "fr": "Préparation",
+        "en": null,
+        "de": null
+      },
+      "description": "Lobby, Teams und Startabgleich.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": null,
+      "completionTaskId": "S0-020",
+      "uiGroup": "Lobby"
+    },
+    {
+      "id": "S1",
+      "order": 1,
+      "names": {
+        "fr": "Énigmes",
+        "en": null,
+        "de": null
+      },
+      "description": "Vier Rätsel parallel; Abschlussgate.",
+      "entryMode": "PARALLEL",
+      "parentPhaseId": null,
+      "completionTaskId": "S1-ALL-900",
+      "uiGroup": "Rätsel"
+    },
+    {
+      "id": "S1-BEL",
+      "order": 11,
+      "names": {
+        "fr": "Réserve de Belladone",
+        "en": null,
+        "de": null
+      },
+      "description": "Papierboote und Bataille navale.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": "S1",
+      "completionTaskId": "S1-BEL-030",
+      "uiGroup": "Rätsel"
+    },
+    {
+      "id": "S1-EPH",
+      "order": 12,
+      "names": {
+        "fr": "Cour d’Éphèdre",
+        "en": null,
+        "de": null
+      },
+      "description": "Schachrätsel.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": "S1",
+      "completionTaskId": "S1-EPH-040",
+      "uiGroup": "Rätsel"
+    },
+    {
+      "id": "S1-OUV",
+      "order": 13,
+      "names": {
+        "fr": "Ouvrage Monochrome",
+        "en": null,
+        "de": null
+      },
+      "description": "Objekte, Blumen und Endfarbe.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": "S1",
+      "completionTaskId": "S1-OUV-040",
+      "uiGroup": "Rätsel"
+    },
+    {
+      "id": "S1-CLO",
+      "order": 14,
+      "names": {
+        "fr": "Clos des Protecteurs",
+        "en": null,
+        "de": null
+      },
+      "description": "Gärten, Statue und Zielmonster.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": "S1",
+      "completionTaskId": "S1-CLO-050",
+      "uiGroup": "Rätsel"
+    },
+    {
+      "id": "S2",
+      "order": 2,
+      "names": {
+        "fr": "Gardiens",
+        "en": null,
+        "de": null
+      },
+      "description": "Vier Wächter parallel; Abschlussgate.",
+      "entryMode": "PARALLEL",
+      "parentPhaseId": null,
+      "completionTaskId": "S2-ALL-900",
+      "uiGroup": "Wächter"
+    },
+    {
+      "id": "S2-VEI",
+      "order": 21,
+      "names": {
+        "fr": "Veilleur de l’Ouvrage",
+        "en": null,
+        "de": null
+      },
+      "description": "Wächter mit Statuentyp.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": "S2",
+      "completionTaskId": "S2-VEI-030",
+      "uiGroup": "Wächter"
+    },
+    {
+      "id": "S2-GAR",
+      "order": 22,
+      "names": {
+        "fr": "Gardien du Clos",
+        "en": null,
+        "de": null
+      },
+      "description": "Wächter mit sicheren Objekten.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": "S2",
+      "completionTaskId": "S2-GAR-030",
+      "uiGroup": "Wächter"
+    },
+    {
+      "id": "S2-DEF",
+      "order": 23,
+      "names": {
+        "fr": "Défenseur de la Réserve",
+        "en": null,
+        "de": null
+      },
+      "description": "Eskalierender Wächter.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": "S2",
+      "completionTaskId": "S2-DEF-030",
+      "uiGroup": "Wächter"
+    },
+    {
+      "id": "S2-SEN",
+      "order": 24,
+      "names": {
+        "fr": "Sentinelle de la Cour",
+        "en": null,
+        "de": null
+      },
+      "description": "Wächter mit Farbe/Element.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": "S2",
+      "completionTaskId": "S2-SEN-030",
+      "uiGroup": "Wächter"
+    },
+    {
+      "id": "S3",
+      "order": 3,
+      "names": {
+        "fr": "Corridor",
+        "en": null,
+        "de": null
+      },
+      "description": "Konfigurierbare Solokampfverteilung.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": null,
+      "completionTaskId": "S3-COR-040",
+      "uiGroup": "Korridor"
+    },
+    {
+      "id": "S4",
+      "order": 4,
+      "names": {
+        "fr": "Boss finaux",
+        "en": null,
+        "de": null
+      },
+      "description": "Zwei Finalbosse parallel oder nacheinander.",
+      "entryMode": "PARALLEL",
+      "parentPhaseId": null,
+      "completionTaskId": "S4-ALL-900",
+      "uiGroup": "Finale"
+    },
+    {
+      "id": "S4-QUE",
+      "order": 41,
+      "names": {
+        "fr": "Reine Écarlate",
+        "en": null,
+        "de": null
+      },
+      "description": "Zweiphasiger Finalboss.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": "S4",
+      "completionTaskId": "S4-QUE-050",
+      "uiGroup": "Finale"
+    },
+    {
+      "id": "S4-PRI",
+      "order": 42,
+      "names": {
+        "fr": "Princesse Maudite",
+        "en": null,
+        "de": null
+      },
+      "description": "Zweiphasiger Finalboss.",
+      "entryMode": "SEQUENTIAL",
+      "parentPhaseId": "S4",
+      "completionTaskId": "S4-PRI-050",
+      "uiGroup": "Finale"
+    },
+    {
+      "id": "S-OPT",
+      "order": 90,
+      "names": {
+        "fr": "Objectifs optionnels",
+        "en": null,
+        "de": null
+      },
+      "description": "Nicht blockierende Zusatzaufgaben.",
+      "entryMode": "OPTIONAL",
+      "parentPhaseId": null,
+      "completionTaskId": "S-OPT-MAN-010",
+      "uiGroup": "Optional"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "S0-001",
+      "phaseId": "S0",
+      "order": 10,
+      "names": {
+        "fr": "Initialiser la session",
+        "en": null,
+        "de": null
+      },
+      "type": "SESSION",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "READY",
+      "description": "Erzeugt den Laufzustand, Links und den anonymen Wiederverbindungsrahmen.",
+      "location": null,
+      "assignment": {
+        "mode": "CAPTAIN",
+        "minimumParticipants": 1,
+        "maximumParticipants": 1,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 1,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "session.name",
+          "type": "string",
+          "description": "Sessionname",
+          "sourceStatus": "PRODUCT_RULE",
+          "required": true
+        },
+        {
+          "path": "session.language",
+          "type": "enum",
+          "description": "Primärsprache",
+          "sourceStatus": "PRODUCT_RULE",
+          "required": true,
+          "enumValues": [
+            "fr",
+            "en",
+            "de"
+          ]
+        },
+        {
+          "path": "session.plannedStartAt",
+          "type": "timestamp",
+          "description": "Optionale Startzeit",
+          "sourceStatus": "PRODUCT_RULE",
+          "nullable": true
+        }
+      ],
+      "instructions": [
+        "Raiddefinition Sanctuaire auswählen.",
+        "Sessionname und Sprache festlegen.",
+        "Captain-, Teilnehmer- und optional Zuschauerlink erzeugen."
+      ],
+      "completion": {
+        "mode": "FORM_SUBMIT",
+        "criteria": [
+          "Session-ID und Links wurden erzeugt."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "SET_STATE",
+          "description": "Session in den Lobbyzustand setzen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "session.status",
+          "value": "LOBBY"
+        },
+        {
+          "type": "LOG_EVENT",
+          "description": "Sessionerstellung protokollieren.",
+          "sourceStatus": "PRODUCT_RULE"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [],
+      "uiHints": {
+        "primaryComponent": "FORM",
+        "participantSummary": "Session beitreten",
+        "captainSummary": "Session erstellen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "session.name",
+          "session.language"
+        ],
+        "quickActions": [
+          "Session erstellen"
+        ]
+      }
+    },
+    {
+      "id": "S0-010",
+      "phaseId": "S0",
+      "order": 20,
+      "names": {
+        "fr": "Répartir les équipes et responsabilités",
+        "en": null,
+        "de": null
+      },
+      "type": "ASSIGNMENT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Verteilt Teilnehmer auf Startbereiche; Vorlagen bleiben editierbar.",
+      "location": null,
+      "assignment": {
+        "mode": "CAPTAIN",
+        "minimumParticipants": 1,
+        "maximumParticipants": 1,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 1,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "teams",
+          "type": "array",
+          "description": "Teams und Teilnehmerzuweisungen",
+          "sourceStatus": "PRODUCT_RULE",
+          "required": true
+        },
+        {
+          "path": "backupEditorParticipantId",
+          "type": "participantId",
+          "description": "Mindestens ein Ersatzeditor",
+          "sourceStatus": "PRODUCT_RULE",
+          "required": true
+        }
+      ],
+      "instructions": [
+        "Startbereiche Boote, Schach, Objekte/Farbe und Gärten abdecken.",
+        "Vorlagen für 8, 12 und 16 Teilnehmer anbieten.",
+        "Mindestens einen Ersatzeditor benennen."
+      ],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Alle kritischen Startbereiche haben eine Verantwortung.",
+          "Ersatzeditor ist benannt."
+        ],
+        "confirmationPolicy": "CAPTAIN",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "SET_STATE",
+          "description": "Teamzuweisungen speichern.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "teams"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [],
+      "uiHints": {
+        "primaryComponent": "BOARD",
+        "participantSummary": "Dein Startteam sehen",
+        "captainSummary": "Teams per Drag-and-drop verteilen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "teams",
+          "backupEditorParticipantId"
+        ],
+        "quickActions": [
+          "Vorlage anwenden",
+          "Ready-Check starten"
+        ]
+      }
+    },
+    {
+      "id": "S0-020",
+      "phaseId": "S0",
+      "order": 30,
+      "names": {
+        "fr": "Confirmer l’état de départ",
+        "en": null,
+        "de": null
+      },
+      "type": "CHECK",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Ready-Check und Abgleich mit dem In-Game-Raid.",
+      "location": null,
+      "assignment": {
+        "mode": "CAPTAIN",
+        "minimumParticipants": 1,
+        "maximumParticipants": 1,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 1,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "session.readyParticipantIds",
+          "type": "array",
+          "description": "Bereite Teilnehmer",
+          "sourceStatus": "PRODUCT_RULE"
+        },
+        {
+          "path": "sanctuaire.raidLife",
+          "type": "integer",
+          "description": "Im Spiel sichtbares Raid-Leben",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true,
+          "default": 20,
+          "minimum": 0,
+          "maximum": 20
+        },
+        {
+          "path": "session.timer.durationSeconds",
+          "type": "integer",
+          "description": "Raidtimer",
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "required": true,
+          "default": 7200
+        }
+      ],
+      "instructions": [
+        "8–16 Teilnehmer bestätigen.",
+        "2-Stunden-Timer und 20 Raid-Leben mit dem Spiel abgleichen.",
+        "Captain und Ersatzeditor online bestätigen."
+      ],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Teilnehmerzahl gültig.",
+          "Alle Pflichtrollen bereit.",
+          "In-Game-Startwerte bestätigt."
+        ],
+        "confirmationPolicy": "CAPTAIN",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "SET_STATE",
+          "description": "Session live setzen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "session.status",
+          "value": "LIVE"
+        },
+        {
+          "type": "START_TIMER",
+          "description": "Globalen Raidtimer starten.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "session.timer"
+        },
+        {
+          "type": "SET_STATE",
+          "description": "Raid-Leben initialisieren.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.raidLife",
+          "value": 20
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "COM-001",
+        "SAN-P0-002"
+      ],
+      "uiHints": {
+        "primaryComponent": "CHECKLIST",
+        "participantSummary": "Bereitschaft bestätigen",
+        "captainSummary": "Raidstart freigeben",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "session.readyParticipantIds",
+          "sanctuaire.raidLife"
+        ],
+        "quickActions": [
+          "Bereit",
+          "Raid starten"
+        ]
+      }
+    },
+    {
+      "id": "S1-BEL-010",
+      "phaseId": "S1-BEL",
+      "order": 10,
+      "names": {
+        "fr": "Révéler six bateaux en papier",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Sechs zufällig verteilte Papierboote aufdecken.",
+      "location": "Ouvrage Monochrome",
+      "assignment": {
+        "mode": "INDIVIDUAL_OR_TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 2,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 2,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.boatsFound",
+          "type": "integer",
+          "description": "Gefundene Boote",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true,
+          "default": 0,
+          "minimum": 0,
+          "maximum": 6
+        },
+        {
+          "path": "sanctuaire.boatFinders",
+          "type": "array",
+          "description": "Finder und optionale Positionen",
+          "sourceStatus": "PRODUCT_RULE"
+        }
+      ],
+      "instructions": [
+        "Sechs Papierboote finden.",
+        "Jeweils „Position aufdecken“ verwenden.",
+        "Papierblumen nicht versehentlich anklicken."
+      ],
+      "completion": {
+        "mode": "COUNTER_TARGET",
+        "criteria": [
+          "boatsFound = 6"
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Bootspositionen erfassen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-BEL-020"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-004"
+      ],
+      "uiHints": {
+        "primaryComponent": "COUNTER",
+        "participantSummary": "6 Papierboote finden",
+        "captainSummary": "Fortschritt und Finder sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.boatsFound"
+        ],
+        "quickActions": [
+          "Boot gefunden",
+          "Problem melden"
+        ]
+      }
+    },
+    {
+      "id": "S1-BEL-020",
+      "phaseId": "S1-BEL",
+      "order": 20,
+      "names": {
+        "fr": "Enregistrer les positions des bateaux",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Bootszellen beider Schlachtfelder erfassen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 2,
+        "maximumParticipants": 2,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 2,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.battleship.boardA.boatCells",
+          "type": "array",
+          "description": "Drei Bootszellen auf [21,17]",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        },
+        {
+          "path": "sanctuaire.battleship.boardB.boatCells",
+          "type": "array",
+          "description": "Drei Bootszellen auf [19,15]",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        }
+      ],
+      "instructions": [
+        "Spielfeld A [21,17] erfassen.",
+        "Spielfeld B [19,15] erfassen.",
+        "Je Brett drei Bootszellen bestätigen."
+      ],
+      "completion": {
+        "mode": "FORM_SUBMIT",
+        "criteria": [
+          "Beide Bretter enthalten je drei eindeutige Zellen."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Bataille navale freigeben.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-BEL-030"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-004"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOARD",
+        "participantSummary": "Bootspositionen eintragen",
+        "captainSummary": "Beide Bretter kontrollieren",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.battleship.boardA.boatCells",
+          "sanctuaire.battleship.boardB.boatCells"
+        ],
+        "quickActions": [
+          "Position speichern",
+          "Bestätigen"
+        ]
+      }
+    },
+    {
+      "id": "S1-BEL-030",
+      "phaseId": "S1-BEL",
+      "order": 30,
+      "names": {
+        "fr": "Exécuter la bataille navale",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Abwechselnd feuern, bis alle sechs Boote versenkt sind.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 2,
+        "maximumParticipants": 2,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 2,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.battleship.activeBoard",
+          "type": "enum",
+          "description": "Aktives Spielfeld",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": "A",
+          "enumValues": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "path": "sanctuaire.battleship.hits",
+          "type": "integer",
+          "description": "Bestätigte Treffer",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 6
+        },
+        {
+          "path": "sanctuaire.battleship.lastShot",
+          "type": "object",
+          "description": "Letzter Schuss",
+          "sourceStatus": "PRODUCT_RULE"
+        }
+      ],
+      "instructions": [
+        "Spielfeld [21,17] beginnt.",
+        "Spielfelder wechseln nach jedem Schuss.",
+        "Abschluss im Spiel bestätigen."
+      ],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Alle sechs Boote versenkt.",
+          "Rätselabschluss im Spiel sichtbar."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "2’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 2000
+        },
+        {
+          "type": "INCREMENT",
+          "description": "Raid-Leben um 1 bis maximal 20 erhöhen.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": 1
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Guideangabe: Fehler kostet 1 Raid-Leben; live bestätigen.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": 1
+        },
+        {
+          "type": "RESET_SEQUENCE",
+          "description": "Guideangabe: Jeder Fehler setzt alle versenkten Boote zurück; live bestätigen.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.battleship.hits",
+          "value": 0
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-004"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOARD",
+        "participantSummary": "Abwechselnd feuern",
+        "captainSummary": "Treffer und aktives Brett verfolgen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.battleship.activeBoard",
+          "sanctuaire.battleship.hits"
+        ],
+        "quickActions": [
+          "Schuss melden",
+          "Treffer",
+          "Fehler melden"
+        ]
+      }
+    },
+    {
+      "id": "S1-EPH-010",
+      "phaseId": "S1-EPH",
+      "order": 10,
+      "names": {
+        "fr": "Activer les échiquiers",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Belladone ansprechen und vier Bretter aktivieren.",
+      "location": "Cour d’Éphèdre [12,14]",
+      "assignment": {
+        "mode": "INDIVIDUAL",
+        "minimumParticipants": 1,
+        "maximumParticipants": 1,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 1,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [
+        "Mit Belladone sprechen.",
+        "Erscheinen der Figuren auf vier Brettern bestätigen."
+      ],
+      "completion": {
+        "mode": "MANUAL",
+        "criteria": [
+          "Bretter sichtbar."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Figurensuche freigeben.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-EPH-020"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-005"
+      ],
+      "uiHints": {
+        "primaryComponent": "TASK_CARD",
+        "participantSummary": "Activer les échiquiers",
+        "captainSummary": "Activer les échiquiers",
+        "showMechanicOnDemand": true,
+        "criticalFields": [],
+        "quickActions": [
+          "Übernehmen",
+          "Starten",
+          "Abschliessen",
+          "Problem melden"
+        ]
+      }
+    },
+    {
+      "id": "S1-EPH-020",
+      "phaseId": "S1-EPH",
+      "order": 20,
+      "names": {
+        "fr": "Identifier les quatre pièces valides",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Schwarzen/weissen Läufer und schwarzen/weissen Turm lokalisieren.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 2,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.chessPieces.blackBishop",
+          "type": "object",
+          "description": "Brett und Koordinate schwarzer Läufer",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        },
+        {
+          "path": "sanctuaire.chessPieces.whiteBishop",
+          "type": "object",
+          "description": "Brett und Koordinate weisser Läufer",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        },
+        {
+          "path": "sanctuaire.chessPieces.blackRook",
+          "type": "object",
+          "description": "Brett und Koordinate schwarzer Turm",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        },
+        {
+          "path": "sanctuaire.chessPieces.whiteRook",
+          "type": "object",
+          "description": "Brett und Koordinate weisser Turm",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        }
+      ],
+      "instructions": [
+        "Figuren prüfen; grün bedeutet Zieltyp.",
+        "Alle vier Zielpositionen erfassen.",
+        "Falsches Prüfen kostet laut Guide kein Leben."
+      ],
+      "completion": {
+        "mode": "FORM_SUBMIT",
+        "criteria": [
+          "Alle vier Zieltypen besitzen Brett und Koordinate."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Vier Spieler bestätigen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-EPH-030"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-005"
+      ],
+      "uiHints": {
+        "primaryComponent": "FORM",
+        "participantSummary": "Vier Zielkoordinaten erfassen",
+        "captainSummary": "Vollständigkeit prüfen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.chessPieces"
+        ],
+        "quickActions": [
+          "Figur speichern",
+          "Zweitbestätigung"
+        ]
+      }
+    },
+    {
+      "id": "S1-EPH-030",
+      "phaseId": "S1-EPH",
+      "order": 30,
+      "names": {
+        "fr": "Confirmer exactement quatre combattants",
+        "en": null,
+        "de": null
+      },
+      "type": "CHECK",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Exakt vier Teilnehmer für den Schachkampf festlegen.",
+      "location": "Cour d’Éphèdre [12,14]",
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 4,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.chess.participantIds",
+          "type": "array",
+          "description": "Exakt vier Spieler",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        }
+      ],
+      "instructions": [
+        "Genau vier Spieler auswählen.",
+        "Weniger oder mehr blockiert den Start."
+      ],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "participantIds enthält exakt vier eindeutige IDs."
+        ],
+        "confirmationPolicy": "CAPTAIN",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Schachkampf freigeben.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-EPH-040"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-005"
+      ],
+      "uiHints": {
+        "primaryComponent": "CHECKLIST",
+        "participantSummary": "Deine Figurenzuweisung sehen",
+        "captainSummary": "Viererteam bestätigen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.chess.participantIds"
+        ],
+        "quickActions": [
+          "Spieler auswählen",
+          "Team bestätigen"
+        ]
+      }
+    },
+    {
+      "id": "S1-EPH-040",
+      "phaseId": "S1-EPH",
+      "order": 40,
+      "names": {
+        "fr": "Placer les pièces sur les cases cibles",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Türme orthogonal und Läufer diagonal auf Zielpositionen bewegen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 4,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.chess.assignments",
+          "type": "array",
+          "description": "Spieler↔Figur↔Ziel",
+          "sourceStatus": "PRODUCT_RULE"
+        },
+        {
+          "path": "sanctuaire.chess.turnsRemaining",
+          "type": "integer",
+          "description": "Verbleibende Belladone-Züge",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": 4,
+          "minimum": 0,
+          "maximum": 4
+        },
+        {
+          "path": "sanctuaire.chess.reachedTargets",
+          "type": "integer",
+          "description": "Erreichte Ziele",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 4
+        }
+      ],
+      "instructions": [
+        "Jede Figur dem passenden Ziel zuweisen.",
+        "Alle Ziele spätestens am Ende des vierten Belladone-Zuges erreichen."
+      ],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Vier Ziele erreicht.",
+          "In-Game-Erfolg bestätigt."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "2’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 2000
+        },
+        {
+          "type": "INCREMENT",
+          "description": "Raid-Leben um 1 bis maximal 20 erhöhen.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": 1
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben pro Kampfteilnehmer reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": "participantCount"
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-005"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOARD",
+        "participantSummary": "Figur und Ziel sehen",
+        "captainSummary": "Vier Figuren und Rundenlimit verfolgen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.chess.assignments",
+          "sanctuaire.chess.turnsRemaining"
+        ],
+        "quickActions": [
+          "Ziel erreicht",
+          "Kampf verloren",
+          "Problem melden"
+        ]
+      }
+    },
+    {
+      "id": "S1-OUV-010",
+      "phaseId": "S1-OUV",
+      "order": 10,
+      "names": {
+        "fr": "Relever les quatre socles",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Je Podest zwei sichtbare Objekte erfassen.",
+      "location": "Clos [11,21] und [12,20]",
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 2,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.pedestals",
+          "type": "object",
+          "description": "Podeste I–IV mit je zwei Objekten",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true,
+          "enumValues": [
+            "Crayon",
+            "Kamas",
+            "Bague",
+            "Règle",
+            "Arakne",
+            "Bobine",
+            "Bougie",
+            "Lanterne"
+          ]
+        }
+      ],
+      "instructions": [
+        "Podeste I und III in [11,21], II und IV in [12,20] ablesen.",
+        "Je Podest zwei Objekte speichern."
+      ],
+      "completion": {
+        "mode": "FORM_SUBMIT",
+        "criteria": [
+          "Vier Podeste vollständig."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Papierblumen bestimmen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-OUV-020"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-006"
+      ],
+      "uiHints": {
+        "primaryComponent": "FORM",
+        "participantSummary": "Objekte je Podest wählen",
+        "captainSummary": "Acht Werte prüfen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.pedestals"
+        ],
+        "quickActions": [
+          "Objekt wählen",
+          "Bestätigen"
+        ]
+      }
+    },
+    {
+      "id": "S1-OUV-020",
+      "phaseId": "S1-OUV",
+      "order": 20,
+      "names": {
+        "fr": "Déterminer la fleur correcte pour chaque socle",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Für jedes Podest das Objekt wählen, auf dessen Karte die Papierblume steht.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 2,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.flowerSequence",
+          "type": "array",
+          "description": "Vier ausgewählte Objekte in Reihenfolge I–IV",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        }
+      ],
+      "instructions": [
+        "Zu jedem Objekt die bekannte Ouvrage-Karte prüfen.",
+        "Für I–IV genau ein Objekt auswählen."
+      ],
+      "completion": {
+        "mode": "FORM_SUBMIT",
+        "criteria": [
+          "Vier Auswahlen vorhanden."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Aktivierungssequenz freigeben.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-OUV-030"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-006"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOARD",
+        "participantSummary": "Papierblume je Podest wählen",
+        "captainSummary": "Sequenz I–IV kontrollieren",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.flowerSequence"
+        ],
+        "quickActions": [
+          "Auswahl speichern",
+          "Zweitbestätigung"
+        ]
+      }
+    },
+    {
+      "id": "S1-OUV-030",
+      "phaseId": "S1-OUV",
+      "order": 30,
+      "names": {
+        "fr": "Activer les fleurs dans l’ordre I–IV",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Die vier Blumen zwingend in Podestreihenfolge aktivieren.",
+      "location": null,
+      "assignment": {
+        "mode": "INDIVIDUAL",
+        "minimumParticipants": 1,
+        "maximumParticipants": 1,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 1,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.flowerActivationIndex",
+          "type": "integer",
+          "description": "Nächster Sequenzindex",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 4
+        }
+      ],
+      "instructions": [
+        "Reihenfolge I → II → III → IV einhalten.",
+        "Jede richtige Aktivierung bestätigen."
+      ],
+      "completion": {
+        "mode": "COUNTER_TARGET",
+        "criteria": [
+          "flowerActivationIndex = 4."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Endfarbe erfassen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-OUV-040"
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Falsche Blume kostet 1 Raid-Leben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": 1
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-006"
+      ],
+      "uiHints": {
+        "primaryComponent": "CHECKLIST",
+        "participantSummary": "Nächste Blume sehen",
+        "captainSummary": "Sequenzfortschritt und Fehler sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.flowerActivationIndex"
+        ],
+        "quickActions": [
+          "Richtig aktiviert",
+          "Falsche Blume"
+        ]
+      }
+    },
+    {
+      "id": "S1-OUV-040",
+      "phaseId": "S1-OUV",
+      "order": 40,
+      "names": {
+        "fr": "Enregistrer la couleur finale",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Endfarbe speichern und an abhängige Module übertragen.",
+      "location": null,
+      "assignment": {
+        "mode": "INDIVIDUAL_OR_TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 2,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 1,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.monochromeColor",
+          "type": "enum",
+          "description": "Endfarbe",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true,
+          "enumValues": [
+            "AMBRE_ORANGE",
+            "AZURE_BLEU",
+            "VIRIDINE_VERT",
+            "ECARLATE_ROUGE"
+          ]
+        }
+      ],
+      "instructions": [
+        "Farbe im Spiel ablesen.",
+        "Zweite Person bestätigen lassen."
+      ],
+      "completion": {
+        "mode": "FORM_SUBMIT",
+        "criteria": [
+          "Gültige Farbe gewählt."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "2’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 2000
+        },
+        {
+          "type": "INCREMENT",
+          "description": "Raid-Leben um 1 bis maximal 20 erhöhen.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": 1
+        },
+        {
+          "type": "TRANSFER_DATA",
+          "description": "Farbe an Clos und Sentinelle übertragen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.monochromeColor"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-006",
+        "UX-004"
+      ],
+      "uiHints": {
+        "primaryComponent": "FORM",
+        "participantSummary": "Endfarbe melden",
+        "captainSummary": "Farbe und Bestätigung sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.monochromeColor"
+        ],
+        "quickActions": [
+          "Farbe wählen",
+          "Bestätigen"
+        ]
+      }
+    },
+    {
+      "id": "S1-CLO-010",
+      "phaseId": "S1-CLO",
+      "order": 10,
+      "names": {
+        "fr": "Attribuer les quatre paires de jardins",
+        "en": null,
+        "de": null
+      },
+      "type": "ASSIGNMENT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Vier Richtungen zwischen Clos und Cour zuweisen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.gardens",
+          "type": "array",
+          "description": "NORTH/EAST/SOUTH/WEST mit Verantwortlichen",
+          "sourceStatus": "PRODUCT_RULE",
+          "required": true
+        }
+      ],
+      "instructions": [
+        "Jede Richtung relativ zum Portal abdecken.",
+        "Clos-Garten und Miniaturgarten paaren."
+      ],
+      "completion": {
+        "mode": "FORM_SUBMIT",
+        "criteria": [
+          "Vier Richtungen zugewiesen."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Gärten rekonstruieren.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-CLO-020"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-007"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOARD",
+        "participantSummary": "Deine Gartenrichtung sehen",
+        "captainSummary": "Vier Richtungen verteilen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.gardens"
+        ],
+        "quickActions": [
+          "Richtung übernehmen",
+          "Zuweisen"
+        ]
+      }
+    },
+    {
+      "id": "S1-CLO-020",
+      "phaseId": "S1-CLO",
+      "order": 20,
+      "names": {
+        "fr": "Reconstruire trois statues par jardin",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Pro Garten drei fehlende Statuen platzieren und validieren.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.gardens[].observedStatues",
+          "type": "array",
+          "description": "Beobachtete fehlende Statuen",
+          "sourceStatus": "GUIDE_CONFIRMED"
+        },
+        {
+          "path": "sanctuaire.gardens[].placedCells",
+          "type": "array",
+          "description": "Gesetzte Zellen",
+          "sourceStatus": "GUIDE_CONFIRMED"
+        },
+        {
+          "path": "sanctuaire.gardens[].validated",
+          "type": "boolean",
+          "description": "Validierungsstatus",
+          "sourceStatus": "GUIDE_CONFIRMED"
+        }
+      ],
+      "instructions": [
+        "Je Richtung drei fehlende Statuen erfassen.",
+        "Zellen setzen.",
+        "Erst validieren, wenn sicher."
+      ],
+      "completion": {
+        "mode": "ALL_SUBTASKS",
+        "criteria": [
+          "Vier Gärten validated = true."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Schlussstatue erfassen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-CLO-030"
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Falsche Validierung kostet 1 Raid-Leben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": 1
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-007"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOARD",
+        "participantSummary": "Deinen Garten rekonstruieren",
+        "captainSummary": "Vier Validierungen verfolgen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.gardens"
+        ],
+        "quickActions": [
+          "Zelle setzen",
+          "Garten validieren",
+          "Fehler melden"
+        ]
+      }
+    },
+    {
+      "id": "S1-CLO-030",
+      "phaseId": "S1-CLO",
+      "order": 30,
+      "names": {
+        "fr": "Enregistrer la statue finale",
+        "en": null,
+        "de": null
+      },
+      "type": "PUZZLE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Schlussstatue nach vier validierten Gärten erfassen.",
+      "location": "Clos [11,20]",
+      "assignment": {
+        "mode": "INDIVIDUAL_OR_TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 2,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 1,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.closTarget.statueType",
+          "type": "enum",
+          "description": "Schlussstatue",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true,
+          "enumValues": [
+            "DAHLIANE",
+            "FRACAMELIA",
+            "MUGUEGIDE",
+            "TRITULIPE"
+          ]
+        }
+      ],
+      "instructions": [
+        "Schlussstatue in [11,20] ablesen.",
+        "Zweite Person bestätigt den Typ."
+      ],
+      "completion": {
+        "mode": "FORM_SUBMIT",
+        "criteria": [
+          "Gültiger Statuentyp."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "TRANSFER_DATA",
+          "description": "Statuentyp an Veilleur übertragen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.closTarget.statueType"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-007"
+      ],
+      "uiHints": {
+        "primaryComponent": "FORM",
+        "participantSummary": "Schlussstatue melden",
+        "captainSummary": "Statuentyp prüfen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.closTarget.statueType"
+        ],
+        "quickActions": [
+          "Statue wählen",
+          "Bestätigen"
+        ]
+      }
+    },
+    {
+      "id": "S1-CLO-040",
+      "phaseId": "S1-CLO",
+      "order": 40,
+      "names": {
+        "fr": "Combiner statue et couleur",
+        "en": null,
+        "de": null
+      },
+      "type": "GATE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Schlussstatue und Monochrome-Farbe zum Zielmonster kombinieren.",
+      "location": null,
+      "assignment": {
+        "mode": "NONE",
+        "minimumParticipants": 0,
+        "maximumParticipants": null,
+        "exclusiveClaim": false,
+        "recommendedParticipants": null,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.closTarget.monochromeColor",
+          "type": "enum",
+          "description": "Übernommene Farbe",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        },
+        {
+          "path": "sanctuaire.closTarget.expectedMonster",
+          "type": "string",
+          "description": "Erwartetes Zielmonster",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        },
+        {
+          "path": "sanctuaire.closTarget.expectedMap",
+          "type": "string",
+          "description": "Erwartete Karte",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        }
+      ],
+      "instructions": [
+        "Farbe automatisch übernehmen.",
+        "Mapping zu Monster und Karte aus versionierter Definition laden."
+      ],
+      "completion": {
+        "mode": "AUTOMATIC_RULE",
+        "criteria": [
+          "Statue und Farbe vorhanden; Mapping aufgelöst."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Zielmonsterkampf freigeben.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-CLO-050"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-007"
+      ],
+      "uiHints": {
+        "primaryComponent": "GATE",
+        "participantSummary": "Zielmonster und Karte sehen",
+        "captainSummary": "Automatisches Mapping kontrollieren",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.closTarget.expectedMonster",
+          "sanctuaire.closTarget.expectedMap"
+        ],
+        "quickActions": [
+          "Mapping prüfen"
+        ]
+      }
+    },
+    {
+      "id": "S1-CLO-050",
+      "phaseId": "S1-CLO",
+      "order": 50,
+      "names": {
+        "fr": "Choisir et vaincre le bon monstre",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Korrektes Zielmonster mit maximal vier Charakteren besiegen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.closTarget.actualMonster",
+          "type": "string",
+          "description": "Gewähltes Monster",
+          "sourceStatus": "PRODUCT_RULE",
+          "required": true
+        },
+        {
+          "path": "sanctuaire.closTarget.combatParticipantIds",
+          "type": "array",
+          "description": "Maximal vier Teilnehmer",
+          "sourceStatus": "PRODUCT_RULE",
+          "required": true
+        }
+      ],
+      "instructions": [
+        "Ziel und Karte aus dem System prüfen.",
+        "Maximal vier Charaktere starten.",
+        "Kampfergebnis melden."
+      ],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Korrektes Monster besiegt."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "2’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 2000
+        },
+        {
+          "type": "INCREMENT",
+          "description": "Raid-Leben um 1 bis maximal 20 erhöhen.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": 1
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Falsches Monster oder Niederlage protokollieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": 1
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-007"
+      ],
+      "uiHints": {
+        "primaryComponent": "TASK_CARD",
+        "participantSummary": "Zielmonster und Karte sehen",
+        "captainSummary": "Team, Ziel und Ergebnis sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.closTarget.expectedMonster",
+          "sanctuaire.closTarget.expectedMap"
+        ],
+        "quickActions": [
+          "Kampf starten",
+          "Sieg",
+          "Falsches Ziel",
+          "Niederlage"
+        ]
+      }
+    },
+    {
+      "id": "S1-ALL-900",
+      "phaseId": "S1",
+      "order": 900,
+      "names": {
+        "fr": "Déverrouiller les quatre gardiens",
+        "en": null,
+        "de": null
+      },
+      "type": "GATE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Automatisches Gate nach vier abgeschlossenen Rätseln.",
+      "location": null,
+      "assignment": {
+        "mode": "NONE",
+        "minimumParticipants": 0,
+        "maximumParticipants": null,
+        "exclusiveClaim": false,
+        "recommendedParticipants": null,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [
+        "Alle vier Rätselabschlüsse prüfen.",
+        "Resultate schreibschützen; Captain-Korrektur bleibt möglich."
+      ],
+      "completion": {
+        "mode": "AUTOMATIC_RULE",
+        "criteria": [
+          "BEL, EPH, OUV und CLO abgeschlossen."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Vier Wächter bereit setzen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S2-VEI-010"
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Vier Wächter bereit setzen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S2-GAR-010"
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Vier Wächter bereit setzen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S2-DEF-010"
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Vier Wächter bereit setzen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S2-SEN-010"
+        },
+        {
+          "type": "CREATE_WARNING",
+          "description": "Captain auf Teamverteilung hinweisen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "warning.SAN-GUARDIAN-UNASSIGNED"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "SAN-P0-003"
+      ],
+      "uiHints": {
+        "primaryComponent": "GATE",
+        "participantSummary": "Wächterphase freigeschaltet",
+        "captainSummary": "Vier Wächterteams zuweisen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [],
+        "quickActions": [
+          "Teams verteilen"
+        ]
+      }
+    },
+    {
+      "id": "S2-VEI-010",
+      "phaseId": "S2-VEI",
+      "order": 10,
+      "names": {
+        "fr": "Charger le type de statue pour le Veilleur",
+        "en": null,
+        "de": null
+      },
+      "type": "GATE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Statuentyp aus Clos in die Wächterkarte laden.",
+      "location": null,
+      "assignment": {
+        "mode": "NONE",
+        "minimumParticipants": 0,
+        "maximumParticipants": null,
+        "exclusiveClaim": false,
+        "recommendedParticipants": null,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "AUTOMATIC_RULE",
+        "criteria": [
+          "closTarget.statueType vorhanden."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "TRANSFER_DATA",
+          "description": "Zieltyp auf Wächterkarte anzeigen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.closTarget.statueType"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "GATE",
+        "participantSummary": "Richtiges Begleitmonster sehen",
+        "captainSummary": "Übertragung prüfen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.closTarget.statueType"
+        ],
+        "quickActions": []
+      }
+    },
+    {
+      "id": "S2-VEI-020",
+      "phaseId": "S2-VEI",
+      "order": 20,
+      "names": {
+        "fr": "Tuer d’abord le bon monstre accompagnateur",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Passenden beschworenen Typ zuerst töten, um Veilleur verwundbar zu machen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.guardians.veilleur.firstKilledType",
+          "type": "enum",
+          "description": "Erster besiegter Begleittyp",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "enumValues": [
+            "DAHLIANE",
+            "FRACAMELIA",
+            "MUGUEGIDE",
+            "TRITULIPE"
+          ]
+        }
+      ],
+      "instructions": [
+        "Zieltyp gross anzeigen.",
+        "Nur diesen Typ zuerst besiegen.",
+        "Falschen ersten Kill sofort melden."
+      ],
+      "completion": {
+        "mode": "MANUAL",
+        "criteria": [
+          "Richtiger erster Kill bestätigt."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "SET_STATE",
+          "description": "Veilleur dauerhaft verwundbar markieren.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.guardians.veilleur.vulnerable",
+          "value": true
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben pro Kampfteilnehmer reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": "participantCount"
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Zieltyp zuerst töten",
+        "captainSummary": "Ziel, Team und Fehlerrisiko sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.closTarget.statueType"
+        ],
+        "quickActions": [
+          "Richtiger Kill",
+          "Falscher Kill",
+          "Kampf verloren"
+        ]
+      }
+    },
+    {
+      "id": "S2-VEI-030",
+      "phaseId": "S2-VEI",
+      "order": 30,
+      "names": {
+        "fr": "Vaincre le Veilleur de l’Ouvrage",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Veilleur-Kampf abschliessen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Veilleur besiegt."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "5’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 5000
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben pro Charakter reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": "participantCount"
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Veilleur besiegen",
+        "captainSummary": "Versuch und Status sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.guardians.veilleur.vulnerable"
+        ],
+        "quickActions": [
+          "Sieg",
+          "Niederlage"
+        ]
+      }
+    },
+    {
+      "id": "S2-GAR-010",
+      "phaseId": "S2-GAR",
+      "order": 10,
+      "names": {
+        "fr": "Charger les quatre objets sûrs",
+        "en": null,
+        "de": null
+      },
+      "type": "GATE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Vier Blumenobjekte in Gardien-Karte laden.",
+      "location": null,
+      "assignment": {
+        "mode": "NONE",
+        "minimumParticipants": 0,
+        "maximumParticipants": null,
+        "exclusiveClaim": false,
+        "recommendedParticipants": null,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "AUTOMATIC_RULE",
+        "criteria": [
+          "flowerSequence vollständig."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "TRANSFER_DATA",
+          "description": "Vier sichere Objekte anzeigen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.flowerSequence"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "GATE",
+        "participantSummary": "Vier sichere Objekte sehen",
+        "captainSummary": "Übertragung prüfen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.flowerSequence"
+        ],
+        "quickActions": []
+      }
+    },
+    {
+      "id": "S2-GAR-020",
+      "phaseId": "S2-GAR",
+      "order": 20,
+      "names": {
+        "fr": "Déclencher les quatre bons glyphes",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Nur die vier sicheren Objektglyphen auslösen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.guardians.gardien.correctGlyphsTriggered",
+          "type": "integer",
+          "description": "Richtige Glyphen",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 4
+        }
+      ],
+      "instructions": [
+        "Vier sichere Objekte gross anzeigen.",
+        "Beschwörungen können Glyphen auslösen.",
+        "Falsche Glyphe sofort melden."
+      ],
+      "completion": {
+        "mode": "COUNTER_TARGET",
+        "criteria": [
+          "correctGlyphsTriggered = 4."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "SET_STATE",
+          "description": "Gardien verwundbar markieren.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.guardians.gardien.vulnerable",
+          "value": true
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben pro Kampfteilnehmer reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": "participantCount"
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Nur sichere Glyphen auslösen",
+        "captainSummary": "Vier sichere Objekte und Zähler sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.flowerSequence",
+          "sanctuaire.guardians.gardien.correctGlyphsTriggered"
+        ],
+        "quickActions": [
+          "Glyphe korrekt",
+          "Falsche Glyphe"
+        ]
+      }
+    },
+    {
+      "id": "S2-GAR-030",
+      "phaseId": "S2-GAR",
+      "order": 30,
+      "names": {
+        "fr": "Vaincre le Gardien du Clos",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Gardien-Kampf abschliessen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Gardien besiegt."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "5’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 5000
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben pro Charakter reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": "participantCount"
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Gardien besiegen",
+        "captainSummary": "Versuch und Status sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.guardians.gardien.vulnerable"
+        ],
+        "quickActions": [
+          "Sieg",
+          "Niederlage"
+        ]
+      }
+    },
+    {
+      "id": "S2-DEF-010",
+      "phaseId": "S2-DEF",
+      "order": 10,
+      "names": {
+        "fr": "Démarrer le combat du Défenseur",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Kampf ohne Rätselinput starten.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [
+        "Team bis maximal vier bestätigen.",
+        "Vier Begleitmonster berücksichtigen."
+      ],
+      "completion": {
+        "mode": "MANUAL",
+        "criteria": [
+          "Kampf aktiv."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Eskalationstracker aktivieren.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S2-DEF-020"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Kampf starten",
+        "captainSummary": "Team und Versuch sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [],
+        "quickActions": [
+          "Kampf starten"
+        ]
+      }
+    },
+    {
+      "id": "S2-DEF-020",
+      "phaseId": "S2-DEF",
+      "order": 20,
+      "names": {
+        "fr": "Suivre l’escalade du Défenseur",
+        "en": null,
+        "de": null
+      },
+      "type": "TRACKER",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Passive Stapel, lebende Adds und Doppelzug verfolgen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.guardians.defender.passiveStacks",
+          "type": "integer",
+          "description": "Stapel 0–10",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 10
+        },
+        {
+          "path": "sanctuaire.guardians.defender.addsAlive",
+          "type": "integer",
+          "description": "Lebende Begleitmonster",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": 4,
+          "minimum": 0,
+          "maximum": 4
+        },
+        {
+          "path": "sanctuaire.guardians.defender.doubleTurnActive",
+          "type": "boolean",
+          "description": "Doppelzug aktiv",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": false
+        }
+      ],
+      "instructions": [
+        "Pro Bosszug Stapel erhöhen.",
+        "Adds nach Tod reduzieren.",
+        "Bei 0 Adds Doppelzug markieren."
+      ],
+      "completion": {
+        "mode": "MANUAL",
+        "criteria": [
+          "Kampf beendet oder Tracker nicht mehr benötigt."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Kampfabschluss erfassen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S2-DEF-030"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Stapel und Adds aktualisieren",
+        "captainSummary": "Eskalationsrisiko sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.guardians.defender.passiveStacks",
+          "sanctuaire.guardians.defender.addsAlive"
+        ],
+        "quickActions": [
+          "+1 Stapel",
+          "Add besiegt"
+        ]
+      }
+    },
+    {
+      "id": "S2-DEF-030",
+      "phaseId": "S2-DEF",
+      "order": 30,
+      "names": {
+        "fr": "Vaincre le Défenseur de la Réserve",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Défenseur-Kampf abschliessen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Défenseur besiegt."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "5’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 5000
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben pro Charakter reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": "participantCount"
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Défenseur besiegen",
+        "captainSummary": "Versuch und Status sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [],
+        "quickActions": [
+          "Sieg",
+          "Niederlage"
+        ]
+      }
+    },
+    {
+      "id": "S2-SEN-010",
+      "phaseId": "S2-SEN",
+      "order": 10,
+      "names": {
+        "fr": "Charger la couleur monochrome",
+        "en": null,
+        "de": null
+      },
+      "type": "GATE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Monochrome-Farbe und Elementzuordnung in Sentinelle-Karte laden.",
+      "location": null,
+      "assignment": {
+        "mode": "NONE",
+        "minimumParticipants": 0,
+        "maximumParticipants": null,
+        "exclusiveClaim": false,
+        "recommendedParticipants": null,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.guardians.sentinelle.targetElement",
+          "type": "enum",
+          "description": "Zielelement",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "enumValues": [
+            "EARTH",
+            "WATER",
+            "AIR",
+            "FIRE"
+          ]
+        }
+      ],
+      "instructions": [],
+      "completion": {
+        "mode": "AUTOMATIC_RULE",
+        "criteria": [
+          "monochromeColor vorhanden und Element gemappt."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "TRANSFER_DATA",
+          "description": "Farbe und Element anzeigen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.monochromeColor"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "GATE",
+        "participantSummary": "Farbe und Zielelement sehen",
+        "captainSummary": "Übertragung prüfen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.monochromeColor",
+          "sanctuaire.guardians.sentinelle.targetElement"
+        ],
+        "quickActions": []
+      }
+    },
+    {
+      "id": "S2-SEN-020",
+      "phaseId": "S2-SEN",
+      "order": 20,
+      "names": {
+        "fr": "Amener le bon obélisque à 1 PV",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Nur den farblich passenden Obelisken auf 1 HP bringen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.guardians.sentinelle.targetObeliskConfirmed",
+          "type": "boolean",
+          "description": "Richtiges Ziel auf 1 HP",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": false
+        }
+      ],
+      "instructions": [
+        "Ziel farblich und textlich anzeigen.",
+        "Keinen falschen Obelisken auf 1 HP bringen.",
+        "Sentinelle in korrekter Glyphe halten."
+      ],
+      "completion": {
+        "mode": "MANUAL",
+        "criteria": [
+          "Korrekte Glyphe erzeugt; Sentinelle verwundbar."
+        ],
+        "confirmationPolicy": "SECOND_PERSON",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "SET_STATE",
+          "description": "Sentinelle verwundbar markieren.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.guardians.sentinelle.vulnerable",
+          "value": true
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben pro Kampfteilnehmer reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": "participantCount"
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Nur Zielobelisk auf 1 HP",
+        "captainSummary": "Ziel, Element und Risiko sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.guardians.sentinelle.targetElement"
+        ],
+        "quickActions": [
+          "Ziel erreicht",
+          "Falsches Ziel"
+        ]
+      }
+    },
+    {
+      "id": "S2-SEN-030",
+      "phaseId": "S2-SEN",
+      "order": 30,
+      "names": {
+        "fr": "Vaincre la Sentinelle de la Cour",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Sentinelle-Kampf abschliessen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 4,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 4,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Sentinelle besiegt."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "5’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 5000
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben pro Charakter reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": "participantCount"
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-008"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Sentinelle besiegen",
+        "captainSummary": "Versuch und Status sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [],
+        "quickActions": [
+          "Sieg",
+          "Niederlage"
+        ]
+      }
+    },
+    {
+      "id": "S2-ALL-900",
+      "phaseId": "S2",
+      "order": 900,
+      "names": {
+        "fr": "Déverrouiller le corridor",
+        "en": null,
+        "de": null
+      },
+      "type": "GATE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Korridor nach vier Wächtersiegen öffnen.",
+      "location": null,
+      "assignment": {
+        "mode": "NONE",
+        "minimumParticipants": 0,
+        "maximumParticipants": null,
+        "exclusiveClaim": false,
+        "recommendedParticipants": null,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "AUTOMATIC_RULE",
+        "criteria": [
+          "Alle vier Wächter COMPLETED."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Korridorziel bestätigen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S3-COR-010"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "SAN-P0-009"
+      ],
+      "uiHints": {
+        "primaryComponent": "GATE",
+        "participantSummary": "Korridor geöffnet",
+        "captainSummary": "Korridorziel laden",
+        "showMechanicOnDemand": true,
+        "criticalFields": [],
+        "quickActions": []
+      }
+    },
+    {
+      "id": "S3-COR-010",
+      "phaseId": "S3",
+      "order": 10,
+      "names": {
+        "fr": "Confirmer le nombre cible du corridor",
+        "en": null,
+        "de": null
+      },
+      "type": "CHECK",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Im Pilot die sichtbare Zielzahl bestätigen; bis dahin konfigurierbar.",
+      "location": null,
+      "assignment": {
+        "mode": "CAPTAIN",
+        "minimumParticipants": 1,
+        "maximumParticipants": 1,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 1,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.corridorTarget",
+          "type": "integer",
+          "description": "Zielzahl 60 oder 80",
+          "sourceStatus": "LIVE_REQUIRED",
+          "required": true,
+          "default": 60,
+          "minimum": 1
+        },
+        {
+          "path": "sanctuaire.corridorSourceConflict",
+          "type": "boolean",
+          "description": "Quellenkonflikt",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": true
+        }
+      ],
+      "instructions": [
+        "Im Spiel sichtbare Zielzahl ablesen.",
+        "Räume und Monster pro Raum dokumentieren.",
+        "Definition nach Evidenz versionieren."
+      ],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Zielzahl für diese Session bestätigt."
+        ],
+        "confirmationPolicy": "CAPTAIN",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Korridorräume erzeugen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S3-COR-020"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "LIVE_REQUIRED",
+      "testRefs": [
+        "SAN-P0-001"
+      ],
+      "uiHints": {
+        "primaryComponent": "FORM",
+        "participantSummary": "Zielzahl bestätigen",
+        "captainSummary": "Quellenkonflikt und Evidenz sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.corridorTarget"
+        ],
+        "quickActions": [
+          "60 bestätigen",
+          "80 bestätigen",
+          "Anderen Wert erfassen"
+        ]
+      }
+    },
+    {
+      "id": "S3-COR-020",
+      "phaseId": "S3",
+      "order": 20,
+      "names": {
+        "fr": "Créer les salles et combats solo",
+        "en": null,
+        "de": null
+      },
+      "type": "COUNTER",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Konfigurierbare Räume und Solokämpfe für die Session erzeugen.",
+      "location": null,
+      "assignment": {
+        "mode": "NONE",
+        "minimumParticipants": 0,
+        "maximumParticipants": null,
+        "exclusiveClaim": false,
+        "recommendedParticipants": null,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.corridorRooms",
+          "type": "array",
+          "description": "Erzeugte Räume und Kämpfe",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "required": true
+        }
+      ],
+      "instructions": [
+        "Standardannahme: 10 Räume × 6 Solokämpfe.",
+        "Tatsächliche Zielzahl aus Session verwenden."
+      ],
+      "completion": {
+        "mode": "AUTOMATIC_RULE",
+        "criteria": [
+          "Summe der erzeugten Kämpfe = corridorTarget."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Solokampf-Dispatcher aktivieren.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S3-COR-030"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-001",
+        "SAN-P1-010"
+      ],
+      "uiHints": {
+        "primaryComponent": "COUNTER",
+        "participantSummary": "Freie Solokämpfe sehen",
+        "captainSummary": "Räume und Restmenge sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.corridorRooms"
+        ],
+        "quickActions": []
+      }
+    },
+    {
+      "id": "S3-COR-030",
+      "phaseId": "S3",
+      "order": 30,
+      "names": {
+        "fr": "Distribuer les combats solo",
+        "en": null,
+        "de": null
+      },
+      "type": "ASSIGNMENT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Nächsten freien Solokampf zuweisen und Niederlagen neu freigeben.",
+      "location": null,
+      "assignment": {
+        "mode": "INDIVIDUAL",
+        "minimumParticipants": 1,
+        "maximumParticipants": 1,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 1,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.corridorCompleted",
+          "type": "integer",
+          "description": "Abgeschlossene Kämpfe",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": 0,
+          "minimum": 0
+        },
+        {
+          "path": "sanctuaire.corridorAssignments",
+          "type": "array",
+          "description": "Kampf↔Spieler↔Status",
+          "sourceStatus": "PRODUCT_RULE",
+          "required": true
+        }
+      ],
+      "instructions": [
+        "Jeder Spieler maximal einen laufenden Kampf.",
+        "Nur solo, ohne Begleiter.",
+        "Niederlage als Retry freigeben."
+      ],
+      "completion": {
+        "mode": "COUNTER_TARGET",
+        "criteria": [
+          "corridorCompleted = corridorTarget."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Korridorabschluss auslösen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S3-COR-040"
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben gemäss Kampfregel reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": 1
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-010"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOARD",
+        "participantSummary": "Deinen nächsten Solokampf sehen",
+        "captainSummary": "Dispatcher, Räume und Restzeit sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.corridorCompleted",
+          "sanctuaire.corridorAssignments"
+        ],
+        "quickActions": [
+          "Nächsten Kampf übernehmen",
+          "Sieg",
+          "Niederlage"
+        ]
+      }
+    },
+    {
+      "id": "S3-COR-040",
+      "phaseId": "S3",
+      "order": 40,
+      "names": {
+        "fr": "Terminer le corridor",
+        "en": null,
+        "de": null
+      },
+      "type": "GATE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Score vergeben und beide Finalbosse freischalten.",
+      "location": null,
+      "assignment": {
+        "mode": "NONE",
+        "minimumParticipants": 0,
+        "maximumParticipants": null,
+        "exclusiveClaim": false,
+        "recommendedParticipants": null,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "AUTOMATIC_RULE",
+        "criteria": [
+          "corridorCompleted = corridorTarget."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "2’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 2000
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Reine-Team vorbereiten.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-QUE-010"
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Princesse-Team vorbereiten.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-PRI-010"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-010"
+      ],
+      "uiHints": {
+        "primaryComponent": "GATE",
+        "participantSummary": "Finalbosse freigeschaltet",
+        "captainSummary": "Zwei Finalteams bilden",
+        "showMechanicOnDemand": true,
+        "criticalFields": [],
+        "quickActions": [
+          "Teams verteilen"
+        ]
+      }
+    },
+    {
+      "id": "S4-QUE-010",
+      "phaseId": "S4-QUE",
+      "order": 10,
+      "names": {
+        "fr": "Préparer l’équipe de la Reine Écarlate",
+        "en": null,
+        "de": null
+      },
+      "type": "ASSIGNMENT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Team bis acht, Versuch und Rollen vorbereiten.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 8,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.queen.teamParticipantIds",
+          "type": "array",
+          "description": "Reine-Team",
+          "sourceStatus": "PRODUCT_RULE",
+          "required": true
+        },
+        {
+          "path": "sanctuaire.queen.attempt",
+          "type": "integer",
+          "description": "Versuchsnummer",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": 1,
+          "minimum": 1
+        }
+      ],
+      "instructions": [
+        "Maximal acht Spieler zuweisen.",
+        "Parallelbetrieb mit Princesse-Team möglich."
+      ],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Team bereit."
+        ],
+        "confirmationPolicy": "CAPTAIN",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Reine Phase 1 starten.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-QUE-020"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-011"
+      ],
+      "uiHints": {
+        "primaryComponent": "CHECKLIST",
+        "participantSummary": "Dein Reine-Team sehen",
+        "captainSummary": "Team und Startbereitschaft sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.queen.teamParticipantIds"
+        ],
+        "quickActions": [
+          "Bereit",
+          "Kampf starten"
+        ]
+      }
+    },
+    {
+      "id": "S4-QUE-020",
+      "phaseId": "S4-QUE",
+      "order": 20,
+      "names": {
+        "fr": "Suivre la phase 1 de la Reine",
+        "en": null,
+        "de": null
+      },
+      "type": "TRACKER",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "50’000-Schadensschwelle, Gefangene und Châtiment-Timer verfolgen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 8,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.queen.phase",
+          "type": "integer",
+          "description": "Bossphase",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 2
+        },
+        {
+          "path": "sanctuaire.queen.damageToThreshold",
+          "type": "integer",
+          "description": "Verbleibend bis 50’000",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": 50000,
+          "minimum": 0,
+          "maximum": 50000
+        },
+        {
+          "path": "sanctuaire.queen.prisoners",
+          "type": "array",
+          "description": "Gefangene Spieler",
+          "sourceStatus": "PRODUCT_RULE"
+        },
+        {
+          "path": "sanctuaire.queen.royalPunishmentTurnsRemaining",
+          "type": "integer",
+          "description": "Runden bis globaler Schaden",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "nullable": true,
+          "minimum": 0,
+          "maximum": 2
+        }
+      ],
+      "instructions": [
+        "Châtiment nach Auslösung auf 2 Runden setzen.",
+        "Gefangene und Befreiungen melden.",
+        "Schadensschwelle aktualisieren."
+      ],
+      "completion": {
+        "mode": "COUNTER_TARGET",
+        "criteria": [
+          "damageToThreshold = 0."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Phase 2 freischalten.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-QUE-030"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-012"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Schwelle, Gefangene und Châtiment sehen",
+        "captainSummary": "Phase-1-Risiken sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.queen.damageToThreshold",
+          "sanctuaire.queen.prisoners",
+          "sanctuaire.queen.royalPunishmentTurnsRemaining"
+        ],
+        "quickActions": [
+          "Schaden aktualisieren",
+          "Gefangenen melden",
+          "Châtiment starten"
+        ]
+      }
+    },
+    {
+      "id": "S4-QUE-030",
+      "phaseId": "S4-QUE",
+      "order": 30,
+      "names": {
+        "fr": "Déclencher la phase 2 de la Reine",
+        "en": null,
+        "de": null
+      },
+      "type": "GATE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Phase 2, Heilung, Volonté und Waffen-Spawns bestätigen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 8,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.queen.willHp",
+          "type": "integer",
+          "description": "Volonté de la Princesse HP",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": 30000,
+          "minimum": 0,
+          "maximum": 30000
+        },
+        {
+          "path": "sanctuaire.queen.pommeauAlive",
+          "type": "boolean",
+          "description": "Pommeau lebt",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": true
+        },
+        {
+          "path": "sanctuaire.queen.lameAlive",
+          "type": "boolean",
+          "description": "Lame lebt",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": true
+        }
+      ],
+      "instructions": [
+        "Bossheilung und Invulnerabilität bestätigen.",
+        "Volonté, Pommeau und Lame erfassen."
+      ],
+      "completion": {
+        "mode": "MANUAL",
+        "criteria": [
+          "Phase 2 aktiv."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "SET_STATE",
+          "description": "Bossphase auf 2 setzen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.queen.phase",
+          "value": 2
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Waffen eliminieren.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-QUE-040"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-012"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Phase-2-Ziele sehen",
+        "captainSummary": "Spawnstatus und Invulnerabilität sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.queen.willHp",
+          "sanctuaire.queen.pommeauAlive",
+          "sanctuaire.queen.lameAlive"
+        ],
+        "quickActions": [
+          "Phase 2 bestätigt"
+        ]
+      }
+    },
+    {
+      "id": "S4-QUE-040",
+      "phaseId": "S4-QUE",
+      "order": 40,
+      "names": {
+        "fr": "Éliminer le Pommeau et la Lame",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Beide Waffen eliminieren, um dauerhafte Verwundbarkeit herzustellen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 8,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [
+        "Erste Runde Invulnerabilität beachten.",
+        "Tod von Pommeau und Lame getrennt melden."
+      ],
+      "completion": {
+        "mode": "ALL_SUBTASKS",
+        "criteria": [
+          "pommeauAlive = false.",
+          "lameAlive = false."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "SET_STATE",
+          "description": "Reine dauerhaft verwundbar.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.queen.permanentlyVulnerable",
+          "value": true
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Reine besiegen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-QUE-050"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-012"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Pommeau und Lame eliminieren",
+        "captainSummary": "Beide Zielzustände sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.queen.pommeauAlive",
+          "sanctuaire.queen.lameAlive"
+        ],
+        "quickActions": [
+          "Pommeau besiegt",
+          "Lame besiegt"
+        ]
+      }
+    },
+    {
+      "id": "S4-QUE-050",
+      "phaseId": "S4-QUE",
+      "order": 50,
+      "names": {
+        "fr": "Vaincre la Reine Écarlate",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Reine besiegen und Finalscore verbuchen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 8,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Reine besiegt."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "10’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 10000
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben pro Charakter reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": "participantCount"
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-012"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Reine besiegen",
+        "captainSummary": "Bossstatus sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.queen.permanentlyVulnerable"
+        ],
+        "quickActions": [
+          "Sieg",
+          "Niederlage"
+        ]
+      }
+    },
+    {
+      "id": "S4-PRI-010",
+      "phaseId": "S4-PRI",
+      "order": 10,
+      "names": {
+        "fr": "Préparer l’équipe de la Princesse Maudite",
+        "en": null,
+        "de": null
+      },
+      "type": "ASSIGNMENT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Team bis acht und Versuch vorbereiten.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 8,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.princess.teamParticipantIds",
+          "type": "array",
+          "description": "Princesse-Team",
+          "sourceStatus": "PRODUCT_RULE",
+          "required": true
+        },
+        {
+          "path": "sanctuaire.princess.attempt",
+          "type": "integer",
+          "description": "Versuchsnummer",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": 1,
+          "minimum": 1
+        }
+      ],
+      "instructions": [
+        "Maximal acht Spieler zuweisen.",
+        "Parallelbetrieb mit Reine-Team möglich."
+      ],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Team bereit."
+        ],
+        "confirmationPolicy": "CAPTAIN",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Princesse Phase 1 starten.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-PRI-020"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-011"
+      ],
+      "uiHints": {
+        "primaryComponent": "CHECKLIST",
+        "participantSummary": "Dein Princesse-Team sehen",
+        "captainSummary": "Team und Startbereitschaft sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.princess.teamParticipantIds"
+        ],
+        "quickActions": [
+          "Bereit",
+          "Kampf starten"
+        ]
+      }
+    },
+    {
+      "id": "S4-PRI-020",
+      "phaseId": "S4-PRI",
+      "order": 20,
+      "names": {
+        "fr": "Suivre la phase 1 de la Princesse",
+        "en": null,
+        "de": null
+      },
+      "type": "TRACKER",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Schadensschwelle, Statuen, Floraison und Distanzregel verfolgen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 8,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.princess.phase",
+          "type": "integer",
+          "description": "Bossphase",
+          "sourceStatus": "PRODUCT_RULE",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 2
+        },
+        {
+          "path": "sanctuaire.princess.damageToThreshold",
+          "type": "integer",
+          "description": "Verbleibend bis 50’000",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": 50000,
+          "minimum": 0,
+          "maximum": 50000
+        },
+        {
+          "path": "sanctuaire.princess.floraison",
+          "type": "integer",
+          "description": "Floraison 0–10",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 10
+        },
+        {
+          "path": "sanctuaire.princess.cursedStatues",
+          "type": "array",
+          "description": "Verfluchte Statuen",
+          "sourceStatus": "PRODUCT_RULE"
+        }
+      ],
+      "instructions": [
+        "Nur aus Distanz Schaden.",
+        "Statuen vor nächstem Bosszug per Waffenangriff befreien.",
+        "Floraison aktualisieren."
+      ],
+      "completion": {
+        "mode": "COUNTER_TARGET",
+        "criteria": [
+          "damageToThreshold = 0."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Princesse Phase 2 freischalten.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-PRI-030"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-013"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Schwelle, Statuen und Floraison sehen",
+        "captainSummary": "Phase-1-Risiken sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.princess.damageToThreshold",
+          "sanctuaire.princess.floraison",
+          "sanctuaire.princess.cursedStatues"
+        ],
+        "quickActions": [
+          "Schaden aktualisieren",
+          "Statue melden",
+          "Floraison +1"
+        ]
+      }
+    },
+    {
+      "id": "S4-PRI-030",
+      "phaseId": "S4-PRI",
+      "order": 30,
+      "names": {
+        "fr": "Déclencher la phase 2 de la Princesse",
+        "en": null,
+        "de": null
+      },
+      "type": "GATE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Phase 2, Volonté und Blumenmechanik bestätigen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 8,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.princess.willHp",
+          "type": "integer",
+          "description": "Volonté de la Reine HP",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": 30000,
+          "minimum": 0,
+          "maximum": 30000
+        },
+        {
+          "path": "sanctuaire.princess.flowerSide",
+          "type": "enum",
+          "description": "Seite der Fleur maudite",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": "ENEMY",
+          "enumValues": [
+            "ALLY",
+            "ENEMY"
+          ]
+        }
+      ],
+      "instructions": [
+        "Bossheilung und Invulnerabilität bestätigen.",
+        "Fleur maudite auf Gegnerseite halten."
+      ],
+      "completion": {
+        "mode": "MANUAL",
+        "criteria": [
+          "Phase 2 aktiv."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "SET_STATE",
+          "description": "Bossphase auf 2 setzen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.princess.phase",
+          "value": 2
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Zwei Incantations anwenden.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-PRI-040"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-013"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Phase-2-Ziele sehen",
+        "captainSummary": "Volonté und Blumenseite sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.princess.willHp",
+          "sanctuaire.princess.flowerSide"
+        ],
+        "quickActions": [
+          "Phase 2 bestätigt"
+        ]
+      }
+    },
+    {
+      "id": "S4-PRI-040",
+      "phaseId": "S4-PRI",
+      "order": 40,
+      "names": {
+        "fr": "Appliquer deux Incantations Florales",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Violetten Glyphenzauber zweimal auf die Princesse anwenden.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 8,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.princess.incantationsApplied",
+          "type": "integer",
+          "description": "Anwendungen 0–2",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 2
+        }
+      ],
+      "instructions": [
+        "Violette Glyphe betreten.",
+        "Einmaligen Zauber auf Princesse anwenden.",
+        "Zweimal wiederholen."
+      ],
+      "completion": {
+        "mode": "COUNTER_TARGET",
+        "criteria": [
+          "incantationsApplied = 2."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "SET_STATE",
+          "description": "Princesse dauerhaft verwundbar.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "sanctuaire.princess.permanentlyVulnerable",
+          "value": true
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Princesse besiegen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-PRI-050"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-013"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Incantations 0/2 sehen",
+        "captainSummary": "Mechanikfortschritt sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.princess.incantationsApplied"
+        ],
+        "quickActions": [
+          "Incantation angewandt"
+        ]
+      }
+    },
+    {
+      "id": "S4-PRI-050",
+      "phaseId": "S4-PRI",
+      "order": 50,
+      "names": {
+        "fr": "Vaincre la Princesse Maudite",
+        "en": null,
+        "de": null
+      },
+      "type": "COMBAT",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Princesse besiegen und Finalscore verbuchen.",
+      "location": null,
+      "assignment": {
+        "mode": "TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 8,
+        "exclusiveClaim": true,
+        "recommendedParticipants": 8,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "CAPTAIN_CONFIRMATION",
+        "criteria": [
+          "Princesse besiegt."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "ADD_SCORE",
+          "description": "10’000 Score vergeben.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "session.score",
+          "value": 10000
+        }
+      ],
+      "failureEffects": [
+        {
+          "type": "DECREMENT",
+          "description": "Raid-Leben pro Charakter reduzieren.",
+          "sourceStatus": "GUIDE_CONFIRMED",
+          "target": "sanctuaire.raidLife",
+          "value": "participantCount"
+        }
+      ],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-013"
+      ],
+      "uiHints": {
+        "primaryComponent": "BOSS_TRACKER",
+        "participantSummary": "Princesse besiegen",
+        "captainSummary": "Bossstatus sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.princess.permanentlyVulnerable"
+        ],
+        "quickActions": [
+          "Sieg",
+          "Niederlage"
+        ]
+      }
+    },
+    {
+      "id": "S4-ALL-900",
+      "phaseId": "S4",
+      "order": 900,
+      "names": {
+        "fr": "Clôturer le raid",
+        "en": null,
+        "de": null
+      },
+      "type": "GATE",
+      "priority": "P0",
+      "optional": false,
+      "initialStatus": "LOCKED",
+      "description": "Beide Finalbosse besiegt: Session einfrieren und Zusammenfassung erzeugen.",
+      "location": null,
+      "assignment": {
+        "mode": "NONE",
+        "minimumParticipants": 0,
+        "maximumParticipants": null,
+        "exclusiveClaim": false,
+        "recommendedParticipants": null,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [],
+      "instructions": [],
+      "completion": {
+        "mode": "AUTOMATIC_RULE",
+        "criteria": [
+          "Reine COMPLETED.",
+          "Princesse COMPLETED."
+        ],
+        "confirmationPolicy": "SYSTEM",
+        "resultFields": []
+      },
+      "effects": [
+        {
+          "type": "END_SESSION",
+          "description": "Session erfolgreich beenden.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "session.status",
+          "value": "ENDED"
+        },
+        {
+          "type": "STOP_TIMER",
+          "description": "Raidtimer stoppen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "session.timer"
+        },
+        {
+          "type": "SET_STATE",
+          "description": "Endscore und Raid-Leben einfrieren.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "session.summary"
+        },
+        {
+          "type": "LOG_EVENT",
+          "description": "Raidabschluss protokollieren.",
+          "sourceStatus": "PRODUCT_RULE"
+        }
+      ],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "SAN-P1-011"
+      ],
+      "uiHints": {
+        "primaryComponent": "GATE",
+        "participantSummary": "Raid abgeschlossen",
+        "captainSummary": "Zusammenfassung öffnen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "session.score",
+          "sanctuaire.raidLife"
+        ],
+        "quickActions": [
+          "Zusammenfassung"
+        ]
+      }
+    },
+    {
+      "id": "S-OPT-MAN-010",
+      "phaseId": "S-OPT",
+      "order": 10,
+      "names": {
+        "fr": "Collecter les pages du manuscrit",
+        "en": null,
+        "de": null
+      },
+      "type": "OPTIONAL",
+      "priority": "P2",
+      "optional": true,
+      "initialStatus": "READY",
+      "description": "Fünf optionale Manuskriptseiten sammeln und doppelt lesen.",
+      "location": null,
+      "assignment": {
+        "mode": "INDIVIDUAL_OR_TEAM",
+        "minimumParticipants": 1,
+        "maximumParticipants": 5,
+        "exclusiveClaim": false,
+        "recommendedParticipants": 1,
+        "requiredRoleLabel": null
+      },
+      "inputFields": [
+        {
+          "path": "sanctuaire.manuscriptPages",
+          "type": "array",
+          "description": "Seiten 1–5 mit aufgenommen/gelesen",
+          "sourceStatus": "GUIDE_CONFIRMED"
+        }
+      ],
+      "instructions": [
+        "Seiten 1–4 direkt verfügbar.",
+        "Seite 5 erst nach Wächtern.",
+        "Jede Seite aufnehmen und nochmals lesen."
+      ],
+      "completion": {
+        "mode": "ALL_SUBTASKS",
+        "criteria": [
+          "Alle gewünschten Seiten gelesen."
+        ],
+        "confirmationPolicy": "SELF",
+        "resultFields": []
+      },
+      "effects": [],
+      "failureEffects": [],
+      "mechanicNotes": [],
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P2-014"
+      ],
+      "uiHints": {
+        "primaryComponent": "CHECKLIST",
+        "participantSummary": "Optionale Seiten sehen",
+        "captainSummary": "Fortschritt optional sehen",
+        "showMechanicOnDemand": true,
+        "criticalFields": [
+          "sanctuaire.manuscriptPages"
+        ],
+        "quickActions": [
+          "Seite aufgenommen",
+          "Seite gelesen"
+        ]
+      }
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "D-S0-S0-001-TO-S0-010",
+      "fromTaskIds": [
+        "S0-001"
+      ],
+      "toTaskId": "S0-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S0-010 wird nach Abschluss von S0-001 bereit."
+    },
+    {
+      "id": "D-S0-S0-010-TO-S0-020",
+      "fromTaskIds": [
+        "S0-010"
+      ],
+      "toTaskId": "S0-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S0-020 wird nach Abschluss von S0-010 bereit."
+    },
+    {
+      "id": "D-S0-START-S1-BEL-010",
+      "fromTaskIds": [
+        "S0-020"
+      ],
+      "toTaskId": "S1-BEL-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-S0-START-S1-EPH-010",
+      "fromTaskIds": [
+        "S0-020"
+      ],
+      "toTaskId": "S1-EPH-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-S0-START-S1-OUV-010",
+      "fromTaskIds": [
+        "S0-020"
+      ],
+      "toTaskId": "S1-OUV-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-S0-START-S1-CLO-010",
+      "fromTaskIds": [
+        "S0-020"
+      ],
+      "toTaskId": "S1-CLO-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-BEL-S1-BEL-010-TO-S1-BEL-020",
+      "fromTaskIds": [
+        "S1-BEL-010"
+      ],
+      "toTaskId": "S1-BEL-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S1-BEL-020 wird nach Abschluss von S1-BEL-010 bereit."
+    },
+    {
+      "id": "D-BEL-S1-BEL-020-TO-S1-BEL-030",
+      "fromTaskIds": [
+        "S1-BEL-020"
+      ],
+      "toTaskId": "S1-BEL-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S1-BEL-030 wird nach Abschluss von S1-BEL-020 bereit."
+    },
+    {
+      "id": "D-EPH-S1-EPH-010-TO-S1-EPH-020",
+      "fromTaskIds": [
+        "S1-EPH-010"
+      ],
+      "toTaskId": "S1-EPH-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S1-EPH-020 wird nach Abschluss von S1-EPH-010 bereit."
+    },
+    {
+      "id": "D-EPH-S1-EPH-020-TO-S1-EPH-030",
+      "fromTaskIds": [
+        "S1-EPH-020"
+      ],
+      "toTaskId": "S1-EPH-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S1-EPH-030 wird nach Abschluss von S1-EPH-020 bereit."
+    },
+    {
+      "id": "D-EPH-S1-EPH-030-TO-S1-EPH-040",
+      "fromTaskIds": [
+        "S1-EPH-030"
+      ],
+      "toTaskId": "S1-EPH-040",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S1-EPH-040 wird nach Abschluss von S1-EPH-030 bereit."
+    },
+    {
+      "id": "D-OUV-S1-OUV-010-TO-S1-OUV-020",
+      "fromTaskIds": [
+        "S1-OUV-010"
+      ],
+      "toTaskId": "S1-OUV-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S1-OUV-020 wird nach Abschluss von S1-OUV-010 bereit."
+    },
+    {
+      "id": "D-OUV-S1-OUV-020-TO-S1-OUV-030",
+      "fromTaskIds": [
+        "S1-OUV-020"
+      ],
+      "toTaskId": "S1-OUV-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S1-OUV-030 wird nach Abschluss von S1-OUV-020 bereit."
+    },
+    {
+      "id": "D-OUV-S1-OUV-030-TO-S1-OUV-040",
+      "fromTaskIds": [
+        "S1-OUV-030"
+      ],
+      "toTaskId": "S1-OUV-040",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S1-OUV-040 wird nach Abschluss von S1-OUV-030 bereit."
+    },
+    {
+      "id": "D-CLO-S1-CLO-010-TO-S1-CLO-020",
+      "fromTaskIds": [
+        "S1-CLO-010"
+      ],
+      "toTaskId": "S1-CLO-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S1-CLO-020 wird nach Abschluss von S1-CLO-010 bereit."
+    },
+    {
+      "id": "D-CLO-S1-CLO-020-TO-S1-CLO-030",
+      "fromTaskIds": [
+        "S1-CLO-020"
+      ],
+      "toTaskId": "S1-CLO-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S1-CLO-030 wird nach Abschluss von S1-CLO-020 bereit."
+    },
+    {
+      "id": "D-CLO-COMBINE",
+      "fromTaskIds": [
+        "S1-CLO-030",
+        "S1-OUV-040"
+      ],
+      "toTaskId": "S1-CLO-040",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "Statue und Farbe müssen vorhanden sein."
+    },
+    {
+      "id": "D-CLO-FIGHT",
+      "fromTaskIds": [
+        "S1-CLO-040"
+      ],
+      "toTaskId": "S1-CLO-050",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-S1-GATE",
+      "fromTaskIds": [
+        "S1-BEL-030",
+        "S1-EPH-040",
+        "S1-OUV-040",
+        "S1-CLO-050"
+      ],
+      "toTaskId": "S1-ALL-900",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-S1-TO-S2-VEI-010",
+      "fromTaskIds": [
+        "S1-ALL-900"
+      ],
+      "toTaskId": "S2-VEI-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-S1-TO-S2-GAR-010",
+      "fromTaskIds": [
+        "S1-ALL-900"
+      ],
+      "toTaskId": "S2-GAR-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-S1-TO-S2-DEF-010",
+      "fromTaskIds": [
+        "S1-ALL-900"
+      ],
+      "toTaskId": "S2-DEF-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-S1-TO-S2-SEN-010",
+      "fromTaskIds": [
+        "S1-ALL-900"
+      ],
+      "toTaskId": "S2-SEN-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-VEI-S2-VEI-010-TO-S2-VEI-020",
+      "fromTaskIds": [
+        "S2-VEI-010"
+      ],
+      "toTaskId": "S2-VEI-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S2-VEI-020 wird nach Abschluss von S2-VEI-010 bereit."
+    },
+    {
+      "id": "D-VEI-S2-VEI-020-TO-S2-VEI-030",
+      "fromTaskIds": [
+        "S2-VEI-020"
+      ],
+      "toTaskId": "S2-VEI-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S2-VEI-030 wird nach Abschluss von S2-VEI-020 bereit."
+    },
+    {
+      "id": "D-GAR-S2-GAR-010-TO-S2-GAR-020",
+      "fromTaskIds": [
+        "S2-GAR-010"
+      ],
+      "toTaskId": "S2-GAR-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S2-GAR-020 wird nach Abschluss von S2-GAR-010 bereit."
+    },
+    {
+      "id": "D-GAR-S2-GAR-020-TO-S2-GAR-030",
+      "fromTaskIds": [
+        "S2-GAR-020"
+      ],
+      "toTaskId": "S2-GAR-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S2-GAR-030 wird nach Abschluss von S2-GAR-020 bereit."
+    },
+    {
+      "id": "D-DEF-S2-DEF-010-TO-S2-DEF-020",
+      "fromTaskIds": [
+        "S2-DEF-010"
+      ],
+      "toTaskId": "S2-DEF-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S2-DEF-020 wird nach Abschluss von S2-DEF-010 bereit."
+    },
+    {
+      "id": "D-DEF-S2-DEF-020-TO-S2-DEF-030",
+      "fromTaskIds": [
+        "S2-DEF-020"
+      ],
+      "toTaskId": "S2-DEF-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S2-DEF-030 wird nach Abschluss von S2-DEF-020 bereit."
+    },
+    {
+      "id": "D-SEN-S2-SEN-010-TO-S2-SEN-020",
+      "fromTaskIds": [
+        "S2-SEN-010"
+      ],
+      "toTaskId": "S2-SEN-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S2-SEN-020 wird nach Abschluss von S2-SEN-010 bereit."
+    },
+    {
+      "id": "D-SEN-S2-SEN-020-TO-S2-SEN-030",
+      "fromTaskIds": [
+        "S2-SEN-020"
+      ],
+      "toTaskId": "S2-SEN-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S2-SEN-030 wird nach Abschluss von S2-SEN-020 bereit."
+    },
+    {
+      "id": "D-S2-GATE",
+      "fromTaskIds": [
+        "S2-VEI-030",
+        "S2-GAR-030",
+        "S2-DEF-030",
+        "S2-SEN-030"
+      ],
+      "toTaskId": "S2-ALL-900",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-COR-S2-ALL-900-TO-S3-COR-010",
+      "fromTaskIds": [
+        "S2-ALL-900"
+      ],
+      "toTaskId": "S3-COR-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S3-COR-010 wird nach Abschluss von S2-ALL-900 bereit."
+    },
+    {
+      "id": "D-COR-S3-COR-010-TO-S3-COR-020",
+      "fromTaskIds": [
+        "S3-COR-010"
+      ],
+      "toTaskId": "S3-COR-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S3-COR-020 wird nach Abschluss von S3-COR-010 bereit."
+    },
+    {
+      "id": "D-COR-S3-COR-020-TO-S3-COR-030",
+      "fromTaskIds": [
+        "S3-COR-020"
+      ],
+      "toTaskId": "S3-COR-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S3-COR-030 wird nach Abschluss von S3-COR-020 bereit."
+    },
+    {
+      "id": "D-COR-S3-COR-030-TO-S3-COR-040",
+      "fromTaskIds": [
+        "S3-COR-030"
+      ],
+      "toTaskId": "S3-COR-040",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S3-COR-040 wird nach Abschluss von S3-COR-030 bereit."
+    },
+    {
+      "id": "D-S3-TO-S4-QUE-010",
+      "fromTaskIds": [
+        "S3-COR-040"
+      ],
+      "toTaskId": "S4-QUE-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-S3-TO-S4-PRI-010",
+      "fromTaskIds": [
+        "S3-COR-040"
+      ],
+      "toTaskId": "S4-PRI-010",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    },
+    {
+      "id": "D-QUE-S4-QUE-010-TO-S4-QUE-020",
+      "fromTaskIds": [
+        "S4-QUE-010"
+      ],
+      "toTaskId": "S4-QUE-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S4-QUE-020 wird nach Abschluss von S4-QUE-010 bereit."
+    },
+    {
+      "id": "D-QUE-S4-QUE-020-TO-S4-QUE-030",
+      "fromTaskIds": [
+        "S4-QUE-020"
+      ],
+      "toTaskId": "S4-QUE-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S4-QUE-030 wird nach Abschluss von S4-QUE-020 bereit."
+    },
+    {
+      "id": "D-QUE-S4-QUE-030-TO-S4-QUE-040",
+      "fromTaskIds": [
+        "S4-QUE-030"
+      ],
+      "toTaskId": "S4-QUE-040",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S4-QUE-040 wird nach Abschluss von S4-QUE-030 bereit."
+    },
+    {
+      "id": "D-QUE-S4-QUE-040-TO-S4-QUE-050",
+      "fromTaskIds": [
+        "S4-QUE-040"
+      ],
+      "toTaskId": "S4-QUE-050",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S4-QUE-050 wird nach Abschluss von S4-QUE-040 bereit."
+    },
+    {
+      "id": "D-PRI-S4-PRI-010-TO-S4-PRI-020",
+      "fromTaskIds": [
+        "S4-PRI-010"
+      ],
+      "toTaskId": "S4-PRI-020",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S4-PRI-020 wird nach Abschluss von S4-PRI-010 bereit."
+    },
+    {
+      "id": "D-PRI-S4-PRI-020-TO-S4-PRI-030",
+      "fromTaskIds": [
+        "S4-PRI-020"
+      ],
+      "toTaskId": "S4-PRI-030",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S4-PRI-030 wird nach Abschluss von S4-PRI-020 bereit."
+    },
+    {
+      "id": "D-PRI-S4-PRI-030-TO-S4-PRI-040",
+      "fromTaskIds": [
+        "S4-PRI-030"
+      ],
+      "toTaskId": "S4-PRI-040",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S4-PRI-040 wird nach Abschluss von S4-PRI-030 bereit."
+    },
+    {
+      "id": "D-PRI-S4-PRI-040-TO-S4-PRI-050",
+      "fromTaskIds": [
+        "S4-PRI-040"
+      ],
+      "toTaskId": "S4-PRI-050",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "S4-PRI-050 wird nach Abschluss von S4-PRI-040 bereit."
+    },
+    {
+      "id": "D-S4-GATE",
+      "fromTaskIds": [
+        "S4-QUE-050",
+        "S4-PRI-050"
+      ],
+      "toTaskId": "S4-ALL-900",
+      "mode": "ALL",
+      "conditions": [],
+      "onSatisfied": "SET_READY",
+      "sourceStatus": "PRODUCT_RULE",
+      "description": ""
+    }
+  ],
+  "scoreRules": [
+    {
+      "id": "SAN-SCORE-PUZZLE",
+      "trigger": "Jedes der vier Rätsel wird erfolgreich abgeschlossen.",
+      "operation": "ADD",
+      "value": 2000,
+      "cap": null,
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-003"
+      ]
+    },
+    {
+      "id": "SAN-SCORE-GUARDIAN",
+      "trigger": "Jeder der vier Wächter wird besiegt.",
+      "operation": "ADD",
+      "value": 5000,
+      "cap": null,
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-009"
+      ]
+    },
+    {
+      "id": "SAN-SCORE-CORRIDOR",
+      "trigger": "Korridorziel vollständig erreicht.",
+      "operation": "ADD",
+      "value": 2000,
+      "cap": null,
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P0-001"
+      ]
+    },
+    {
+      "id": "SAN-SCORE-FINAL",
+      "trigger": "Reine oder Princesse wird besiegt.",
+      "operation": "ADD",
+      "value": 10000,
+      "cap": 50000,
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "testRefs": [
+        "SAN-P1-011"
+      ]
+    }
+  ],
+  "warnings": [
+    {
+      "id": "SAN-LIFE-RED",
+      "severity": "RED",
+      "condition": {
+        "type": "STATE_VALUE",
+        "path": "sanctuaire.raidLife",
+        "taskId": null,
+        "operator": "LTE",
+        "value": 5,
+        "description": ""
+      },
+      "message": "Raid-Leben kritisch: höchstens 5 verbleibend.",
+      "audience": [
+        "CAPTAIN",
+        "EDITOR",
+        "ALL"
+      ],
+      "recommendedAction": "Riskante Kämpfe stoppen, Ziele und Teams vor jedem Start bestätigen.",
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "SAN-P0-002"
+      ]
+    },
+    {
+      "id": "SAN-GUARDIAN-UNASSIGNED",
+      "severity": "ORANGE",
+      "condition": {
+        "type": "STATE_VALUE",
+        "path": "derived.guardianReadyWithoutTeam",
+        "taskId": null,
+        "operator": "EQ",
+        "value": true,
+        "description": ""
+      },
+      "message": "Wächter ist bereit, aber ohne Team.",
+      "audience": [
+        "CAPTAIN",
+        "EDITOR"
+      ],
+      "recommendedAction": "Team sofort zuweisen.",
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "UX-003"
+      ]
+    },
+    {
+      "id": "SAN-RESULT-UNCONFIRMED",
+      "severity": "RED",
+      "condition": {
+        "type": "STATE_VALUE",
+        "path": "derived.dependentCombatUsesUnconfirmedResult",
+        "taskId": null,
+        "operator": "EQ",
+        "value": true,
+        "description": ""
+      },
+      "message": "Ein abhängiger Kampf startet mit unbestätigtem Rätselresultat.",
+      "audience": [
+        "CAPTAIN",
+        "EDITOR",
+        "AFFECTED_TEAM"
+      ],
+      "recommendedAction": "Resultat vor Start zweitbestätigen.",
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "UX-004"
+      ]
+    },
+    {
+      "id": "SAN-CORRIDOR-TIME",
+      "severity": "ORANGE",
+      "condition": {
+        "type": "STATE_VALUE",
+        "path": "derived.corridorProjectionAtRisk",
+        "taskId": null,
+        "operator": "EQ",
+        "value": true,
+        "description": ""
+      },
+      "message": "Korridorrestmenge gefährdet den Finalstart.",
+      "audience": [
+        "CAPTAIN",
+        "EDITOR"
+      ],
+      "recommendedAction": "Freie Spieler neu verteilen und Räume priorisieren.",
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "SAN-P1-010"
+      ]
+    },
+    {
+      "id": "SAN-FINAL-TEAM",
+      "severity": "ORANGE",
+      "condition": {
+        "type": "STATE_VALUE",
+        "path": "derived.finalBossReadyWithoutFullPlannedTeam",
+        "taskId": null,
+        "operator": "EQ",
+        "value": true,
+        "description": ""
+      },
+      "message": "Finalboss ist bereit, aber das geplante Team ist nicht vollständig.",
+      "audience": [
+        "CAPTAIN",
+        "EDITOR",
+        "AFFECTED_TEAM"
+      ],
+      "recommendedAction": "Team vervollständigen oder Start bewusst bestätigen.",
+      "sourceStatus": "PRODUCT_RULE",
+      "testRefs": [
+        "SAN-P1-011"
+      ]
+    }
+  ],
+  "automations": [
+    {
+      "id": "SAN-AUTO-PUZZLE-GATE",
+      "trigger": "S1-BEL-030, S1-EPH-040, S1-OUV-040 und S1-CLO-050 sind COMPLETED.",
+      "guardConditions": [],
+      "actions": [
+        {
+          "type": "SET_TASK_STATUS",
+          "description": "S1-ALL-900 automatisch abschliessen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S1-ALL-900",
+          "value": "COMPLETED"
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Alle vier Wächter freischalten.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S2"
+        }
+      ],
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "Verhindert manuelle Freischaltfehler."
+    },
+    {
+      "id": "SAN-AUTO-GUARDIAN-GATE",
+      "trigger": "Alle vier Wächterabschlussaufgaben sind COMPLETED.",
+      "guardConditions": [],
+      "actions": [
+        {
+          "type": "SET_TASK_STATUS",
+          "description": "S2-ALL-900 automatisch abschliessen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S2-ALL-900",
+          "value": "COMPLETED"
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Korridor freischalten.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S3-COR-010"
+        }
+      ],
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "Öffnet den Korridor."
+    },
+    {
+      "id": "SAN-AUTO-CORRIDOR-GATE",
+      "trigger": "corridorCompleted = corridorTarget.",
+      "guardConditions": [],
+      "actions": [
+        {
+          "type": "SET_TASK_STATUS",
+          "description": "S3-COR-040 abschliessen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S3-COR-040",
+          "value": "COMPLETED"
+        },
+        {
+          "type": "UNLOCK_TASK",
+          "description": "Beide Finalbosse freischalten.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4"
+        }
+      ],
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "Finalzugang nach Zielerreichung."
+    },
+    {
+      "id": "SAN-AUTO-END",
+      "trigger": "S4-QUE-050 und S4-PRI-050 sind COMPLETED.",
+      "guardConditions": [],
+      "actions": [
+        {
+          "type": "SET_TASK_STATUS",
+          "description": "S4-ALL-900 abschliessen.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "S4-ALL-900",
+          "value": "COMPLETED"
+        },
+        {
+          "type": "END_SESSION",
+          "description": "Session erfolgreich beenden.",
+          "sourceStatus": "PRODUCT_RULE",
+          "target": "session.status",
+          "value": "ENDED"
+        }
+      ],
+      "sourceStatus": "PRODUCT_RULE",
+      "description": "Beendet die Session konsistent."
+    }
+  ],
+  "dataTransfers": [
+    {
+      "id": "SAN-XFER-COLOR-CLOS",
+      "sourcePath": "task.S1-OUV-040.result.monochromeColor",
+      "targetPaths": [
+        "task.S1-CLO-040.input.monochromeColor",
+        "task.S2-SEN-010.input.monochromeColor",
+        "ui.guardian.sentinelle.monochromeColor"
+      ],
+      "trigger": "S1-OUV-040 bestätigt",
+      "validation": "Wert muss einer von vier definierten Farben sein.",
+      "sourceStatus": "PRODUCT_RULE"
+    },
+    {
+      "id": "SAN-XFER-STATUE",
+      "sourcePath": "task.S1-CLO-030.result.statueType",
+      "targetPaths": [
+        "task.S1-CLO-040.input.statueType",
+        "task.S2-VEI-010.input.statueType",
+        "ui.guardian.veilleur.statueType"
+      ],
+      "trigger": "S1-CLO-030 bestätigt",
+      "validation": "Wert muss einem definierten Statuentyp entsprechen.",
+      "sourceStatus": "PRODUCT_RULE"
+    },
+    {
+      "id": "SAN-XFER-FLOWERS",
+      "sourcePath": "task.S1-OUV-020.result.flowerSequence",
+      "targetPaths": [
+        "task.S2-GAR-010.input.safeObjects",
+        "ui.guardian.gardien.safeObjects"
+      ],
+      "trigger": "S1-OUV-020 zweitbestätigt",
+      "validation": "Genau vier Objekte in Podestreihenfolge.",
+      "sourceStatus": "PRODUCT_RULE"
+    },
+    {
+      "id": "SAN-XFER-PUZZLE-GATE",
+      "sourcePath": "derived.allPuzzlesCompleted",
+      "targetPaths": [
+        "task.S1-ALL-900",
+        "phase.S2"
+      ],
+      "trigger": "Alle Puzzleabschlussaufgaben COMPLETED",
+      "validation": "Vier eindeutige Abschlüsse.",
+      "sourceStatus": "PRODUCT_RULE"
+    },
+    {
+      "id": "SAN-XFER-GUARDIAN-GATE",
+      "sourcePath": "derived.allGuardiansCompleted",
+      "targetPaths": [
+        "task.S2-ALL-900",
+        "phase.S3"
+      ],
+      "trigger": "Alle Wächterabschlussaufgaben COMPLETED",
+      "validation": "Vier eindeutige Siege.",
+      "sourceStatus": "PRODUCT_RULE"
+    },
+    {
+      "id": "SAN-XFER-CORRIDOR-GATE",
+      "sourcePath": "derived.corridorComplete",
+      "targetPaths": [
+        "task.S3-COR-040",
+        "phase.S4"
+      ],
+      "trigger": "corridorCompleted = corridorTarget",
+      "validation": "Zielzahl der Session verwenden.",
+      "sourceStatus": "PRODUCT_RULE"
+    }
+  ],
+  "sourceReferences": [
+    {
+      "id": "SAN-OFFICIAL-3.6",
+      "type": "OFFICIAL",
+      "title": "Ankama – Raid is not dead / Update 3.6",
+      "url": "https://www.dofus.com/fr/mmorpg/actualites/maj/1770516-raid-not-dead/details",
+      "checkedAt": "2026-06-26",
+      "notes": "Offizielle Raidgrundlagen."
+    },
+    {
+      "id": "SAN-GUIDE-DPLN",
+      "type": "GUIDE",
+      "title": "DofusPourLesNoobs – Sanctuaire des Jardins éternels",
+      "url": "https://www.dofuspourlesnoobs.com/sanctuaire-des-jardins-eternels.html",
+      "checkedAt": "2026-06-26",
+      "notes": "Detailmechaniken; Korridorzahl widersprüchlich."
+    },
+    {
+      "id": "SAN-GUIDE-TRACKER",
+      "type": "GUIDE",
+      "title": "DPLN – Suivi des énigmes",
+      "url": "https://www.dofuspourlesnoobs.com/suivi-des-enigmes-du-raid-des-jardins-eternels.html",
+      "checkedAt": "2026-06-26",
+      "notes": "Kollaborative Rätselreferenz."
+    },
+    {
+      "id": "SAN-PROJECT-GRAPH",
+      "type": "PROJECT",
+      "title": "SANCTUAIRE_TASK_GRAPH.md",
+      "url": null,
+      "checkedAt": "2026-06-26",
+      "notes": "Verbindliche interne Implementierungsgrundlage v0.2."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "SAN-Q-CORRIDOR",
+      "question": "Bestätigt ein eigener RAIDWEAVE-Live-Test die Guide-Baseline von 10 × 6 = 60 Korridormonstern?",
+      "impact": "Korridorfortschritt, Raumgenerator und Prognose.",
+      "status": "CONFIGURABLE_UNTIL_VERIFIED",
+      "configurationStrategy": "corridorTarget bleibt Session-/Definitionsparameter; Standard 60 mit sichtbarem Unsicherheitsbadge.",
+      "testRefs": [
+        "SAN-P0-001"
+      ]
+    },
+    {
+      "id": "SAN-Q-BATTLESHIP-FAIL",
+      "question": "Welche exakten Fehlervarianten und Resetfolgen gelten bei Bataille navale?",
+      "impact": "Raid-Leben und Recovery-UX.",
+      "status": "CONFIGURABLE_UNTIL_VERIFIED",
+      "configurationStrategy": "Fehlerwirkung manuell protokollieren; keine automatische Lebensänderung ohne Bestätigung.",
+      "testRefs": [
+        "SAN-P0-004"
+      ]
+    },
+    {
+      "id": "SAN-Q-FINAL-TIME",
+      "question": "Wie verhält sich das Raidzeitende bei einem oder zwei laufenden Finalkämpfen?",
+      "impact": "Timeranzeige und Sessionende.",
+      "status": "CONFIGURABLE_UNTIL_VERIFIED",
+      "configurationStrategy": "Timer zeigt 0 und markiert Ergebnis als In-Game-abhängig; Captain bestätigt tatsächlichen Ausgang.",
+      "testRefs": [
+        "COM-006",
+        "SAN-P1-011"
+      ]
+    },
+    {
+      "id": "SAN-Q-INGAME-INFO",
+      "question": "Welche globalen Fortschrittsinformationen zeigt der Client bereits?",
+      "impact": "Vermeidung redundanter UI.",
+      "status": "OPEN",
+      "configurationStrategy": "Wireframes priorisieren fehlende nächste Aktion; doppelte Kennzahlen später anhand Screenshots reduzieren.",
+      "testRefs": [
+        "COM-007"
+      ]
+    }
+  ],
+  "uiConfiguration": {
+    "captainPrimaryView": "Horizontale Raidkarte mit Captain Radar rechts.",
+    "participantPrimaryView": "Persönliche Mission mit Jetzt/Danach/Warte auf.",
+    "raidMapOrientation": "HORIZONTAL",
+    "primaryMetrics": [
+      "session.timer.remaining",
+      "session.score",
+      "sanctuaire.raidLife",
+      "participants.readyOrConnected"
+    ],
+    "radarWarningIds": [
+      "SAN-LIFE-RED",
+      "SAN-GUARDIAN-UNASSIGNED",
+      "SAN-RESULT-UNCONFIRMED",
+      "SAN-CORRIDOR-TIME",
+      "SAN-FINAL-TEAM"
+    ]
+  },
+  "lookupTables": [
+    {
+      "id": "SAN-LOCATIONS",
+      "description": "Feste Kartenpositionen aus dem Task-Graph.",
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "values": {
+        "battleshipBoardA": "[21,17]",
+        "battleshipBoardB": "[19,15]",
+        "chessActivation": "[12,14]",
+        "pedestalsIAndIII": "[11,21]",
+        "pedestalsIIAndIV": "[12,20]",
+        "finalStatue": "[11,20]",
+        "manuscript5": "[16,12]"
+      }
+    },
+    {
+      "id": "SAN-MONOCHROME-OBJECT-LOCATIONS",
+      "description": "Objektkarten für die Papierblumenprüfung.",
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "values": {
+        "Crayon": "[21,7]",
+        "Kamas": "[22,7]",
+        "Bague": "[23,7]",
+        "Règle": "[21,8]",
+        "Arakne": "[23,8]",
+        "Bobine": "[21,9]",
+        "Bougie": "[22,9]",
+        "Lanterne": "[23,9]"
+      }
+    },
+    {
+      "id": "SAN-SENTINELLE-COLOR-ELEMENT",
+      "description": "Monochrome-Farbe zu Sentinelle-Element.",
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "values": {
+        "AMBRE_ORANGE": "EARTH",
+        "AZURE_BLEU": "WATER",
+        "VIRIDINE_VERT": "AIR",
+        "ECARLATE_ROUGE": "FIRE"
+      }
+    },
+    {
+      "id": "SAN-CLOS-TARGET-MAPPING",
+      "description": "Statue + Monochrome-Farbe zu Zielmonster und Karte.",
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "values": {
+        "AMBRE_ORANGE": {
+          "DAHLIANE": {
+            "monster": "Dahliane ambré",
+            "map": "[11,21]"
+          },
+          "FRACAMELIA": {
+            "monster": "Fracamélia ambré",
+            "map": "[11,19]"
+          },
+          "MUGUEGIDE": {
+            "monster": "Muguégide ambré",
+            "map": "[12,20]"
+          },
+          "TRITULIPE": {
+            "monster": "Tritulipe ambré",
+            "map": "[10,20]"
+          }
+        },
+        "AZURE_BLEU": {
+          "DAHLIANE": {
+            "monster": "Dahliane azuré",
+            "map": "[11,19]"
+          },
+          "FRACAMELIA": {
+            "monster": "Fracamélia azuré",
+            "map": "[11,21]"
+          },
+          "MUGUEGIDE": {
+            "monster": "Muguégide azuré",
+            "map": "[10,20]"
+          },
+          "TRITULIPE": {
+            "monster": "Tritulipe azuré",
+            "map": "[12,20]"
+          }
+        },
+        "ECARLATE_ROUGE": {
+          "DAHLIANE": {
+            "monster": "Dahliane écarlate",
+            "map": "[10,20]"
+          },
+          "FRACAMELIA": {
+            "monster": "Fracamélia écarlate",
+            "map": "[12,20]"
+          },
+          "MUGUEGIDE": {
+            "monster": "Muguégide écarlate",
+            "map": "[11,21]"
+          },
+          "TRITULIPE": {
+            "monster": "Tritulipe écarlate",
+            "map": "[11,19]"
+          }
+        },
+        "VIRIDINE_VERT": {
+          "DAHLIANE": {
+            "monster": "Dahliane viridine",
+            "map": "[12,20]"
+          },
+          "FRACAMELIA": {
+            "monster": "Fracamélia viridine",
+            "map": "[10,20]"
+          },
+          "MUGUEGIDE": {
+            "monster": "Muguégide viridine",
+            "map": "[11,19]"
+          },
+          "TRITULIPE": {
+            "monster": "Tritulipe viridine",
+            "map": "[11,21]"
+          }
+        }
+      }
+    },
+    {
+      "id": "SAN-MANUSCRIPT-PAGES",
+      "description": "Optionale Manuskriptseiten und Freischaltung.",
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "values": [
+        {
+          "page": 1,
+          "position": "[22,9]",
+          "availableAfter": "RAID_START"
+        },
+        {
+          "page": 2,
+          "position": "[12,20]",
+          "availableAfter": "RAID_START"
+        },
+        {
+          "page": 3,
+          "position": "[19,15]",
+          "availableAfter": "RAID_START"
+        },
+        {
+          "page": 4,
+          "position": "[9,14]",
+          "availableAfter": "RAID_START"
+        },
+        {
+          "page": 5,
+          "position": "[16,12]",
+          "availableAfter": "S2-ALL-900"
+        }
+      ]
+    },
+    {
+      "id": "SAN-CORRIDOR-DEFAULT",
+      "description": "Guidebasierte Baseline: 10 Räume mit je 6 Monstern; noch nicht durch RAIDWEAVE live bestätigt.",
+      "sourceStatus": "GUIDE_CONFIRMED",
+      "values": {
+        "rooms": 10,
+        "monstersPerRoom": 6,
+        "target": 60,
+        "raidweaveLiveConfirmed": false
+      }
+    }
+  ],
+  "creationCostGuildKamas": 480,
+  "scoreConfiguration": {
+    "maximum": 50000,
+    "rewardTrackMaximum": 50000,
+    "allowNegative": false,
+    "sourceStatus": "OFFICIAL_CONFIRMED"
+  }
+}
