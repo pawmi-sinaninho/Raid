@@ -31,7 +31,7 @@
             "name": "Combat A",
             "recommendedSize": 3,
             "responsibilities": [
-              "Gruppen",
+              "groupes",
               "Bosse"
             ]
           },
@@ -39,7 +39,7 @@
             "name": "Combat B",
             "recommendedSize": 3,
             "responsibilities": [
-              "Gruppen",
+              "groupes",
               "Farm"
             ]
           },
@@ -47,9 +47,9 @@
             "name": "Support",
             "recommendedSize": 2,
             "responsibilities": [
-              "Licht",
+              "lumière",
               "Ledger",
-              "Rätsel",
+              "énigme",
               "Bank"
             ]
           }
@@ -63,7 +63,7 @@
             "name": "Combat A",
             "recommendedSize": 4,
             "responsibilities": [
-              "Gruppen",
+              "groupes",
               "Bosse"
             ]
           },
@@ -71,7 +71,7 @@
             "name": "Combat B",
             "recommendedSize": 4,
             "responsibilities": [
-              "Gruppen",
+              "groupes",
               "Farm"
             ]
           },
@@ -79,11 +79,11 @@
             "name": "Expedition",
             "recommendedSize": 4,
             "responsibilities": [
-              "Licht",
+              "lumière",
               "Ledger",
               "Luminarium",
               "Bank",
-              "Sequenz"
+              "séquence"
             ]
           }
         ]
@@ -92,8 +92,8 @@
   },
   "timer": {
     "durationSeconds": 3600,
-    "startTrigger": "Captain bestätigt G0-020 und startet den Live-Modus.",
-    "expiryBehaviour": "Finalkampf muss vor Ablauf gestartet sein; nach bestätigtem Start darf er weiterlaufen. Verhalten ohne Finalstart nach Patch 3.6.4.3 live prüfen.",
+    "startTrigger": "capitaine confirmé G0-020 und startet den mode direct.",
+    "expiryBehaviour": "combat final muss vor Ablauf gestartet sein; nach confirmé Start darf er weiterlaufen. Verhalten ohne lancement du combat final nach Patch 3.6.4.3 vérifier en jeu.",
     "serverAuthoritative": true,
     "pauseAllowed": false,
     "adjustmentRoles": [
@@ -281,13 +281,13 @@
       {
         "path": "gigalodon.lightStates",
         "type": "array",
-        "description": "Lichtzustände Etagen -1 bis -5",
+        "description": "états de lumière étages -1 bis -5",
         "sourceStatus": "LIVE_REQUIRED"
       },
       {
         "path": "gigalodon.saltPool",
         "type": "object",
-        "description": "Serverautoritärer gemeinsamer Salzpool mit unveränderlichem Änderungsledger",
+        "description": "Serverautoritärer gemeinsamer selpool mit unveränderlichem Änderungsledger",
         "sourceStatus": "GUIDE_CONFIRMED",
         "default": {
           "amount": 0,
@@ -300,19 +300,19 @@
       {
         "path": "gigalodon.participantInventories",
         "type": "array",
-        "description": "Persönliche getragene Score- und Unique-Ressourcen; Salz ist ausdrücklich ausgeschlossen",
+        "description": "Persönliche getragene Score- und Unique-ressources; sel ist ausdrücklich ausgeschlossen",
         "sourceStatus": "PRODUCT_RULE"
       },
       {
         "path": "gigalodon.depositedResources",
         "type": "object",
-        "description": "Eingezahlte Ressourcen",
+        "description": "Eingezahlte ressources",
         "sourceStatus": "PRODUCT_RULE"
       },
       {
         "path": "gigalodon.confirmedScore",
         "type": "integer",
-        "description": "Bestätigter Ressourcenscore",
+        "description": "Confirmé score de ressources",
         "sourceStatus": "PRODUCT_RULE",
         "default": 0
       },
@@ -326,13 +326,13 @@
       {
         "path": "gigalodon.bossUniqueDrops",
         "type": "object",
-        "description": "Halter der Unique-Ressourcen",
+        "description": "porteur der Unique-ressources",
         "sourceStatus": "PRODUCT_RULE"
       },
       {
         "path": "gigalodon.access",
         "type": "object",
-        "description": "Etagenzugänge",
+        "description": "accès d’étage",
         "sourceStatus": "PRODUCT_RULE"
       },
       {
@@ -344,19 +344,19 @@
       {
         "path": "gigalodon.finalReadiness",
         "type": "object",
-        "description": "Finalstartcheck",
+        "description": "lancement du combat finalcheck",
         "sourceStatus": "PRODUCT_RULE"
       },
       {
         "path": "gigalodon.final",
         "type": "object",
-        "description": "Gigalodon-Kampftracker",
+        "description": "Gigalodon-suivi du combat",
         "sourceStatus": "PRODUCT_RULE"
       },
       {
         "path": "gigalodon.lightIntervalSeconds",
         "type": "integer",
-        "description": "Guide-Baseline des Lichtverfalls",
+        "description": "base du guide des déclin de la lumières",
         "sourceStatus": "GUIDE_CONFIRMED",
         "default": 120,
         "minimum": 30,
@@ -365,21 +365,21 @@
       {
         "path": "gigalodon.lightIntervalSourceStatus",
         "type": "string",
-        "description": "Vertrauensstatus des Lichtintervalls",
+        "description": "Vertrauensstatus des lumièreintervalls",
         "sourceStatus": "GUIDE_CONFIRMED",
         "default": "GUIDE_CONFIRMED"
       },
       {
         "path": "gigalodon.saltCostSourceStatus",
         "type": "string",
-        "description": "Vertrauensstatus der Salzkosten",
+        "description": "Vertrauensstatus der selkosten",
         "sourceStatus": "GUIDE_CONFIRMED",
         "default": "GUIDE_CONFIRMED"
       },
       {
         "path": "gigalodon.floor1GroupTargetSourceStatus",
         "type": "string",
-        "description": "Vertrauensstatus der Etage--1-Gruppenzahl",
+        "description": "Vertrauensstatus der étage--1-nombre de groupes",
         "sourceStatus": "LIVE_REQUIRED",
         "default": "LIVE_REQUIRED"
       }
@@ -394,7 +394,7 @@
         "en": null,
         "de": null
       },
-      "description": "Licht- und Ressourcenprozesse laufen parallel zum Raid.",
+      "description": "lumière- und processus de ressources laufen parallel zum Raid.",
       "entryMode": "CONTINUOUS",
       "parentPhaseId": null,
       "completionTaskId": null,
@@ -408,11 +408,11 @@
         "en": null,
         "de": null
       },
-      "description": "Etagenlicht, Salz und Kampfrisiko.",
+      "description": "lumière d’étage, sel und risque de combat.",
       "entryMode": "CONTINUOUS",
       "parentPhaseId": "G-PAR",
       "completionTaskId": null,
-      "uiGroup": "Licht"
+      "uiGroup": "lumière"
     },
     {
       "id": "G-PAR-LEDGER",
@@ -422,11 +422,11 @@
         "en": null,
         "de": null
       },
-      "description": "Getragen, verloren und eingezahlt.",
+      "description": "Getragen, verloren und déposé.",
       "entryMode": "CONTINUOUS",
       "parentPhaseId": "G-PAR",
       "completionTaskId": null,
-      "uiGroup": "Ressourcen"
+      "uiGroup": "ressources"
     },
     {
       "id": "G0",
@@ -436,7 +436,7 @@
         "en": null,
         "de": null
       },
-      "description": "Lobby, Rollen, Timer und erstes Licht.",
+      "description": "Lobby, Rollen, Timer und erstes lumière.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": null,
       "completionTaskId": "G0-020",
@@ -450,11 +450,11 @@
         "en": null,
         "de": null
       },
-      "description": "Gruppen, Fragment 1 und Zugang.",
+      "description": "groupes, Fragment 1 und accès.",
       "entryMode": "PARALLEL",
       "parentPhaseId": null,
       "completionTaskId": "G1-040",
-      "uiGroup": "Etage -1"
+      "uiGroup": "étage -1"
     },
     {
       "id": "G2",
@@ -464,7 +464,7 @@
         "en": null,
         "de": null
       },
-      "description": "Licht, Boss und Zugang Etage -3.",
+      "description": "lumière, Boss und accès étage -3.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": null,
       "completionTaskId": "G2-040",
@@ -478,7 +478,7 @@
         "en": null,
         "de": null
       },
-      "description": "4×4-Rätsel und Zugang Etage -4.",
+      "description": "4×4-énigme und accès étage -4.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": null,
       "completionTaskId": "G3-030",
@@ -492,7 +492,7 @@
         "en": null,
         "de": null
       },
-      "description": "Sequenz, Bossdrops, Rätsel und Abkürzung.",
+      "description": "séquence, Bossdrops, énigme und Abkürzung.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": null,
       "completionTaskId": "G4-050",
@@ -520,7 +520,7 @@
         "en": null,
         "de": null
       },
-      "description": "Dunkle Karte, Kampftracker und Noirceur.",
+      "description": "Dunkle Karte, suivi du combat und Noirceur.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": null,
       "completionTaskId": "G6-030",
@@ -534,11 +534,11 @@
         "en": null,
         "de": null
       },
-      "description": "Inventarcheck, Einzahlungen und Finalfreigabe.",
+      "description": "contrôle d’inventaire, dépôts und autorisation finale.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": null,
       "completionTaskId": "GF-030",
-      "uiGroup": "Finalfreigabe"
+      "uiGroup": "autorisation finale"
     },
     {
       "id": "GG",
@@ -548,7 +548,7 @@
         "en": null,
         "de": null
       },
-      "description": "Finalstart, drei Schadensrunden und Abschluss.",
+      "description": "lancement du combat final, drei tours de dégâts und clôture.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": null,
       "completionTaskId": "GG-050",
@@ -569,7 +569,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Sichtbares Lichtlevel und Ablesezeit erfassen.",
+      "description": "Sichtbares niveau de lumière und Ablesezeit saisir.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -577,13 +577,13 @@
         "maximumParticipants": 1,
         "exclusiveClaim": false,
         "recommendedParticipants": 1,
-        "requiredRoleLabel": "Lichtverantwortlicher"
+        "requiredRoleLabel": "lumièreverantwortlicher"
       },
       "inputFields": [
         {
           "path": "gigalodon.lightStates[].floor",
           "type": "enum",
-          "description": "Etage",
+          "description": "étage",
           "sourceStatus": "PRODUCT_RULE",
           "required": true,
           "enumValues": [
@@ -597,7 +597,7 @@
         {
           "path": "gigalodon.lightStates[].level",
           "type": "integer",
-          "description": "Lichtlevel 0–4",
+          "description": "niveau de lumière 0–4",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true,
           "minimum": 0,
@@ -613,20 +613,20 @@
         {
           "path": "gigalodon.lightStates[].nextDecayAt",
           "type": "timestamp",
-          "description": "Berechneter nächster Verlust",
+          "description": "Berechneter nächster perte",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         }
       ],
       "instructions": [
         "Im Spiel sichtbares Level ablesen.",
-        "Zeitpunkt bestätigen.",
-        "Nächsten erwarteten Verlust auf Basis der versionierten Intervallregel berechnen."
+        "Zeitpunkt confirmer.",
+        "Nächsten erwarteten perte auf Basis der versionierten Intervallregel berechnen."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Etage, Level und Beobachtungszeit vorhanden."
+          "étage, Level und Beobachtungszeit présent."
         ],
         "confirmationPolicy": "SELF",
         "resultFields": []
@@ -634,7 +634,7 @@
       "effects": [
         {
           "type": "SET_STATE",
-          "description": "Lichtzustand aktualisieren.",
+          "description": "état de la lumière actualiser.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.lightStates"
         }
@@ -648,15 +648,15 @@
       ],
       "uiHints": {
         "primaryComponent": "TIMER",
-        "participantSummary": "Lichtlevel und Countdown sehen",
-        "captainSummary": "Alle Etagenlichter sehen",
+        "participantSummary": "niveau de lumière und Countdown voir",
+        "captainSummary": "Alle lumières d’étage voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.lightStates[].level",
           "gigalodon.lightStates[].nextDecayAt"
         ],
         "quickActions": [
-          "Level bestätigen",
+          "Level confirmer",
           "Timer korrigieren"
         ]
       }
@@ -674,7 +674,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Warnstufe aus Lichtlevel ableiten.",
+      "description": "Warnstufe aus niveau de lumière ableiten.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -686,7 +686,7 @@
       },
       "inputFields": [],
       "instructions": [
-        "Level 4: keine Warnung.",
+        "Level 4: keine alerte.",
         "Level 3: Hinweis.",
         "Level 2: Gelb.",
         "Level 1: Orange.",
@@ -703,7 +703,7 @@
       "effects": [
         {
           "type": "CREATE_WARNING",
-          "description": "Etagenwarnung entsprechend Level erzeugen.",
+          "description": "alerte d’étage entsprechend Level erzeugen.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.lightWarnings"
         }
@@ -717,8 +717,8 @@
       ],
       "uiHints": {
         "primaryComponent": "RADAR_ONLY",
-        "participantSummary": "Aktuelle Lichtwarnung sehen",
-        "captainSummary": "Etagenwarnungen priorisiert sehen",
+        "participantSummary": "Aktuelle lumièrewarnung voir",
+        "captainSummary": "alertes d’étage priorisiert voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.lightStates"
@@ -739,7 +739,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Ziellevel, Salzverbrauch und verantwortliche Person protokollieren.",
+      "description": "niveau cible, consommation de sel und verantwortliche Person protokollieren.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -747,13 +747,13 @@
         "maximumParticipants": 1,
         "exclusiveClaim": false,
         "recommendedParticipants": 1,
-        "requiredRoleLabel": "Lichtverantwortlicher"
+        "requiredRoleLabel": "lumièreverantwortlicher"
       },
       "inputFields": [
         {
           "path": "gigalodon.lightAction.floor",
           "type": "integer",
-          "description": "Etage",
+          "description": "étage",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
@@ -769,7 +769,7 @@
         {
           "path": "gigalodon.lightAction.targetLevel",
           "type": "integer",
-          "description": "Ziellevel",
+          "description": "niveau cible",
           "sourceStatus": "PRODUCT_RULE",
           "required": true,
           "minimum": 1,
@@ -778,7 +778,7 @@
         {
           "path": "gigalodon.lightAction.saltUsed",
           "type": "integer",
-          "description": "Eingesetztes Salz",
+          "description": "Eindéfinies sel",
           "sourceStatus": "LIVE_REQUIRED",
           "required": true,
           "minimum": 1
@@ -786,20 +786,20 @@
         {
           "path": "gigalodon.lightAction.participantId",
           "type": "participantId",
-          "description": "Ausführender Spieler",
+          "description": "Ausconduireder joueur",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         }
       ],
       "instructions": [
-        "Vorheriges und Ziellevel erfassen.",
-        "Salzmenge bestätigen.",
+        "Vorheriges und niveau cible saisir.",
+        "quantité de sel confirmer.",
         "Neue Ablesezeit setzen."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Level und Salzmenge gespeichert."
+          "Level und quantité de sel gespeichert."
         ],
         "confirmationPolicy": "SELF",
         "resultFields": []
@@ -807,13 +807,13 @@
       "effects": [
         {
           "type": "SET_STATE",
-          "description": "Lichtlevel und nächsten Verfall aktualisieren.",
+          "description": "niveau de lumière und nächsten Verfall actualiser.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.lightStates"
         },
         {
           "type": "DECREMENT",
-          "description": "Persönlichen Salzbestand reduzieren.",
+          "description": "Persönlichen selbestand reduzieren.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.participantInventories[].salt",
           "value": "saltUsed"
@@ -828,8 +828,8 @@
       ],
       "uiHints": {
         "primaryComponent": "FORM",
-        "participantSummary": "Licht auffüllen melden",
-        "captainSummary": "Kosten und Timer prüfen",
+        "participantSummary": "lumière auffüllen signaler",
+        "captainSummary": "Kosten und Timer vérifier",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.lightAction.targetLevel",
@@ -853,7 +853,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Monsterboni und Aggressionsrisiko passend zum Licht anzeigen.",
+      "description": "Monsterboni und Aggressionsrisiko passend zum lumière afficher.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -873,7 +873,7 @@
         }
       ],
       "instructions": [
-        "Boni nur für normale Raidmonster, Mureine und Exécrabe anzeigen.",
+        "Boni nur für normale Raidmonster, Mureine und Exécrabe afficher.",
         "Willorque und Gigalodon ausnehmen."
       ],
       "completion": {
@@ -893,8 +893,8 @@
       ],
       "uiHints": {
         "primaryComponent": "RADAR_ONLY",
-        "participantSummary": "Kampfrisiko deiner Etage sehen",
-        "captainSummary": "Modifier und Ausnahmen sehen",
+        "participantSummary": "risque de combat deiner étage voir",
+        "captainSummary": "Modifier und Ausnahmen voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.lightCombatModifiers"
@@ -915,7 +915,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Ressourcen, Standort und Unique-Drops nach Kämpfen aktualisieren.",
+      "description": "ressources, Standort und Unique-Drops nach combatsn actualiser.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -929,28 +929,28 @@
         {
           "path": "gigalodon.participantInventories[].resources",
           "type": "object",
-          "description": "Getragene Ressourcen",
+          "description": "Getragene ressources",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
         {
           "path": "gigalodon.participantInventories[].currentFloor",
           "type": "integer",
-          "description": "Aktuelle Etage",
+          "description": "Aktuelle étage",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
         {
           "path": "gigalodon.participantInventories[].lastConfirmedAt",
           "type": "timestamp",
-          "description": "Letzte Bestätigung",
+          "description": "Letzte confirmation",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
         {
           "path": "gigalodon.participantInventories[].risk",
           "type": "enum",
-          "description": "Risiko",
+          "description": "risque",
           "sourceStatus": "PRODUCT_RULE",
           "enumValues": [
             "LOW",
@@ -960,8 +960,8 @@
         }
       ],
       "instructions": [
-        "Nach Kampf „keine wertvolle Änderung“ oder Mengen aktualisieren.",
-        "Unique-Drop und Standort bestätigen."
+        "Nach combat „keine wertvolle Änderung“ oder Mengen actualiser.",
+        "Unique-Drop und Standort confirmer."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
@@ -988,8 +988,8 @@
       ],
       "uiHints": {
         "primaryComponent": "LEDGER",
-        "participantSummary": "Getragene Ressourcen aktualisieren",
-        "captainSummary": "Bestände und Score at risk sehen",
+        "participantSummary": "Getragene ressources actualiser",
+        "captainSummary": "inventaires und score non sécurisé voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.participantInventories[].resources",
@@ -997,8 +997,8 @@
         ],
         "quickActions": [
           "Keine Änderung",
-          "Bestand aktualisieren",
-          "Unique-Drop melden"
+          "Bestand actualiser",
+          "Unique-Drop signaler"
         ]
       }
     },
@@ -1015,7 +1015,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Niederlage, Teleport und Ressourcenverlust konsistent protokollieren.",
+      "description": "Défaite, Teleport und perte de ressources konsistent protokollieren.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -1029,7 +1029,7 @@
         {
           "path": "gigalodon.loss.participantId",
           "type": "participantId",
-          "description": "Betroffener Spieler",
+          "description": "Betroffener joueur",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
@@ -1049,14 +1049,14 @@
         }
       ],
       "instructions": [
-        "Vorherigen Bestand anzeigen.",
-        "Verlust bestätigen.",
-        "Spielerposition auf Vorposten setzen."
+        "Vorherigen Bestand afficher.",
+        "perte confirmer.",
+        "position du joueur auf Vorposten setzen."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Verlust und Position bestätigt."
+          "perte und Position confirmé."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -1064,20 +1064,20 @@
       "effects": [
         {
           "type": "CLEAR_INVENTORY",
-          "description": "Getragenes Raidinventar gemäss bestätigtem Verlust leeren.",
+          "description": "Getragenes Raidinventar gemäss confirmé perte leeren.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.participantInventories[]"
         },
         {
           "type": "SET_STATE",
-          "description": "Spielerposition auf Vorposten setzen.",
+          "description": "position du joueur auf Vorposten setzen.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "participant.currentFloor",
           "value": 0
         },
         {
           "type": "CREATE_WARNING",
-          "description": "Bei möglicher Unique-Ressource Captain warnen.",
+          "description": "Bei möglicher Unique-Ressource capitaine warnen.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "warning.GIG-UNIQUE-AT-RISK"
         }
@@ -1090,15 +1090,15 @@
       ],
       "uiHints": {
         "primaryComponent": "FORM",
-        "participantSummary": "Niederlage und Verlust melden",
-        "captainSummary": "Verlustauswirkung bestätigen",
+        "participantSummary": "Défaite und perte signaler",
+        "captainSummary": "effet de la perte confirmer",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.loss.lostResources",
           "gigalodon.loss.uniqueResourceAffected"
         ],
         "quickActions": [
-          "Verlust bestätigen",
+          "perte confirmer",
           "Korrigieren"
         ]
       }
@@ -1116,7 +1116,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Scorefähige Ressourcen vom Spielerbestand in den bestätigten Raidscore übertragen.",
+      "description": "Scorefähige ressources vom inventaire du joueur in den confirmé Raidscore übertragen.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -1130,14 +1130,14 @@
         {
           "path": "gigalodon.deposit.participantId",
           "type": "participantId",
-          "description": "Einzahlender Spieler",
+          "description": "Einzahlender joueur",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
         {
           "path": "gigalodon.deposit.resources",
           "type": "object",
-          "description": "Eingezahlte Ressourcen",
+          "description": "Eingezahlte ressources",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
@@ -1150,14 +1150,14 @@
         }
       ],
       "instructions": [
-        "Alle Schätze im Spiel einzahlen.",
-        "Salz separat behandeln.",
+        "Alle Schätze en jeu déposer.",
+        "sel separat behandeln.",
         "Scoreänderung mit sichtbarem Wert abgleichen."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Einzahlung und Scorezuwachs bestätigt."
+          "dépôt und Scorezuwachs confirmé."
         ],
         "confirmationPolicy": "SELF",
         "resultFields": []
@@ -1165,7 +1165,7 @@
       "effects": [
         {
           "type": "INCREMENT",
-          "description": "Bestätigten Score erhöhen.",
+          "description": "Confirmén Score erhöhen.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.confirmedScore",
           "value": "confirmedScoreDelta"
@@ -1185,15 +1185,15 @@
       ],
       "uiHints": {
         "primaryComponent": "LEDGER",
-        "participantSummary": "Einzahlung bestätigen",
-        "captainSummary": "Scorezuwachs und Rest at risk sehen",
+        "participantSummary": "dépôt confirmer",
+        "captainSummary": "Scorezuwachs und Rest non sécurisé voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.deposit.resources",
           "gigalodon.deposit.confirmedScoreDelta"
         ],
         "quickActions": [
-          "Alle Schätze eingezahlt"
+          "Alle Schätze déposé"
         ]
       }
     },
@@ -1210,7 +1210,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "8–12 Teilnehmer, Sessionlinks und Grundzustand erzeugen.",
+      "description": "8–12 joueurs, Sessionlinks und Grundzustand erzeugen.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -1293,7 +1293,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Kampf-, Licht-, Bank-, Rätsel- und Finalrollen verteilen.",
+      "description": "combat-, lumière-, Bank-, énigme- und Finalrollen répartir.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -1307,28 +1307,28 @@
         {
           "path": "gigalodon.functionalRoles",
           "type": "array",
-          "description": "Rollen↔Spieler",
+          "description": "Rollen↔joueur",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
         {
           "path": "backupEditorParticipantId",
           "type": "participantId",
-          "description": "Ersatzeditor",
+          "description": "éditeur de secours",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         }
       ],
       "instructions": [
-        "Kampfteamleiter benennen.",
-        "Licht-, Ressourcen-, Luminarium-, Exécrabe-, Pincen- und Finalrollen abdecken.",
+        "responsable d’escouade de combat benennen.",
+        "lumière-, ressources-, Luminarium-, Exécrabe-, Pincen- und Finalrollen abdecken.",
         "Rollen dürfen kombiniert werden."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
           "Kritische Rollen abgedeckt.",
-          "Ersatzeditor vorhanden."
+          "éditeur de secours présent."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -1347,15 +1347,15 @@
       "testRefs": [],
       "uiHints": {
         "primaryComponent": "BOARD",
-        "participantSummary": "Deine Expeditionsrolle sehen",
-        "captainSummary": "Rollenabdeckung sehen",
+        "participantSummary": "Deine Expeditionsrolle voir",
+        "captainSummary": "Rollenabdeckung voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.functionalRoles"
         ],
         "quickActions": [
           "Vorlage anwenden",
-          "Rollen zuweisen"
+          "Rollen affecter"
         ]
       }
     },
@@ -1372,7 +1372,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "60-Minuten-Timer starten und erstes Etagenlicht erfassen.",
+      "description": "60-Minuten-Timer lancer und erstes lumière d’étage saisir.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -1386,27 +1386,27 @@
         {
           "path": "session.readyParticipantIds",
           "type": "array",
-          "description": "Bereite Teilnehmer",
+          "description": "prêts joueurs",
           "sourceStatus": "PRODUCT_RULE"
         },
         {
           "path": "gigalodon.lightStates[-1]",
           "type": "object",
-          "description": "Erster Lichtstatus",
+          "description": "Erster lumièrestatus",
           "sourceStatus": "LIVE_REQUIRED",
           "required": true
         }
       ],
       "instructions": [
-        "8–12 Teilnehmer bestätigen.",
-        "60-Minuten-Timer starten.",
-        "Etage -1 Lichtlevel und Uhrzeit erfassen."
+        "8–12 joueurs confirmer.",
+        "60-Minuten-Timer lancer.",
+        "étage -1 niveau de lumière und Uhrzeit saisir."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Teilnehmerzahl gültig.",
-          "Timer und Lichtstatus aktiv."
+          "nombre de joueurs gültig.",
+          "Timer und lumièrestatus actif."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -1421,13 +1421,13 @@
         },
         {
           "type": "START_TIMER",
-          "description": "Globalen Timer starten.",
+          "description": "Globalen Timer lancer.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "session.timer"
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Etage--1-Gruppen erzeugen.",
+          "description": "étage--1-groupes erzeugen.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G1-010"
         }
@@ -1441,16 +1441,16 @@
       ],
       "uiHints": {
         "primaryComponent": "CHECKLIST",
-        "participantSummary": "Bereitschaft bestätigen",
-        "captainSummary": "Timer und Licht starten",
+        "participantSummary": "préparation confirmer",
+        "captainSummary": "Timer und lumière lancer",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "session.readyParticipantIds",
           "gigalodon.lightStates[-1]"
         ],
         "quickActions": [
-          "Bereit",
-          "Raid starten"
+          "Prêt",
+          "Raid lancer"
         ]
       }
     },
@@ -1467,7 +1467,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Konfigurierbare Gruppenzahl für Etage -1 initialisieren.",
+      "description": "Konfigurierbare nombre de groupes für étage -1 initialisieren.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -1481,7 +1481,7 @@
         {
           "path": "gigalodon.floorStates[-1].groupTarget",
           "type": "integer",
-          "description": "Zielzahl Etage -1",
+          "description": "nombre cible étage -1",
           "sourceStatus": "LIVE_REQUIRED",
           "required": true,
           "default": 18,
@@ -1490,7 +1490,7 @@
         {
           "path": "gigalodon.floorStates[-1].groupsCompleted",
           "type": "integer",
-          "description": "Abgeschlossene Gruppen",
+          "description": "Terminés groupes",
           "sourceStatus": "PRODUCT_RULE",
           "default": 0,
           "minimum": 0
@@ -1498,12 +1498,12 @@
       ],
       "instructions": [
         "Standard 18 aus Detailguide laden.",
-        "Im Pilot sichtbare Zielzahl bestätigen."
+        "Im Pilot sichtbare nombre cible confirmer."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Zielzahl für Session gesetzt."
+          "nombre cible für Session défini."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -1511,7 +1511,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Gruppenverteilung aktivieren.",
+          "description": "répartition des groupes actifieren.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G1-020"
         }
@@ -1524,14 +1524,14 @@
       ],
       "uiHints": {
         "primaryComponent": "COUNTER",
-        "participantSummary": "Gruppenfortschritt sehen",
-        "captainSummary": "Zielkonflikt bestätigen",
+        "participantSummary": "progression des groupes voir",
+        "captainSummary": "conflit d’objectif confirmer",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.floorStates[-1].groupTarget"
         ],
         "quickActions": [
-          "18 bestätigen",
+          "18 confirmer",
           "Anderen Wert setzen"
         ]
       }
@@ -1549,7 +1549,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Gruppen auf Teams verteilen, Ressourcen und Licht parallel pflegen.",
+      "description": "groupes auf escouades répartir, ressources und lumière parallel pflegen.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -1563,7 +1563,7 @@
         {
           "path": "gigalodon.floorStates[-1].assignments",
           "type": "array",
-          "description": "Gruppen↔Teams",
+          "description": "groupes↔escouades",
           "sourceStatus": "PRODUCT_RULE"
         },
         {
@@ -1576,9 +1576,9 @@
         }
       ],
       "instructions": [
-        "Freie Gruppe übernehmen.",
-        "Nach jedem Kampf Ledger aktualisieren.",
-        "Gruppen respawnen hier nicht."
+        "Freie groupe prendre.",
+        "Nach jedem combat Ledger actualiser.",
+        "groupes respawnen hier nicht."
       ],
       "completion": {
         "mode": "COUNTER_TARGET",
@@ -1591,7 +1591,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Etage -2 öffnen.",
+          "description": "étage -2 ouvrir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G1-040"
         }
@@ -1604,17 +1604,17 @@
       ],
       "uiHints": {
         "primaryComponent": "BOARD",
-        "participantSummary": "Nächste Gruppe sehen",
-        "captainSummary": "Teams, Licht und Gruppenfortschritt sehen",
+        "participantSummary": "Nächste groupe voir",
+        "captainSummary": "escouades, lumière und progression des groupes voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.floorStates[-1].assignments",
           "gigalodon.floorStates[-1].groupsCompleted"
         ],
         "quickActions": [
-          "Gruppe übernehmen",
-          "Sieg",
-          "Niederlage"
+          "groupe prendre",
+          "Victoire",
+          "Défaite"
         ]
       }
     },
@@ -1631,7 +1631,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Gemeinschaftliches Fragment 1 als Alteration bestätigen.",
+      "description": "Gemeinschaftliches Fragment 1 als Alteration confirmer.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL_OR_TEAM",
@@ -1645,7 +1645,7 @@
         {
           "path": "gigalodon.fragments.first",
           "type": "boolean",
-          "description": "Fragment 1 vorhanden",
+          "description": "Fragment 1 présent",
           "sourceStatus": "GUIDE_CONFIRMED",
           "default": false
         },
@@ -1658,8 +1658,8 @@
         }
       ],
       "instructions": [
-        "Alterations nach Kämpfen prüfen.",
-        "Erhalt sofort global melden."
+        "Alterations nach combatsn vérifier.",
+        "Erhalt sofort global signaler."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
@@ -1686,8 +1686,8 @@
       ],
       "uiHints": {
         "primaryComponent": "CHECKLIST",
-        "participantSummary": "Fragmentstatus sehen",
-        "captainSummary": "Globalen Fragmentstatus sehen",
+        "participantSummary": "Fragmentstatus voir",
+        "captainSummary": "Globalen Fragmentstatus voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.fragments.first"
@@ -1710,7 +1710,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Aufzug und Mureine nach allen Gruppen freischalten.",
+      "description": "Aufzug und Mureine nach allen groupes déverrouiller.",
       "location": "Aufzug [4,3]",
       "assignment": {
         "mode": "NONE",
@@ -1733,14 +1733,14 @@
       "effects": [
         {
           "type": "SET_STATE",
-          "description": "Etage -2 freischalten.",
+          "description": "étage -2 déverrouiller.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.access.floor2",
           "value": true
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Mureine-Licht vorbereiten.",
+          "description": "Mureine-lumière vorbereiten.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G2-010"
         }
@@ -1753,8 +1753,8 @@
       ],
       "uiHints": {
         "primaryComponent": "GATE",
-        "participantSummary": "Etage -2 geöffnet",
-        "captainSummary": "Mureine-Team aktivieren",
+        "participantSummary": "étage -2 geouvre",
+        "captainSummary": "Mureine-escouade actifieren",
         "showMechanicOnDemand": true,
         "criticalFields": [],
         "quickActions": []
@@ -1773,7 +1773,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Lichtlevel vor Bossstart bestätigen; empfohlen Level 4.",
+      "description": "niveau de lumière vor Bossstart confirmer; empfohlen Level 4.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -1781,13 +1781,13 @@
         "maximumParticipants": 12,
         "exclusiveClaim": false,
         "recommendedParticipants": 1,
-        "requiredRoleLabel": "Lichtverantwortlicher"
+        "requiredRoleLabel": "lumièreverantwortlicher"
       },
       "inputFields": [
         {
           "path": "gigalodon.lightStates[-2].level",
           "type": "integer",
-          "description": "Licht Etage -2",
+          "description": "lumière étage -2",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true,
           "minimum": 0,
@@ -1795,14 +1795,14 @@
         }
       ],
       "instructions": [
-        "Aktuelles Level erfassen.",
+        "Aktuelles Level saisir.",
         "Bei Bedarf Luminomachine auffüllen.",
-        "Team über aktive Modifier informieren."
+        "escouade über actife Modifier informieren."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Lichtzustand bewusst bestätigt."
+          "état de la lumière bewusst confirmé."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -1810,7 +1810,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Mureine-Kampf freigeben.",
+          "description": "Mureine-combat débloquer.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G2-020"
         }
@@ -1824,15 +1824,15 @@
       ],
       "uiHints": {
         "primaryComponent": "CHECKLIST",
-        "participantSummary": "Licht vor Boss sehen",
-        "captainSummary": "Start trotz Risiko bestätigen",
+        "participantSummary": "lumière vor Boss voir",
+        "captainSummary": "Start trotz risque confirmer",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.lightStates[-2].level"
         ],
         "quickActions": [
-          "Licht bereit",
-          "Trotzdem starten"
+          "lumière bereit",
+          "Trotzdem lancer"
         ]
       }
     },
@@ -1849,7 +1849,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Einmaligen Bosskampf mit bestätigter Gruppe starten.",
+      "description": "Einmaligen Bosskampf mit confirmé groupe lancer.",
       "location": "Loch [4,7]",
       "assignment": {
         "mode": "TEAM",
@@ -1861,14 +1861,14 @@
       },
       "inputFields": [],
       "instructions": [
-        "Bossgruppe bestätigen.",
+        "Bossgruppe confirmer.",
         "Einmaligkeit beachten.",
-        "Kampf starten."
+        "combat lancer."
       ],
       "completion": {
         "mode": "MANUAL",
         "criteria": [
-          "Kampf aktiv."
+          "combat actif."
         ],
         "confirmationPolicy": "SELF",
         "resultFields": []
@@ -1876,7 +1876,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Sieg und Drops erfassen.",
+          "description": "Victoire und Drops saisir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G2-030"
         }
@@ -1889,14 +1889,14 @@
       ],
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
-        "participantSummary": "Mureine-Kampf starten",
-        "captainSummary": "Team und Lichtstatus sehen",
+        "participantSummary": "Mureine-combat lancer",
+        "captainSummary": "escouade und lumièrestatus voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.lightStates[-2].level"
         ],
         "quickActions": [
-          "Kampf starten"
+          "combat lancer"
         ]
       }
     },
@@ -1913,7 +1913,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Unique-Ressource, Fragment 2 und Salz erfassen.",
+      "description": "Unique-Ressource, Fragment 2 und sel saisir.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -1927,7 +1927,7 @@
         {
           "path": "gigalodon.bosses.mureine.uniqueResourceHolder",
           "type": "participantId",
-          "description": "Halter Unité de Mureine",
+          "description": "porteur Unité de Mureine",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         },
@@ -1940,17 +1940,17 @@
         }
       ],
       "instructions": [
-        "Sieg bestätigen.",
-        "Genau einen Halter der Unité erfassen.",
+        "Victoire confirmer.",
+        "Genau einen porteur der Unité saisir.",
         "Fragment 2 global setzen.",
-        "Salz der Kampfteilnehmer aktualisieren."
+        "sel der combattants actualiser."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
           "Boss besiegt.",
-          "Unique-Halter gesetzt.",
-          "Fragment 2 bestätigt."
+          "Unique-porteur défini.",
+          "Fragment 2 confirmé."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -1972,7 +1972,7 @@
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Etage -3 öffnen.",
+          "description": "étage -3 ouvrir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G2-040"
         }
@@ -1985,16 +1985,16 @@
       ],
       "uiHints": {
         "primaryComponent": "FORM",
-        "participantSummary": "Drop und Halter melden",
-        "captainSummary": "Unique-Ressource und Fragment sehen",
+        "participantSummary": "Drop und porteur signaler",
+        "captainSummary": "Unique-Ressource und Fragment voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.bosses.mureine.uniqueResourceHolder",
           "gigalodon.fragments.second"
         ],
         "quickActions": [
-          "Halter wählen",
-          "Drops bestätigen"
+          "choisir le porteur",
+          "Drops confirmer"
         ]
       }
     },
@@ -2011,7 +2011,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Aufzug zur Luminarium-Etage öffnen.",
+      "description": "Aufzug zur Luminarium-étage ouvrir.",
       "location": "Aufzug [2,7]",
       "assignment": {
         "mode": "NONE",
@@ -2034,14 +2034,14 @@
       "effects": [
         {
           "type": "SET_STATE",
-          "description": "Etage -3 freischalten.",
+          "description": "étage -3 déverrouiller.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.access.floor3",
           "value": true
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Luminarium erfassen.",
+          "description": "Luminarium saisir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G3-010"
         }
@@ -2054,8 +2054,8 @@
       ],
       "uiHints": {
         "primaryComponent": "GATE",
-        "participantSummary": "Etage -3 geöffnet",
-        "captainSummary": "Luminarium-Aufgabe freigeben",
+        "participantSummary": "étage -3 geouvre",
+        "captainSummary": "Luminarium-mission débloquer",
         "showMechanicOnDemand": true,
         "criticalFields": [],
         "quickActions": []
@@ -2074,7 +2074,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "16 Lampenfische als Bool-Matrix erfassen.",
+      "description": "16 Lampenfische als Bool-Matrix saisir.",
       "location": "Grotte [4,12]",
       "assignment": {
         "mode": "TEAM",
@@ -2094,7 +2094,7 @@
         }
       ],
       "instructions": [
-        "Alle 16 Zellen erfassen.",
+        "Alle 16 Zellen saisir.",
         "Grotte als sichere Karte behandeln."
       ],
       "completion": {
@@ -2121,15 +2121,15 @@
       ],
       "uiHints": {
         "primaryComponent": "BOARD",
-        "participantSummary": "4×4-Zustand erfassen",
-        "captainSummary": "Matrix prüfen",
+        "participantSummary": "4×4-état saisir",
+        "captainSummary": "Matrix vérifier",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.luminarium.cells"
         ],
         "quickActions": [
           "Zelle toggeln",
-          "Zustand bestätigen"
+          "état confirmer"
         ]
       }
     },
@@ -2173,7 +2173,7 @@
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Klickfolge vorhanden."
+          "Klickfolge présent."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -2181,7 +2181,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Klickfolge ausführen.",
+          "description": "Klickfolge ausconduire.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G3-030"
         }
@@ -2194,14 +2194,14 @@
       ],
       "uiHints": {
         "primaryComponent": "BOARD",
-        "participantSummary": "Klickfolge sehen",
-        "captainSummary": "Lösung und Quelle sehen",
+        "participantSummary": "Klickfolge voir",
+        "captainSummary": "Lösung und Quelle voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.luminarium.solutionClicks"
         ],
         "quickActions": [
-          "Lösung übernehmen",
+          "Lösung prendre",
           "Neu berechnen"
         ]
       }
@@ -2219,7 +2219,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Klickfolge ausführen und Wandöffnung bestätigen.",
+      "description": "Klickfolge ausconduire und ouverture du mur confirmer.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -2247,9 +2247,9 @@
         }
       ],
       "instructions": [
-        "Klickfolge Schritt für Schritt ausführen.",
+        "Klickfolge Schritt für Schritt ausconduire.",
         "Gleichzeitige Klicks vermeiden.",
-        "Wandöffnung bestätigen."
+        "ouverture du mur confirmer."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
@@ -2262,14 +2262,14 @@
       "effects": [
         {
           "type": "SET_STATE",
-          "description": "Etage -4 freischalten.",
+          "description": "étage -4 déverrouiller.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.access.floor4",
           "value": true
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Exécrabe-Licht vorbereiten.",
+          "description": "Exécrabe-lumière vorbereiten.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G4-010"
         }
@@ -2282,8 +2282,8 @@
       ],
       "uiHints": {
         "primaryComponent": "BOARD",
-        "participantSummary": "Nächsten Klick sehen",
-        "captainSummary": "Fortschritt und Konflikte sehen",
+        "participantSummary": "Nächsten Klick voir",
+        "captainSummary": "Fortschritt und Konflikte voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.luminarium.solutionClicks",
@@ -2291,8 +2291,8 @@
         ],
         "quickActions": [
           "Klick ausgeführt",
-          "Reset melden",
-          "Abgeschlossen"
+          "Reset signaler",
+          "Terminé"
         ]
       }
     },
@@ -2309,7 +2309,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Lichtlevel vor Exécrabe bestätigen.",
+      "description": "niveau de lumière vor Exécrabe confirmer.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -2317,13 +2317,13 @@
         "maximumParticipants": 12,
         "exclusiveClaim": false,
         "recommendedParticipants": 1,
-        "requiredRoleLabel": "Lichtverantwortlicher"
+        "requiredRoleLabel": "lumièreverantwortlicher"
       },
       "inputFields": [
         {
           "path": "gigalodon.lightStates[-4].level",
           "type": "integer",
-          "description": "Licht Etage -4",
+          "description": "lumière étage -4",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true,
           "minimum": 0,
@@ -2331,13 +2331,13 @@
         }
       ],
       "instructions": [
-        "Level erfassen.",
+        "Level saisir.",
         "Level 4 empfohlen."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Lichtzustand bewusst bestätigt."
+          "état de la lumière bewusst confirmé."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -2345,7 +2345,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Sequenzschreiber bestimmen.",
+          "description": "séquenceschreiber bestimmen.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G4-020"
         }
@@ -2359,15 +2359,15 @@
       ],
       "uiHints": {
         "primaryComponent": "CHECKLIST",
-        "participantSummary": "Licht vor Exécrabe sehen",
-        "captainSummary": "Startfreigabe sehen",
+        "participantSummary": "lumière vor Exécrabe voir",
+        "captainSummary": "autorisation de départ voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.lightStates[-4].level"
         ],
         "quickActions": [
-          "Licht bereit",
-          "Trotzdem starten"
+          "lumière bereit",
+          "Trotzdem lancer"
         ]
       }
     },
@@ -2398,19 +2398,19 @@
         {
           "path": "gigalodon.execrabe.sequenceRecorderParticipantId",
           "type": "participantId",
-          "description": "Sequenzschreiber",
+          "description": "séquenceschreiber",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         }
       ],
       "instructions": [
         "Eine klare verantwortliche Person bestimmen.",
-        "Optional zweite Bestätigungsperson."
+        "Optional zweite personne de confirmation."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Sequenzschreiber gesetzt."
+          "séquenceschreiber défini."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -2418,7 +2418,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Exécrabe-Kampf freigeben.",
+          "description": "Exécrabe-combat débloquer.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G4-030"
         }
@@ -2431,7 +2431,7 @@
       ],
       "uiHints": {
         "primaryComponent": "FORM",
-        "participantSummary": "Deine Schreiberrolle sehen",
+        "participantSummary": "Deine Schreiberrolle voir",
         "captainSummary": "Schreiber festlegen",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -2455,7 +2455,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Erscheinungen bei 80k/60k/40k/20k in Reihenfolge erfassen.",
+      "description": "Erscheinungen bei 80k/60k/40k/20k in Reihenfolge saisir.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -2522,7 +2522,7 @@
       "instructions": [
         "Bei jeder Schwelle sofort Erscheinung wählen.",
         "Keine Dopplung zulassen.",
-        "Zweite Person bestätigt komplette Sequenz."
+        "Zweite Person confirmé komplette séquence."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
@@ -2535,7 +2535,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Sieg und Unique-Drops erfassen.",
+          "description": "Victoire und Unique-Drops saisir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G4-040"
         }
@@ -2548,8 +2548,8 @@
       ],
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
-        "participantSummary": "Nächste Schwelle und Sequenz sehen",
-        "captainSummary": "Vierstufige Sequenz gross sehen",
+        "participantSummary": "Nächste Schwelle und séquence voir",
+        "captainSummary": "Vierstufige séquence gross voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.execrabe.sequence"
@@ -2576,7 +2576,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Rancune, Pince, Fragment 3 und Salz erfassen.",
+      "description": "Rancune, Pince, Fragment 3 und sel saisir.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -2590,14 +2590,14 @@
         {
           "path": "gigalodon.bosses.execrabe.rancuneHolder",
           "type": "participantId",
-          "description": "Halter Rancune",
+          "description": "porteur Rancune",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         },
         {
           "path": "gigalodon.bosses.execrabe.pinceHolder",
           "type": "participantId",
-          "description": "Halter Pince",
+          "description": "porteur Pince",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         },
@@ -2610,16 +2610,16 @@
         }
       ],
       "instructions": [
-        "Sieg bestätigen.",
-        "Rancune- und Pincen-Halter eindeutig erfassen.",
+        "Victoire confirmer.",
+        "Rancune- und Pincen-porteur eindeutig saisir.",
         "Fragment 3 global setzen."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
           "Boss besiegt.",
-          "Beide Halter gesetzt.",
-          "Fragment 3 bestätigt."
+          "Beide porteur défini.",
+          "Fragment 3 confirmé."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -2641,7 +2641,7 @@
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Exécrabe-Rätsel freigeben.",
+          "description": "Exécrabe-énigme débloquer.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G4-050"
         }
@@ -2654,16 +2654,16 @@
       ],
       "uiHints": {
         "primaryComponent": "FORM",
-        "participantSummary": "Unique-Drops melden",
-        "captainSummary": "Rancune-, Pincen-Halter und Fragment sehen",
+        "participantSummary": "Unique-Drops signaler",
+        "captainSummary": "Rancune-, Pincen-porteur und Fragment voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.bosses.execrabe.rancuneHolder",
           "gigalodon.bosses.execrabe.pinceHolder"
         ],
         "quickActions": [
-          "Halter wählen",
-          "Drops bestätigen"
+          "choisir le porteur",
+          "Drops confirmer"
         ]
       }
     },
@@ -2710,9 +2710,9 @@
         }
       ],
       "instructions": [
-        "Sequenz aus dem Kampf gross anzeigen.",
+        "séquence aus dem combat gross afficher.",
         "Statuen exakt in Reihenfolge anklicken.",
-        "Fehler sofort melden und bei Element 1 neu beginnen."
+        "erreur sofort signaler und bei Element 1 neu beginnen."
       ],
       "completion": {
         "mode": "COUNTER_TARGET",
@@ -2725,20 +2725,20 @@
       "effects": [
         {
           "type": "SET_STATE",
-          "description": "Etage -5 freischalten.",
+          "description": "étage -5 déverrouiller.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.access.floor5",
           "value": true
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Fragmentfarm öffnen.",
+          "description": "Fragmentfarm ouvrir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G5-010"
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Abkürzung optional öffnen.",
+          "description": "Abkürzung optional ouvrir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G4-060"
         },
@@ -2759,7 +2759,7 @@
         },
         {
           "type": "RESET_SEQUENCE",
-          "description": "Rätselindex auf 0 setzen.",
+          "description": "énigmeindex auf 0 setzen.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.execrabe.puzzle.progressIndex",
           "value": 0
@@ -2772,8 +2772,8 @@
       ],
       "uiHints": {
         "primaryComponent": "CHECKLIST",
-        "participantSummary": "Nächste Statue sehen",
-        "captainSummary": "Sequenz, Fortschritt und Strafe sehen",
+        "participantSummary": "Nächste Statue voir",
+        "captainSummary": "séquence, Fortschritt und Strafe voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.execrabe.sequence",
@@ -2798,7 +2798,7 @@
       "priority": "P1",
       "optional": true,
       "initialStatus": "LOCKED",
-      "description": "Nur der Pincen-Halter öffnet die Abkürzung.",
+      "description": "Nur der Pincen-porteur ouvre die Abkürzung.",
       "location": "[6,10] ↔ [4,7]",
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -2812,19 +2812,19 @@
         {
           "path": "gigalodon.shortcut.open",
           "type": "boolean",
-          "description": "Abkürzung geöffnet",
+          "description": "Abkürzung geouvre",
           "sourceStatus": "PRODUCT_RULE",
           "default": false
         }
       ],
       "instructions": [
-        "Pincen-Halter zur Position [6,10] führen.",
-        "Öffnung bestätigen."
+        "Pincen-porteur zur Position [6,10] conduire.",
+        "ouverture confirmer."
       ],
       "completion": {
         "mode": "MANUAL",
         "criteria": [
-          "Abkürzung geöffnet."
+          "Abkürzung geouvre."
         ],
         "confirmationPolicy": "SELF",
         "resultFields": []
@@ -2846,16 +2846,16 @@
       ],
       "uiHints": {
         "primaryComponent": "TASK_CARD",
-        "participantSummary": "Du trägst die Pince: Abkürzung öffnen",
-        "captainSummary": "Halter und Öffnungsstatus sehen",
+        "participantSummary": "Du trägst die Pince: Abkürzung ouvrir",
+        "captainSummary": "porteur und ouverturesstatus voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.bosses.execrabe.pinceHolder",
           "gigalodon.shortcut.open"
         ],
         "quickActions": [
-          "Abkürzung geöffnet",
-          "Problem melden"
+          "Abkürzung geouvre",
+          "Problem signaler"
         ]
       }
     },
@@ -2910,9 +2910,9 @@
         }
       ],
       "instructions": [
-        "Unique- und allgemeine Ressourcen at risk anzeigen.",
-        "Auswirkung auf Fragmentchance anzeigen.",
-        "Captain entscheidet."
+        "Unique- und allgemeine ressources non sécurisé afficher.",
+        "Auswirkung auf Fragmentchance afficher.",
+        "capitaine entscheidet."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
@@ -2937,14 +2937,14 @@
       ],
       "uiHints": {
         "primaryComponent": "CHECKLIST",
-        "participantSummary": "Einzahlungsentscheid sehen",
+        "participantSummary": "dépôtsentscheid voir",
         "captainSummary": "Sicherheit, Zeit und Chance vergleichen",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.depositDecision"
         ],
         "quickActions": [
-          "Jetzt einzahlen",
+          "Jetzt déposer",
           "Weiterfarmen"
         ]
       }
@@ -2962,7 +2962,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Globalen Alterationsstatus für alle vier Fragmente prüfen.",
+      "description": "Globalen Alterationsstatus für alle vier Fragmente vérifier.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL_OR_TEAM",
@@ -2982,13 +2982,13 @@
         }
       ],
       "instructions": [
-        "Fragment 1 und 4 als Drops prüfen.",
-        "Fragment 2/3 aus Bossen prüfen."
+        "Fragment 1 und 4 als Drops vérifier.",
+        "Fragment 2/3 aus Bossen vérifier."
       ],
       "completion": {
         "mode": "MANUAL",
         "criteria": [
-          "Fragmentstatus aktuell bestätigt."
+          "Fragmentstatus aktuell confirmé."
         ],
         "confirmationPolicy": "SELF",
         "resultFields": []
@@ -3010,14 +3010,14 @@
       ],
       "uiHints": {
         "primaryComponent": "CHECKLIST",
-        "participantSummary": "Fehlende Fragmente sehen",
-        "captainSummary": "Vier Fragmentflags sehen",
+        "participantSummary": "Fehlende Fragmente voir",
+        "captainSummary": "Vier Fragmentflags voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.fragments"
         ],
         "quickActions": [
-          "Status bestätigen"
+          "état confirmer"
         ]
       }
     },
@@ -3034,7 +3034,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Chance aus bestätigtem Score ableiten; Grenzwerte als unbestätigt markieren.",
+      "description": "Chance aus confirmé Score ableiten; Grenzwerte als unconfirmé markieren.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -3060,8 +3060,8 @@
         }
       ],
       "instructions": [
-        "Bestätigten Score verwenden.",
-        "Grenzwerte 7’000 und 10’000 sichtbar als unbestätigt markieren."
+        "Confirmén Score utiliser.",
+        "Grenzwerte 7’000 und 10’000 sichtbar als unconfirmé markieren."
       ],
       "completion": {
         "mode": "AUTOMATIC_RULE",
@@ -3080,8 +3080,8 @@
       ],
       "uiHints": {
         "primaryComponent": "RADAR_ONLY",
-        "participantSummary": "Aktuelle Fragmentchance sehen",
-        "captainSummary": "Chance und Grenzwertunsicherheit sehen",
+        "participantSummary": "Aktuelle Fragmentchance voir",
+        "captainSummary": "Chance und Grenzwertunsicherheit voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.fragmentDropChancePercent"
@@ -3102,7 +3102,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Krak’Haine-/Score-Farmteams, Licht und Ledger parallel koordinieren.",
+      "description": "Krak’Haine-/Score-Farmteams, lumière und Ledger parallel koordinieren.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -3116,27 +3116,27 @@
         {
           "path": "gigalodon.floorStates[-5].farmAssignments",
           "type": "array",
-          "description": "Farmgruppen↔Teams",
+          "description": "Farmgruppen↔escouades",
           "sourceStatus": "PRODUCT_RULE"
         },
         {
           "path": "gigalodon.floorStates[-5].activeFights",
           "type": "integer",
-          "description": "Aktive Kämpfe",
+          "description": "Aktive combats",
           "sourceStatus": "PRODUCT_RULE",
           "default": 0,
           "minimum": 0
         }
       ],
       "instructions": [
-        "Gruppen parallel verteilen.",
-        "Nach jedem Kampf Inventar bestätigen.",
+        "groupes parallel répartir.",
+        "Nach jedem combat inventaire confirmer.",
         "Autopilotproblem an [12,13] beachten."
       ],
       "completion": {
         "mode": "MANUAL",
         "criteria": [
-          "Vier Fragmente vorhanden oder Captain stoppt Farming."
+          "Vier Fragmente présent oder capitaine stoppt Farming."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -3144,7 +3144,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Vier-Fragmente-Gate prüfen.",
+          "description": "Vier-Fragmente-Gate vérifier.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G5-040"
         }
@@ -3157,18 +3157,18 @@
       ],
       "uiHints": {
         "primaryComponent": "BOARD",
-        "participantSummary": "Deine Farmgruppe sehen",
-        "captainSummary": "Teams, Licht, Chance und Score at risk sehen",
+        "participantSummary": "Deine Farmgruppe voir",
+        "captainSummary": "escouades, lumière, Chance und score non sécurisé voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.floorStates[-5].farmAssignments",
           "gigalodon.fragmentDropChancePercent"
         ],
         "quickActions": [
-          "Gruppe übernehmen",
-          "Sieg",
-          "Fragment melden",
-          "Niederlage"
+          "groupe prendre",
+          "Victoire",
+          "Fragment signaler",
+          "Défaite"
         ]
       }
     },
@@ -3185,7 +3185,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Alle vier Alterations vorhanden: Etage -6 öffnen.",
+      "description": "Alle vier Alterations présent: étage -6 ouvrir.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -3208,14 +3208,14 @@
       "effects": [
         {
           "type": "SET_STATE",
-          "description": "Etage -6 freischalten.",
+          "description": "étage -6 déverrouiller.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.access.floor6",
           "value": true
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Willorque-Vorbereitung freigeben.",
+          "description": "Willorque-Vorbereitung débloquer.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G6-010"
         }
@@ -3228,8 +3228,8 @@
       ],
       "uiHints": {
         "primaryComponent": "GATE",
-        "participantSummary": "Etage -6 geöffnet",
-        "captainSummary": "Willorque-Team aktivieren",
+        "participantSummary": "étage -6 geouvre",
+        "captainSummary": "Willorque-escouade actifieren",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.fragments"
@@ -3250,7 +3250,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Team vor Betreten der dunklen Aggressionskarte vollständig bereitstellen.",
+      "description": "escouade vor Betreten der dunklen Aggressionskarte vollständig bereitstellen.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -3264,27 +3264,27 @@
         {
           "path": "gigalodon.willorque.teamReady",
           "type": "boolean",
-          "description": "Team bereit",
+          "description": "escouade bereit",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
         {
           "path": "gigalodon.willorque.teamParticipantIds",
           "type": "array",
-          "description": "Willorque-Team",
+          "description": "Willorque-escouade",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         }
       ],
       "instructions": [
-        "Kein normales Lichtmanagement auf Etage -6.",
-        "Gruppe vor Betreten bereit machen.",
+        "Kein normales gestion de la lumière auf étage -6.",
+        "groupe vor Betreten bereit machen.",
         "Aggression bis 10 Felder beachten."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Team vollständig bereit."
+          "escouade vollständig bereit."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -3292,7 +3292,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Willorque-Tracker freigeben.",
+          "description": "Willorque-Tracker débloquer.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G6-020"
         }
@@ -3305,14 +3305,14 @@
       ],
       "uiHints": {
         "primaryComponent": "CHECKLIST",
-        "participantSummary": "Willorque-Team und Warnung sehen",
-        "captainSummary": "Team vor dunkler Map prüfen",
+        "participantSummary": "Willorque-escouade und alerte voir",
+        "captainSummary": "escouade vor dunkler Map vérifier",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.willorque.teamParticipantIds"
         ],
         "quickActions": [
-          "Team bereit",
+          "escouade bereit",
           "Karte betreten"
         ]
       }
@@ -3377,7 +3377,7 @@
         }
       ],
       "instructions": [
-        "Lampenfische aktualisieren.",
+        "Lampenfische actualiser.",
         "Bei 100 % Resistenzfenster markieren.",
         "Bei 43’400 alle Fische aus markieren."
       ],
@@ -3392,7 +3392,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Noirceur erfassen.",
+          "description": "Noirceur saisir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G6-030"
         }
@@ -3405,8 +3405,8 @@
       ],
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
-        "participantSummary": "Light Count und Schwelle sehen",
-        "captainSummary": "Kampfzustand sehen",
+        "participantSummary": "Light Count und Schwelle voir",
+        "captainSummary": "combatzustand voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.willorque.hp",
@@ -3414,7 +3414,7 @@
           "gigalodon.willorque.lanternsOn"
         ],
         "quickActions": [
-          "HP aktualisieren",
+          "HP actualiser",
           "Fisch an",
           "Fisch aus",
           "Schwelle ausgelöst"
@@ -3434,7 +3434,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Sieg, Noirceur-Halter und Rückweg erfassen.",
+      "description": "Victoire, Noirceur-porteur und retour saisir.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -3448,21 +3448,21 @@
         {
           "path": "gigalodon.bosses.willorque.noirceurHolder",
           "type": "participantId",
-          "description": "Halter Noirceur",
+          "description": "porteur Noirceur",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         }
       ],
       "instructions": [
-        "Sieg bestätigen.",
-        "Genau einen Noirceur-Halter setzen.",
-        "Final-Rückweg aktivieren."
+        "Victoire confirmer.",
+        "Genau einen Noirceur-porteur setzen.",
+        "Final-retour actifieren."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
           "Boss besiegt.",
-          "Noirceur-Halter gesetzt."
+          "Noirceur-porteur défini."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -3477,7 +3477,7 @@
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Final-Rückweg prüfen.",
+          "description": "Final-retour vérifier.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "GF-010"
         }
@@ -3490,15 +3490,15 @@
       ],
       "uiHints": {
         "primaryComponent": "FORM",
-        "participantSummary": "Noirceur-Halter melden",
-        "captainSummary": "Unique-Ressource und Rückweg sehen",
+        "participantSummary": "Noirceur-porteur signaler",
+        "captainSummary": "Unique-Ressource und retour voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.bosses.willorque.noirceurHolder"
         ],
         "quickActions": [
-          "Halter wählen",
-          "Sieg bestätigen"
+          "choisir le porteur",
+          "Victoire confirmer"
         ]
       }
     },
@@ -3515,7 +3515,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Unbestätigte Inventare, Score at risk, Positionen und aktive Kämpfe zusammenführen.",
+      "description": "Unconfirmé inventaires, score non sécurisé, Positionen und actife combats zusammenconduire.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -3529,7 +3529,7 @@
         {
           "path": "gigalodon.finalReadiness.activeFights",
           "type": "integer",
-          "description": "Aktive Kämpfe",
+          "description": "Aktive combats",
           "sourceStatus": "LIVE_REQUIRED",
           "required": true,
           "minimum": 0
@@ -3545,19 +3545,19 @@
         {
           "path": "gigalodon.finalReadiness.staleInventoryParticipantIds",
           "type": "array",
-          "description": "Veraltete Bestätigungen",
+          "description": "Veraltete confirmations",
           "sourceStatus": "PRODUCT_RULE"
         }
       ],
       "instructions": [
-        "Alle Inventare und Positionen prüfen.",
-        "Unique-Ressourcenhalter hervorheben.",
-        "Aktive Kämpfe erfassen."
+        "Alle inventaires und Positionen vérifier.",
+        "Unique-porteur de ressources hervorheben.",
+        "Aktive combats saisir."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Alle kritischen Teilnehmer geprüft."
+          "Alle kritischen joueurs geprüft."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -3565,7 +3565,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Ressourcen sichern.",
+          "description": "ressources sichern.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "GF-020"
         }
@@ -3579,16 +3579,16 @@
       ],
       "uiHints": {
         "primaryComponent": "LEDGER",
-        "participantSummary": "Dein offenes Inventar bestätigen",
-        "captainSummary": "Gesamtes Risiko und Positionen sehen",
+        "participantSummary": "Dein offenes inventaire confirmer",
+        "captainSummary": "Gesamtes risque und Positionen voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.finalReadiness.activeFights",
           "gigalodon.finalReadiness.criticalUnbankedScore"
         ],
         "quickActions": [
-          "Spieler anpingen",
-          "Inventar bestätigen"
+          "relancer le joueur",
+          "inventaire confirmer"
         ]
       }
     },
@@ -3605,7 +3605,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Mureine-, Exécrabe- und Willorque-Ressourcen sowie Schätze sichern.",
+      "description": "Mureine-, Exécrabe- und Willorque-ressources sowie Schätze sichern.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL_OR_TEAM",
@@ -3619,34 +3619,34 @@
         {
           "path": "gigalodon.finalReadiness.mureineResourceBanked",
           "type": "boolean",
-          "description": "Unité eingezahlt",
+          "description": "Unité déposé",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
         {
           "path": "gigalodon.finalReadiness.execrabeResourceBanked",
           "type": "boolean",
-          "description": "Rancune eingezahlt",
+          "description": "Rancune déposé",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
         {
           "path": "gigalodon.finalReadiness.willorqueResourceBanked",
           "type": "boolean",
-          "description": "Noirceur eingezahlt",
+          "description": "Noirceur déposé",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         }
       ],
       "instructions": [
-        "Unique-Halter zum Koffer führen.",
-        "Alle wertvollen Ressourcen einzahlen.",
-        "Bestätigten Score prüfen."
+        "Unique-porteur zum coffre conduire.",
+        "Alle wertvollen ressources déposer.",
+        "Confirmén Score vérifier."
       ],
       "completion": {
         "mode": "ALL_SUBTASKS",
         "criteria": [
-          "Drei Unique-Ressourcen eingezahlt."
+          "Drei Unique-ressources déposé."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -3654,7 +3654,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Finalstartcheck freigeben.",
+          "description": "lancement du combat finalcheck débloquer.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "GF-030"
         }
@@ -3667,8 +3667,8 @@
       ],
       "uiHints": {
         "primaryComponent": "LEDGER",
-        "participantSummary": "Deine Einzahlungspflicht sehen",
-        "captainSummary": "Drei Unique-Checks und Rest at risk sehen",
+        "participantSummary": "Deine dépôtspflicht voir",
+        "captainSummary": "Drei Unique-Checks und Rest non sécurisé voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.finalReadiness.mureineResourceBanked",
@@ -3677,7 +3677,7 @@
         ],
         "quickActions": [
           "Eingezahlt",
-          "Spieler anpingen"
+          "relancer le joueur"
         ]
       }
     },
@@ -3694,7 +3694,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Timer, Ressourcen, Kämpfe, Team und Captainfreigabe prüfen.",
+      "description": "Timer, ressources, combats, escouade und validation du capitaine vérifier.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -3715,7 +3715,7 @@
         {
           "path": "gigalodon.finalReadiness.activeFights",
           "type": "integer",
-          "description": "Aktive Kämpfe",
+          "description": "Aktive combats",
           "sourceStatus": "LIVE_REQUIRED",
           "required": true,
           "minimum": 0
@@ -3730,20 +3730,20 @@
         {
           "path": "gigalodon.finalReadiness.captainConfirmed",
           "type": "boolean",
-          "description": "Captainfreigabe",
+          "description": "validation du capitaine",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         }
       ],
       "instructions": [
-        "Pflichtzugänge und Unique-Einzahlungen prüfen.",
-        "Aktive Kämpfe als mögliche Startblockade rot anzeigen.",
-        "Finalteam und Restzeit bestätigen."
+        "Pflichtzugänge und Unique-dépôts vérifier.",
+        "Aktive combats als mögliche Startblockade rot afficher.",
+        "Finalteam und Restzeit confirmer."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Alle bestätigten Pflichtchecks erfüllt; unbestätigte Blockade bewusst behandelt."
+          "Alle confirmé Pflichtchecks erfüllt; unconfirmé Blockade bewusst behandelt."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -3751,7 +3751,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Finalkampfstart freigeben.",
+          "description": "combat finalstart débloquer.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "GG-010"
         }
@@ -3764,14 +3764,14 @@
       ],
       "uiHints": {
         "primaryComponent": "CHECKLIST",
-        "participantSummary": "Finalbereitschaft sehen",
-        "captainSummary": "Startcheck mit Unsicherheitslabel sehen",
+        "participantSummary": "Finalbereitschaft voir",
+        "captainSummary": "contrôle de départ mit Unsicherheitslabel voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.finalReadiness"
         ],
         "quickActions": [
-          "Finalstart freigeben",
+          "lancement du combat final débloquer",
           "Blockade bearbeiten"
         ]
       }
@@ -3802,9 +3802,9 @@
       "inputFields": [],
       "instructions": [
         ">10 normal.",
-        "6–10 Einzahlung/Rückweg priorisieren.",
+        "6–10 dépôt/retour priorisieren.",
         "3–6 Farming stoppen und Final vorbereiten.",
-        "<3 nur Finalstart."
+        "<3 nur lancement du combat final."
       ],
       "completion": {
         "mode": "AUTOMATIC_RULE",
@@ -3830,8 +3830,8 @@
       ],
       "uiHints": {
         "primaryComponent": "RADAR_ONLY",
-        "participantSummary": "Zeitpriorität sehen",
-        "captainSummary": "Zeitrisiko und nächste Aktion sehen",
+        "participantSummary": "Zeitpriorität voir",
+        "captainSummary": "Zeitrisiko und nächste Aktion voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "session.timer.remaining"
@@ -3852,7 +3852,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Finalkampf vor Ablauf des globalen Timers starten.",
+      "description": "combat final vor Ablauf des globalen Timers lancer.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -3866,7 +3866,7 @@
         {
           "path": "gigalodon.final.startedAt",
           "type": "timestamp",
-          "description": "Finalstartzeit",
+          "description": "lancement du combat finalzeit",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
@@ -3880,14 +3880,14 @@
         }
       ],
       "instructions": [
-        "Interaktion am Raidkoffer ausführen.",
+        "Interaktion am Raidkoffer ausconduire.",
         "Maximal 12 Charaktere.",
-        "Start vor globalem Timerende bestätigen."
+        "Start vor globalem Timerende confirmer."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Finalkampf im Spiel gestartet."
+          "combat final en jeu gestartet."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -3902,7 +3902,7 @@
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Drei Schadensrunden verfolgen.",
+          "description": "Drei tours de dégâts verfolgen.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "GG-020"
         }
@@ -3917,8 +3917,8 @@
       ],
       "uiHints": {
         "primaryComponent": "CHECKLIST",
-        "participantSummary": "Finalteam und Startsignal sehen",
-        "captainSummary": "Restzeit und Startfreigabe sehen",
+        "participantSummary": "Finalteam und signal de départ voir",
+        "captainSummary": "Restzeit und autorisation de départ voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "session.timer.remaining",
@@ -3943,7 +3943,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Runde, Gesamtschaden und verschluckten Spieler verfolgen.",
+      "description": "Runde, Gesamtschaden und verschluckten joueur verfolgen.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -3957,7 +3957,7 @@
         {
           "path": "gigalodon.final.combatRound",
           "type": "integer",
-          "description": "Kampfrunde 1–3",
+          "description": "tour de combat 1–3",
           "sourceStatus": "GUIDE_CONFIRMED",
           "default": 1,
           "minimum": 1,
@@ -3981,14 +3981,14 @@
         }
       ],
       "instructions": [
-        "Gesamtschaden aktualisieren.",
+        "Gesamtschaden actualiser.",
         "Runde bis 3 verfolgen.",
         "Gebietsschaden nur einmal für das Gigalodon zählen."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Beginn Runde 4 / Kampfende bestätigt."
+          "Beginn Runde 4 / combatende confirmé."
         ],
         "confirmationPolicy": "SELF",
         "resultFields": []
@@ -4002,7 +4002,7 @@
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Raidabschluss erfassen.",
+          "description": "Raidabschluss saisir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "GG-050"
         }
@@ -4015,8 +4015,8 @@
       ],
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
-        "participantSummary": "Runde und Schaden sehen",
-        "captainSummary": "Schaden, Scorestufe und Mechanikwarnung sehen",
+        "participantSummary": "Runde und dégâts voir",
+        "captainSummary": "dégâts, Scorestufe und Mechanikwarnung voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.final.combatRound",
@@ -4024,7 +4024,7 @@
           "gigalodon.final.projectedBonusScore"
         ],
         "quickActions": [
-          "Schaden aktualisieren",
+          "actualiser les dégâts",
           "Nächste Runde"
         ]
       }
@@ -4042,7 +4042,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Verschluckten Spieler und schwarzes Feld schnell melden.",
+      "description": "Verschluckten joueur und schwarzes Feld schnell signaler.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -4056,7 +4056,7 @@
         {
           "path": "gigalodon.final.swallowedParticipantId",
           "type": "participantId",
-          "description": "Verschluckter Spieler",
+          "description": "Verschluckter joueur",
           "sourceStatus": "PRODUCT_RULE",
           "nullable": true
         },
@@ -4069,14 +4069,14 @@
         }
       ],
       "instructions": [
-        "Verschluckten Spieler sofort auswählen.",
-        "Schwarzes Feld als frei/belegt melden.",
-        "Nächste Teamaktion anzeigen."
+        "Verschluckten joueur sofort auswählen.",
+        "Schwarzes Feld als frei/belegt signaler.",
+        "Nächste escouadeaktion afficher."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Aktueller Zustand gemeldet."
+          "Aktueller état gemeldet."
         ],
         "confirmationPolicy": "SELF",
         "resultFields": []
@@ -4084,7 +4084,7 @@
       "effects": [
         {
           "type": "CREATE_WARNING",
-          "description": "Teamwarnung zur Verschluckmechanik.",
+          "description": "escouadewarnung zur Verschluckmechanik.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.swallowWarning"
         }
@@ -4097,15 +4097,15 @@
       ],
       "uiHints": {
         "primaryComponent": "FORM",
-        "participantSummary": "Verschluckzustand melden",
-        "captainSummary": "Sofortwarnung sehen",
+        "participantSummary": "Verschluckzustand signaler",
+        "captainSummary": "Sofortwarnung voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.final.swallowedParticipantId",
           "gigalodon.final.blackGlyphOccupied"
         ],
         "quickActions": [
-          "Spieler verschluckt",
+          "joueur avalé",
           "Feld frei",
           "Feld belegt",
           "Entwarnung"
@@ -4125,7 +4125,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Letzte erreichte Schadensschwelle auf Bonusscore abbilden.",
+      "description": "Letzte erreichte seuil de dégâts auf Bonusscore abbilden.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -4174,8 +4174,8 @@
       ],
       "uiHints": {
         "primaryComponent": "COUNTER",
-        "participantSummary": "Erreichte Scorestufe sehen",
-        "captainSummary": "Schadensschwelle und Score prüfen",
+        "participantSummary": "Erreichte Scorestufe voir",
+        "captainSummary": "seuil de dégâts und Score vérifier",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.final.totalDamage",
@@ -4197,7 +4197,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Ressourcenscore, Bonusscore und Laufdaten einfrieren.",
+      "description": "score de ressources, Bonusscore und Laufdaten einfrieren.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -4222,7 +4222,7 @@
         {
           "path": "gigalodon.summary.confirmedResourceScore",
           "type": "integer",
-          "description": "Bestätigter Ressourcenscore",
+          "description": "Confirmé score de ressources",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
@@ -4242,14 +4242,14 @@
         }
       ],
       "instructions": [
-        "Tatsächliches In-Game-Ende bestätigen.",
-        "Score und Zeit bis Finalstart speichern.",
-        "Verluste, Warnungen und Engpässe zusammenfassen."
+        "Tatsächliches en jeu-Ende confirmer.",
+        "Score und Zeit bis lancement du combat final speichern.",
+        "pertee, alertes und Engpässe zusammenfassen."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Endzustand und Score bestätigt."
+          "Endzustand und Score confirmé."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": [
@@ -4296,13 +4296,13 @@
       "uiHints": {
         "primaryComponent": "GATE",
         "participantSummary": "Raid abgeschlossen",
-        "captainSummary": "Zusammenfassung prüfen",
+        "captainSummary": "Zusammenfassung vérifier",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.summary"
         ],
         "quickActions": [
-          "Zusammenfassung öffnen"
+          "Zusammenfassung ouvrir"
         ]
       }
     }
@@ -4318,7 +4318,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G0-010 wird nach Abschluss von G0-001 bereit."
+      "description": "G0-010 wird nach clôture von G0-001 bereit."
     },
     {
       "id": "D-G0-G0-010-TO-G0-020",
@@ -4330,7 +4330,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G0-020 wird nach Abschluss von G0-010 bereit."
+      "description": "G0-020 wird nach clôture von G0-010 bereit."
     },
     {
       "id": "D-G1-MAIN-G0-020-TO-G1-010",
@@ -4342,7 +4342,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G1-010 wird nach Abschluss von G0-020 bereit."
+      "description": "G1-010 wird nach clôture von G0-020 bereit."
     },
     {
       "id": "D-G1-MAIN-G1-010-TO-G1-020",
@@ -4354,7 +4354,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G1-020 wird nach Abschluss von G1-010 bereit."
+      "description": "G1-020 wird nach clôture von G1-010 bereit."
     },
     {
       "id": "D-G1-MAIN-G1-020-TO-G1-040",
@@ -4366,7 +4366,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G1-040 wird nach Abschluss von G1-020 bereit."
+      "description": "G1-040 wird nach clôture von G1-020 bereit."
     },
     {
       "id": "D-G1-FRAG1",
@@ -4378,7 +4378,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "Fragmentbeobachtung läuft parallel zur Gruppenphase."
+      "description": "Fragmentbeobachtung läuft parallel zur phase de groupes."
     },
     {
       "id": "D-G2-G1-040-TO-G2-010",
@@ -4390,7 +4390,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G2-010 wird nach Abschluss von G1-040 bereit."
+      "description": "G2-010 wird nach clôture von G1-040 bereit."
     },
     {
       "id": "D-G2-G2-010-TO-G2-020",
@@ -4402,7 +4402,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G2-020 wird nach Abschluss von G2-010 bereit."
+      "description": "G2-020 wird nach clôture von G2-010 bereit."
     },
     {
       "id": "D-G2-G2-020-TO-G2-030",
@@ -4414,7 +4414,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G2-030 wird nach Abschluss von G2-020 bereit."
+      "description": "G2-030 wird nach clôture von G2-020 bereit."
     },
     {
       "id": "D-G2-G2-030-TO-G2-040",
@@ -4426,7 +4426,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G2-040 wird nach Abschluss von G2-030 bereit."
+      "description": "G2-040 wird nach clôture von G2-030 bereit."
     },
     {
       "id": "D-G3-G2-040-TO-G3-010",
@@ -4438,7 +4438,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G3-010 wird nach Abschluss von G2-040 bereit."
+      "description": "G3-010 wird nach clôture von G2-040 bereit."
     },
     {
       "id": "D-G3-G3-010-TO-G3-020",
@@ -4450,7 +4450,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G3-020 wird nach Abschluss von G3-010 bereit."
+      "description": "G3-020 wird nach clôture von G3-010 bereit."
     },
     {
       "id": "D-G3-G3-020-TO-G3-030",
@@ -4462,7 +4462,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G3-030 wird nach Abschluss von G3-020 bereit."
+      "description": "G3-030 wird nach clôture von G3-020 bereit."
     },
     {
       "id": "D-G4-G3-030-TO-G4-010",
@@ -4474,7 +4474,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G4-010 wird nach Abschluss von G3-030 bereit."
+      "description": "G4-010 wird nach clôture von G3-030 bereit."
     },
     {
       "id": "D-G4-G4-010-TO-G4-020",
@@ -4486,7 +4486,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G4-020 wird nach Abschluss von G4-010 bereit."
+      "description": "G4-020 wird nach clôture von G4-010 bereit."
     },
     {
       "id": "D-G4-G4-020-TO-G4-030",
@@ -4498,7 +4498,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G4-030 wird nach Abschluss von G4-020 bereit."
+      "description": "G4-030 wird nach clôture von G4-020 bereit."
     },
     {
       "id": "D-G4-G4-030-TO-G4-040",
@@ -4510,7 +4510,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G4-040 wird nach Abschluss von G4-030 bereit."
+      "description": "G4-040 wird nach clôture von G4-030 bereit."
     },
     {
       "id": "D-G4-G4-040-TO-G4-050",
@@ -4522,7 +4522,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G4-050 wird nach Abschluss von G4-040 bereit."
+      "description": "G4-050 wird nach clôture von G4-040 bereit."
     },
     {
       "id": "D-G4-SHORTCUT",
@@ -4535,7 +4535,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "Pince vorhanden und Rätsel gelöst."
+      "description": "Pince présent und énigme gelöst."
     },
     {
       "id": "D-G4-DEPOSIT",
@@ -4547,7 +4547,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "Zwischeneinzahlung nach Zugang Etage -5 planbar."
+      "description": "Zwischeneinzahlung nach accès étage -5 planbar."
     },
     {
       "id": "D-G5-START",
@@ -4571,7 +4571,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G5-020 wird nach Abschluss von G5-010 bereit."
+      "description": "G5-020 wird nach clôture von G5-010 bereit."
     },
     {
       "id": "D-G5-G5-020-TO-G5-030",
@@ -4583,7 +4583,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G5-030 wird nach Abschluss von G5-020 bereit."
+      "description": "G5-030 wird nach clôture von G5-020 bereit."
     },
     {
       "id": "D-G5-G5-030-TO-G5-040",
@@ -4595,7 +4595,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G5-040 wird nach Abschluss von G5-030 bereit."
+      "description": "G5-040 wird nach clôture von G5-030 bereit."
     },
     {
       "id": "D-G6-G5-040-TO-G6-010",
@@ -4607,7 +4607,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G6-010 wird nach Abschluss von G5-040 bereit."
+      "description": "G6-010 wird nach clôture von G5-040 bereit."
     },
     {
       "id": "D-G6-G6-010-TO-G6-020",
@@ -4619,7 +4619,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G6-020 wird nach Abschluss von G6-010 bereit."
+      "description": "G6-020 wird nach clôture von G6-010 bereit."
     },
     {
       "id": "D-G6-G6-020-TO-G6-030",
@@ -4631,7 +4631,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "G6-030 wird nach Abschluss von G6-020 bereit."
+      "description": "G6-030 wird nach clôture von G6-020 bereit."
     },
     {
       "id": "D-GF-G6-030-TO-GF-010",
@@ -4643,7 +4643,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "GF-010 wird nach Abschluss von G6-030 bereit."
+      "description": "GF-010 wird nach clôture von G6-030 bereit."
     },
     {
       "id": "D-GF-GF-010-TO-GF-020",
@@ -4655,7 +4655,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "GF-020 wird nach Abschluss von GF-010 bereit."
+      "description": "GF-020 wird nach clôture von GF-010 bereit."
     },
     {
       "id": "D-GF-GF-020-TO-GF-030",
@@ -4667,7 +4667,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "GF-030 wird nach Abschluss von GF-020 bereit."
+      "description": "GF-030 wird nach clôture von GF-020 bereit."
     },
     {
       "id": "D-GF-TIME",
@@ -4691,7 +4691,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "GG-010 wird nach Abschluss von GF-030 bereit."
+      "description": "GG-010 wird nach clôture von GF-030 bereit."
     },
     {
       "id": "D-GG-GG-010-TO-GG-020",
@@ -4703,7 +4703,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "GG-020 wird nach Abschluss von GG-010 bereit."
+      "description": "GG-020 wird nach clôture von GG-010 bereit."
     },
     {
       "id": "D-GG-SWALLOW",
@@ -4715,7 +4715,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "Mechanikmelder ab Finalstart verfügbar."
+      "description": "Mechanikmelder ab lancement du combat final verfügbar."
     },
     {
       "id": "D-GG-SCORE",
@@ -4830,7 +4830,7 @@
   "scoreRules": [
     {
       "id": "GIG-SCORE-SALT",
-      "trigger": "Gemeinsames Salz gesammelt oder für Licht verbraucht.",
+      "trigger": "Gemeinsames sel gesammelt oder für lumière verbraucht.",
       "operation": "ADD",
       "value": 0,
       "cap": null,
@@ -4841,7 +4841,7 @@
     },
     {
       "id": "GIG-SCORE-QUARTZ",
-      "trigger": "Quartz eingezahlt.",
+      "trigger": "Quartz déposé.",
       "operation": "ADD",
       "value": 2,
       "cap": null,
@@ -4852,7 +4852,7 @@
     },
     {
       "id": "GIG-SCORE-OPALE",
-      "trigger": "Opale eingezahlt.",
+      "trigger": "Opale déposé.",
       "operation": "ADD",
       "value": 4,
       "cap": null,
@@ -4863,7 +4863,7 @@
     },
     {
       "id": "GIG-SCORE-AMAZONITE",
-      "trigger": "Amazonite eingezahlt.",
+      "trigger": "Amazonite déposé.",
       "operation": "ADD",
       "value": 6,
       "cap": null,
@@ -4874,7 +4874,7 @@
     },
     {
       "id": "GIG-SCORE-AVENTURINE",
-      "trigger": "Aventurine eingezahlt.",
+      "trigger": "Aventurine déposé.",
       "operation": "ADD",
       "value": 10,
       "cap": null,
@@ -4885,7 +4885,7 @@
     },
     {
       "id": "GIG-SCORE-LAPIZ",
-      "trigger": "Lapiz eingezahlt.",
+      "trigger": "Lapiz déposé.",
       "operation": "ADD",
       "value": 15,
       "cap": null,
@@ -4896,7 +4896,7 @@
     },
     {
       "id": "GIG-SCORE-JAIS",
-      "trigger": "Jais eingezahlt.",
+      "trigger": "Jais déposé.",
       "operation": "ADD",
       "value": 20,
       "cap": null,
@@ -4907,7 +4907,7 @@
     },
     {
       "id": "GIG-SCORE-ONYX",
-      "trigger": "Onyx eingezahlt.",
+      "trigger": "Onyx déposé.",
       "operation": "ADD",
       "value": 30,
       "cap": null,
@@ -4918,7 +4918,7 @@
     },
     {
       "id": "GIG-SCORE-MUREINE",
-      "trigger": "Unité de Mureine eingezahlt.",
+      "trigger": "Unité de Mureine déposé.",
       "operation": "ADD",
       "value": 1000,
       "cap": null,
@@ -4929,7 +4929,7 @@
     },
     {
       "id": "GIG-SCORE-EXECRABE",
-      "trigger": "Rancune d’Exécrabe eingezahlt.",
+      "trigger": "Rancune d’Exécrabe déposé.",
       "operation": "ADD",
       "value": 5000,
       "cap": null,
@@ -4940,7 +4940,7 @@
     },
     {
       "id": "GIG-SCORE-WILLORQUE",
-      "trigger": "Noirceur de Willorque eingezahlt.",
+      "trigger": "Noirceur de Willorque déposé.",
       "operation": "ADD",
       "value": 10000,
       "cap": null,
@@ -4951,7 +4951,7 @@
     },
     {
       "id": "GIG-SCORE-EXE-PENALTY",
-      "trigger": "Falsche Statue im Exécrabe-Rätsel.",
+      "trigger": "Falsche Statue im Exécrabe-énigme.",
       "operation": "SUBTRACT",
       "value": 1000,
       "cap": null,
@@ -5051,7 +5051,7 @@
         "EDITOR",
         "ALL"
       ],
-      "recommendedAction": "Farming abbrechen und Finalstart ausführen.",
+      "recommendedAction": "Farming abbrechen und lancement du combat final ausconduire.",
       "sourceStatus": "PRODUCT_RULE",
       "testRefs": [
         "GIG-P0-017"
@@ -5068,13 +5068,13 @@
         "value": true,
         "description": ""
       },
-      "message": "Mindestens eine Unique-Bossressource ist nicht eingezahlt.",
+      "message": "Mindestens eine Unique-Bossressource ist nicht déposé.",
       "audience": [
         "CAPTAIN",
         "EDITOR",
         "AFFECTED_PARTICIPANT"
       ],
-      "recommendedAction": "Halter sofort zum Koffer führen.",
+      "recommendedAction": "porteur sofort zum coffre conduire.",
       "sourceStatus": "PRODUCT_RULE",
       "testRefs": [
         "GIG-P1-021"
@@ -5091,13 +5091,13 @@
         "value": 0,
         "description": ""
       },
-      "message": "Aktive Etage hat Lichtlevel 0.",
+      "message": "Aktive étage hat niveau de lumière 0.",
       "audience": [
         "CAPTAIN",
         "EDITOR",
         "AFFECTED_TEAM"
       ],
-      "recommendedAction": "Aggressionszone verlassen oder Licht sofort auffüllen.",
+      "recommendedAction": "Aggressionszone verlassen oder lumière sofort auffüllen.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "testRefs": [
         "GIG-P0-001",
@@ -5115,13 +5115,13 @@
         "value": 1,
         "description": ""
       },
-      "message": "Aktive Etage hat Lichtlevel 1.",
+      "message": "Aktive étage hat niveau de lumière 1.",
       "audience": [
         "CAPTAIN",
         "EDITOR",
         "AFFECTED_TEAM"
       ],
-      "recommendedAction": "Salzverantwortlichen aktivieren.",
+      "recommendedAction": "selverantwortlichen actifieren.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "testRefs": [
         "GIG-P0-001"
@@ -5138,13 +5138,13 @@
         "value": true,
         "description": ""
       },
-      "message": "Exécrabe-Rätsel startet mit unvollständiger Sequenz.",
+      "message": "Exécrabe-énigme startet mit unvollständiger séquence.",
       "audience": [
         "CAPTAIN",
         "EDITOR",
         "AFFECTED_TEAM"
       ],
-      "recommendedAction": "Vier Schwellenwerte zweitbestätigen.",
+      "recommendedAction": "Vier Schwellenwerte zweitconfirmer.",
       "sourceStatus": "PRODUCT_RULE",
       "testRefs": [
         "GIG-P0-010"
@@ -5167,7 +5167,7 @@
         "EDITOR",
         "ALL"
       ],
-      "recommendedAction": "Halter bestimmen; Handel ist deaktiviert.",
+      "recommendedAction": "désigner le porteur; Handel ist deactifiert.",
       "sourceStatus": "PRODUCT_RULE",
       "testRefs": [
         "GIG-P0-012"
@@ -5184,13 +5184,13 @@
         "value": 0,
         "description": ""
       },
-      "message": "Aktive Kämpfe sind eine mögliche Finalstartblockade.",
+      "message": "Aktive combats sind eine mögliche lancement du combat finalblockade.",
       "audience": [
         "CAPTAIN",
         "EDITOR",
         "ALL"
       ],
-      "recommendedAction": "Kämpfe beenden oder kontrollierten Startversuch dokumentieren.",
+      "recommendedAction": "combats beenden oder kontrollierten Startversuch dokumentieren.",
       "sourceStatus": "LIVE_REQUIRED",
       "testRefs": [
         "GIG-P0-015"
@@ -5207,13 +5207,13 @@
         "value": true,
         "description": ""
       },
-      "message": "Mindestens ein Inventar ist seit über 5 Minuten unbestätigt.",
+      "message": "Mindestens ein inventaire ist seit über 5 Minuten unconfirmé.",
       "audience": [
         "CAPTAIN",
         "EDITOR",
         "AFFECTED_PARTICIPANT"
       ],
-      "recommendedAction": "Bestand und Position aktualisieren.",
+      "recommendedAction": "Bestand und Position actualiser.",
       "sourceStatus": "PRODUCT_RULE",
       "testRefs": [
         "UX-003"
@@ -5236,7 +5236,7 @@
         "EDITOR",
         "AFFECTED_PARTICIPANT"
       ],
-      "recommendedAction": "Zwischeneinzahlung oder sicheren Rückweg priorisieren.",
+      "recommendedAction": "Zwischeneinzahlung oder sicheren retour priorisieren.",
       "sourceStatus": "PRODUCT_RULE",
       "testRefs": [
         "GIG-P1-021"
@@ -5258,14 +5258,14 @@
         },
         {
           "type": "SET_STATE",
-          "description": "Etage -3 öffnen.",
+          "description": "étage -3 ouvrir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.access.floor3",
           "value": true
         },
         {
           "type": "CREATE_WARNING",
-          "description": "Unité-Halter bis Einzahlung verfolgen.",
+          "description": "Unité-porteur bis dépôt verfolgen.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "warning.GIG-UNIQUE-UNBANKED"
         }
@@ -5280,14 +5280,14 @@
       "actions": [
         {
           "type": "SET_STATE",
-          "description": "Etage -4 öffnen.",
+          "description": "étage -4 ouvrir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.access.floor4",
           "value": true
         }
       ],
       "sourceStatus": "PRODUCT_RULE",
-      "description": "Zugang nach Rätsel."
+      "description": "accès nach énigme."
     },
     {
       "id": "GIG-AUTO-EXECRABE",
@@ -5318,14 +5318,14 @@
       "actions": [
         {
           "type": "SET_STATE",
-          "description": "Etage -5 öffnen.",
+          "description": "étage -5 ouvrir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.access.floor5",
           "value": true
         }
       ],
       "sourceStatus": "PRODUCT_RULE",
-      "description": "Farmphase öffnen."
+      "description": "Farmphase ouvrir."
     },
     {
       "id": "GIG-AUTO-FRAGMENTS",
@@ -5334,21 +5334,21 @@
       "actions": [
         {
           "type": "SET_TASK_STATUS",
-          "description": "G5-040 abschliessen.",
+          "description": "G5-040 terminer.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G5-040",
           "value": "COMPLETED"
         },
         {
           "type": "SET_STATE",
-          "description": "Etage -6 öffnen.",
+          "description": "étage -6 ouvrir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.access.floor6",
           "value": true
         }
       ],
       "sourceStatus": "PRODUCT_RULE",
-      "description": "Willorque freischalten."
+      "description": "Willorque déverrouiller."
     },
     {
       "id": "GIG-AUTO-WILLORQUE",
@@ -5357,13 +5357,13 @@
       "actions": [
         {
           "type": "CREATE_WARNING",
-          "description": "Rückweg und Einzahlung priorisieren.",
+          "description": "retour und dépôt priorisieren.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "warning.GIG-UNIQUE-UNBANKED"
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Finalsicherung öffnen.",
+          "description": "Finalsicherung ouvrir.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "GF-010"
         }
@@ -5373,7 +5373,7 @@
     },
     {
       "id": "GIG-AUTO-FINAL-START",
-      "trigger": "GG-010 wird im Spiel bestätigt.",
+      "trigger": "GG-010 wird en jeu confirmé.",
       "guardConditions": [],
       "actions": [
         {
@@ -5404,7 +5404,7 @@
         "derived.scoreAtRiskByPlayer",
         "ui.resourceLedger"
       ],
-      "trigger": "Inventarbestätigung",
+      "trigger": "confirmation d’inventaire",
       "validation": "Mengen nicht negativ; Scorewerte aus versionierter Tabelle.",
       "sourceStatus": "PRODUCT_RULE"
     },
@@ -5416,8 +5416,8 @@
         "gigalodon.confirmedScore",
         "ui.raidHeader.score"
       ],
-      "trigger": "Einzahlung bestätigt",
-      "validation": "Nur scorefähige Ressourcen; Salz separat.",
+      "trigger": "dépôt confirmé",
+      "validation": "Nur comptant pour le score ressources; sel separat.",
       "sourceStatus": "PRODUCT_RULE"
     },
     {
@@ -5428,8 +5428,8 @@
         "ui.captainRadar.uniqueHolders",
         "task.GF-020.input.mureineHolder"
       ],
-      "trigger": "Mureine-Drops bestätigt",
-      "validation": "Genau ein Teilnehmer.",
+      "trigger": "Mureine-Drops confirmé",
+      "validation": "Genau ein joueurs.",
       "sourceStatus": "PRODUCT_RULE"
     },
     {
@@ -5442,8 +5442,8 @@
         "task.G4-060.assignee",
         "task.GF-020.input.execrabeHolder"
       ],
-      "trigger": "Exécrabe-Drops bestätigt",
-      "validation": "Rancune- und Pincen-Halter vorhanden.",
+      "trigger": "Exécrabe-Drops confirmé",
+      "validation": "Rancune- und Pincen-porteur présent.",
       "sourceStatus": "PRODUCT_RULE"
     },
     {
@@ -5453,7 +5453,7 @@
         "task.G4-050.input.sequence",
         "ui.execrabePuzzle.sequence"
       ],
-      "trigger": "Sequenz zweitbestätigt",
+      "trigger": "séquence zweitconfirmé",
       "validation": "Vier unterschiedliche Erscheinungen.",
       "sourceStatus": "PRODUCT_RULE"
     },
@@ -5465,8 +5465,8 @@
         "ui.captainRadar.uniqueHolders",
         "task.GF-020.input.willorqueHolder"
       ],
-      "trigger": "Willorque-Drops bestätigt",
-      "validation": "Genau ein Teilnehmer.",
+      "trigger": "Willorque-Drops confirmé",
+      "validation": "Genau ein joueurs.",
       "sourceStatus": "PRODUCT_RULE"
     },
     {
@@ -5488,8 +5488,8 @@
         "ui.finalReadiness",
         "ui.captainRadar"
       ],
-      "trigger": "Inventar, Timer, Team oder Kampfstatus ändert sich",
-      "validation": "Unbestätigte aktive-Kämpfe-Regel sichtbar kennzeichnen.",
+      "trigger": "inventaire, Timer, escouade oder état du combat ändert sich",
+      "validation": "Unconfirmé actife-combats-Regel sichtbar kennzeichnen.",
       "sourceStatus": "PRODUCT_RULE"
     }
   ],
@@ -5508,7 +5508,7 @@
       "title": "Patch 3.6.4.3 – 24.06.2026",
       "url": "https://www.dofus.com/fr/mmorpg/actualites/maj/1770516-raid-not-dead/correctifs/1770644-patch-notes-3-6-4-3-24-06-2026",
       "checkedAt": "2026-06-26",
-      "notes": "Timerende-Fix erwähnt; aktuelles Verhalten live prüfen."
+      "notes": "Timerende-Fix erwähnt; aktuelles Verhalten vérifier en jeu."
     },
     {
       "id": "GIG-GUIDE-DPLN",
@@ -5524,7 +5524,7 @@
       "title": "DPLN – Solveur du Luminarium",
       "url": "https://www.dofuspourlesnoobs.com/solveur-du-luminarium.html",
       "checkedAt": "2026-06-26",
-      "notes": "Referenz für Toggle-Rätsel; UI nicht kopieren."
+      "notes": "Referenz für Toggle-énigme; UI nicht kopieren."
     },
     {
       "id": "GIG-PROJECT-GRAPH",
@@ -5538,7 +5538,7 @@
   "openQuestions": [
     {
       "id": "GIG-Q-LIGHT-INTERVAL",
-      "question": "Sind Lichtstufen exakt 120 Sekunden und wie verhalten sie sich in Kampfvorbereitung/Kampf?",
+      "question": "Sind lumièrestufen exakt 120 Sekunden und wie verhalten sie sich in combatvorbereitung/combat?",
       "impact": "Synchroner Countdown und Warnzeitpunkt.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
       "configurationStrategy": "decayIntervalSeconds als Definitionsparameter; Standard 120 mit UNCONFIRMED.",
@@ -5549,16 +5549,16 @@
     {
       "id": "GIG-Q-SALT-COST",
       "question": "Sind 1/3/6/10 Gesamt- oder inkrementelle Kosten?",
-      "impact": "Salzplanung und Ledger.",
+      "impact": "selplanung und Ledger.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
-      "configurationStrategy": "costToSetLevel-Tabelle verwenden; tatsächlichen Verbrauch manuell bestätigen.",
+      "configurationStrategy": "costToSetLevel-Tabelle utiliser; tatsächlichen Verbrauch manuell confirmer.",
       "testRefs": [
         "GIG-P0-002"
       ]
     },
     {
       "id": "GIG-Q-FLOOR1-GROUPS",
-      "question": "Sind auf Etage -1 18 Gruppen oder im Raidkontext 20 relevant?",
+      "question": "Sind auf étage -1 18 groupes oder im Raidkontext 20 relevant?",
       "impact": "Fortschrittszähler und Gate.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
       "configurationStrategy": "groupTarget pro Definition/Session konfigurierbar; Standard 18.",
@@ -5568,10 +5568,10 @@
     },
     {
       "id": "GIG-Q-UNIQUE-LOSS",
-      "question": "Gehen Unique-Bossressourcen bei Niederlage verloren?",
-      "impact": "Risikoengine und Recovery.",
+      "question": "Gehen Unique-Bossressourcen bei Défaite verloren?",
+      "impact": "moteur de risque und Recovery.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
-      "configurationStrategy": "Bei Niederlage nicht automatisch löschen; Captain bestätigt Sonderfall.",
+      "configurationStrategy": "Bei Défaite nicht automatisch löschen; capitaine confirmé Sonderfall.",
       "testRefs": [
         "GIG-P0-005"
       ]
@@ -5588,20 +5588,20 @@
     },
     {
       "id": "GIG-Q-ACTIVE-FIGHT",
-      "question": "Kann Gigalodon gestartet werden, während ein anderer Kampf läuft?",
-      "impact": "Finalstartcheck.",
+      "question": "Kann Gigalodon gestartet werden, während ein anderer combat läuft?",
+      "impact": "lancement du combat finalcheck.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
-      "configurationStrategy": "Aktive Kämpfe rot als „mögliche Startblockade“ markieren, nicht als bewiesenes hartes Gate.",
+      "configurationStrategy": "Aktive combats rot als „mögliche Startblockade“ markieren, nicht als bewiesenes hartes Gate.",
       "testRefs": [
         "GIG-P0-015"
       ]
     },
     {
       "id": "GIG-Q-TIMER-END",
-      "question": "Wie endet der Raid aktuell bei 0 ohne Finalstart nach Patch 3.6.4.3?",
+      "question": "Wie endet der Raid aktuell bei 0 ohne lancement du combat final nach Patch 3.6.4.3?",
       "impact": "Sessionende, Teleport und Belohnung.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
-      "configurationStrategy": "Captain bestätigt tatsächlichen In-Game-Ausgang; keine automatische Belohnungsannahme.",
+      "configurationStrategy": "capitaine confirmé tatsächlichen en jeu-Ausgang; keine automatische Belohnungsannahme.",
       "testRefs": [
         "GIG-P0-016"
       ]
@@ -5618,8 +5618,8 @@
     }
   ],
   "uiConfiguration": {
-    "captainPrimaryView": "Vertikale Tiefenkarte mit Lichtleiste links, Expedition in der Mitte und Captain Radar rechts.",
-    "participantPrimaryView": "Persönliche Mission plus kompaktes eigenes Inventar und aktive Etagenwarnung.",
+    "captainPrimaryView": "Vertikale Tiefenkarte mit lumièreleiste links, Expedition in der Mitte und capitaine Radar rechts.",
+    "participantPrimaryView": "Persönliche Mission plus kompaktes eigenes inventaire und actife alerte d’étage.",
     "raidMapOrientation": "VERTICAL",
     "primaryMetrics": [
       "session.timer.remaining",
@@ -5643,7 +5643,7 @@
   "lookupTables": [
     {
       "id": "GIG-LIGHT-COST-TO-LEVEL",
-      "description": "Kumulative Einzelschritte 0→1, 1→2, 2→3 und 3→4; Guide-Baseline, noch nicht RAIDWEAVE-live-bestätigt.",
+      "description": "Kumulative Einzelschritte 0→1, 1→2, 2→3 und 3→4; base du guide, noch nicht RAIDWEAVE-live-confirmé.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "values": {
         "1": 1,
@@ -5686,7 +5686,7 @@
     },
     {
       "id": "GIG-RESOURCE-SCORE",
-      "description": "Punkte pro eingezahlter persönlicher Ressource; Salz bleibt gemeinsame Raidressource mit 0 Punkten.",
+      "description": "Punkte pro déposéer persönlicher Ressource; sel bleibt gemeinsame ressource de raid mit 0 Punkten.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "values": {
         "salt": 0,
@@ -5704,7 +5704,7 @@
     },
     {
       "id": "GIG-FRAGMENT-DROP-CHANCE",
-      "description": "Chance aus bestätigtem Score; Grenzwerte 7’000/10’000 live zu prüfen.",
+      "description": "Chance aus confirmé Score; Grenzwerte 7’000/10’000 à vérifier en jeu.",
       "sourceStatus": "LIVE_REQUIRED",
       "values": [
         {
@@ -5731,7 +5731,7 @@
     },
     {
       "id": "GIG-FINAL-DAMAGE-SCORE",
-      "description": "Bonusscore nach letzter erreichter Schadensschwelle.",
+      "description": "Bonusscore nach letzter erreichter seuil de dégâts.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "values": [
         [
@@ -5893,7 +5893,7 @@
           "access": null,
           "sourceStatus": "LIVE_REQUIRED",
           "status": "OPEN",
-          "note": "Etage -6 ist dokumentiert, aber ohne eindeutige Kartenkoordinate."
+          "note": "étage -6 ist dokumentiert, aber ohne eindeutige Kartenkoordinate."
         }
       }
     }

@@ -1317,7 +1317,7 @@ export class PlatformStore {
       const after = state.saltPool.amount - saltCost;
       const entry: GigalodonSaltChange = {
         id: randomUUID(), kind: "REFILL", delta: -saltCost, before: state.saltPool.amount, after,
-        cause: `Licht Etage ${input.floor}: ${currentLevel} → ${input.targetLevel}`,
+        cause: `Lumière étage ${input.floor}: ${currentLevel} → ${input.targetLevel}`,
         actorParticipantId: actor.participantId, responsibleParticipantId, floor: input.floor, createdAt: observedAt
       };
       const saltPool = {
@@ -1588,7 +1588,7 @@ export class PlatformStore {
       };
       const nextGig = { ...state, finalReadiness };
       const summary = finalReadinessSummary(nextGig);
-      if (input.captainConfirmed && summary.blocked.length > 0) throw new DomainError("FINAL_NOT_READY", 409, "Finalstart ist noch nicht freigegeben.", summary);
+      if (input.captainConfirmed && summary.blocked.length > 0) throw new DomainError("FINAL_NOT_READY", 409, "Le lancement final n’est pas encore autorisé.", summary);
       const nextState: RaidState = { ...beforeState, gigalodon: nextGig };
       await tx.query(`UPDATE raid_sessions SET raid_state=$2::jsonb,status=CASE WHEN status='LIVE' THEN 'FINAL_PREP' ELSE status END WHERE id=$1`, [actor.sessionId, JSON.stringify(nextState)]);
       if (input.captainConfirmed && summary.blocked.length === 0) {
@@ -1620,10 +1620,10 @@ export class PlatformStore {
       const state = getGigalodonState(row.raid_state ?? {});
       if (!state.finalReadiness.captainConfirmed) throw new DomainError("FINAL_NOT_CONFIRMED", 409, "Le contrôle de départ final n’a pas été confirmé.");
       if (state.finalReadiness.activeFightsRuleSourceStatus === "LIVE_CONFIRMED" && state.finalReadiness.activeFights > 0) throw new DomainError("ACTIVE_FIGHTS_BLOCK_FINAL", 409, "Les combats actifs bloquent le lancement final confirmé en jeu.");
-      if (state.final.result) throw new DomainError("FINAL_ALREADY_COMPLETED", 409, "Nach einem abgeschlossenen Finalkampf ist kein weiterer Versuch erlaubt.");
+      if (state.final.result) throw new DomainError("FINAL_ALREADY_COMPLETED", 409, "Aucune nouvelle tentative n’est autorisée après un combat final terminé.");
       if (state.final.startedAt) throw new DomainError("FINAL_ALREADY_STARTED", 409, "Der Gigalodon-Finalversuch wurde bereits gestartet.");
       const remainingSeconds = row.timer_started_at ? row.timer_duration_seconds - Math.floor((Date.now() - new Date(row.timer_started_at).getTime()) / 1000) : row.timer_duration_seconds;
-      if (remainingSeconds <= 0) throw new DomainError("RAID_TIMER_EXPIRED", 409, "Der Finalkampf wurde nicht vor Ablauf des Raidtimers gestartet.");
+      if (remainingSeconds <= 0) throw new DomainError("RAID_TIMER_EXPIRED", 409, "Le combat final n’a pas été lancé avant l’expiration du chronomètre du raid.");
       const startedAt = new Date().toISOString();
       const nextState: RaidState = { ...row.raid_state, gigalodon: { ...state, final: { ...state.final, startedAt, startedBeforeExpiry: true, preparationSeconds, combatRound: 1 } } };
       await tx.query(`UPDATE raid_sessions SET raid_state=$2::jsonb,status='FINAL_ACTIVE' WHERE id=$1`, [actor.sessionId, JSON.stringify(nextState)]);
@@ -1651,7 +1651,7 @@ export class PlatformStore {
     completed?: boolean;
     result?: "VICTORY" | "DEFEAT";
   }): Promise<RaidState> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen den Finalkampf nicht aktualisieren.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas mettre à jour le combat final.");
     if (!Number.isInteger(input.combatRound) || input.combatRound < 1 || input.combatRound > 3) throw new DomainError("INVALID_COMBAT_ROUND", 400, "Runde muss zwischen 1 und 3 liegen.");
     if (!Number.isInteger(input.totalDamage) || input.totalDamage < 0) throw new DomainError("INVALID_DAMAGE", 400, "Les dégâts sont invalides.");
     return this.db.transaction(async (tx) => {
@@ -1659,7 +1659,7 @@ export class PlatformStore {
       if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState; status: SessionRecord["status"] }>(`SELECT raid_state,status FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
       if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
-      if (row.status !== "FINAL_ACTIVE") throw new DomainError("FINAL_NOT_ACTIVE", 409, "Der Gigalodon-Finalkampf ist nicht aktiv.");
+      if (row.status !== "FINAL_ACTIVE") throw new DomainError("FINAL_NOT_ACTIVE", 409, "Le combat final Gigalodon n’est pas actif.");
       const state = getGigalodonState(row.raid_state ?? {});
       if (state.final.result) throw new DomainError("FINAL_ALREADY_COMPLETED", 409, "Der Finalversuch ist bereits abgeschlossen.");
       if (input.completed && !input.result) throw new DomainError("FINAL_RESULT_REQUIRED", 400, "Für den Abschluss ist VICTORY oder DEFEAT erforderlich.");
@@ -1716,9 +1716,9 @@ export class PlatformStore {
       if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState; status: SessionRecord["status"] }>(`SELECT raid_state,status FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
       if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
-      if (row.status !== "FINAL_ACTIVE") throw new DomainError("FINAL_NOT_ACTIVE", 409, "Finalkampf ist nicht aktiv.");
+      if (row.status !== "FINAL_ACTIVE") throw new DomainError("FINAL_NOT_ACTIVE", 409, "Le combat final n’est pas actif.");
       const state = getGigalodonState(row.raid_state ?? {});
-      if (!state.final.result) throw new DomainError("FINAL_RESULT_REQUIRED", 409, "Der Finalkampf benötigt vor Raidabschluss ein Ergebnis.");
+      if (!state.final.result) throw new DomainError("FINAL_RESULT_REQUIRED", 409, "Le combat final nécessite un résultat avant la clôture du raid.");
       const totalScore = state.final.totalScore ?? state.confirmedScore + state.final.bonusScore;
       await tx.query(`UPDATE raid_sessions SET status='ENDED',ended_at=now() WHERE id=$1`, [actor.sessionId]);
       await tx.query(
