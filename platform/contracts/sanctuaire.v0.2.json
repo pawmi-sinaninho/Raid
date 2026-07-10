@@ -5,7 +5,7 @@
   "names": {
     "fr": "Sanctuaire des Jardins éternels",
     "en": "Sanctuary of the Eternal Gardens",
-    "de": "Sanctuaire der Ewigen jardins"
+    "de": "Sanctuaire des Jardins éternels"
   },
   "gameVersion": "3.6.4.3",
   "definitionVersion": "0.2.1",
@@ -28,27 +28,27 @@
         "participantCount": 8,
         "teams": [
           {
-            "name": "Boote",
+            "name": "Bateaux",
             "recommendedSize": 2,
             "responsibilities": [
-              "Papierboote",
+              "Bateaux en papier",
               "Bataille navale"
             ]
           },
           {
-            "name": "Schach",
+            "name": "Échecs",
             "recommendedSize": 2,
             "responsibilities": [
               "pièces",
-              "Schachkampf"
+              "Combat d’échecs"
             ]
           },
           {
             "name": "Monochrome",
             "recommendedSize": 2,
             "responsibilities": [
-              "Podeste",
-              "Blumen",
+              "Socles",
+              "Fleurs",
               "couleur"
             ]
           },
@@ -67,27 +67,27 @@
         "participantCount": 12,
         "teams": [
           {
-            "name": "Boote",
+            "name": "Bateaux",
             "recommendedSize": 2,
             "responsibilities": [
-              "Papierboote",
+              "Bateaux en papier",
               "Bataille navale"
             ]
           },
           {
-            "name": "Schach",
+            "name": "Échecs",
             "recommendedSize": 4,
             "responsibilities": [
               "pièces",
-              "Schachkampf"
+              "Combat d’échecs"
             ]
           },
           {
             "name": "Monochrome",
             "recommendedSize": 2,
             "responsibilities": [
-              "Podeste",
-              "Blumen",
+              "Socles",
+              "Fleurs",
               "couleur"
             ]
           },
@@ -106,27 +106,27 @@
         "participantCount": 16,
         "teams": [
           {
-            "name": "Boote",
+            "name": "Bateaux",
             "recommendedSize": 2,
             "responsibilities": [
-              "Papierboote",
+              "Bateaux en papier",
               "Bataille navale"
             ]
           },
           {
-            "name": "Schach",
+            "name": "Échecs",
             "recommendedSize": 4,
             "responsibilities": [
               "pièces",
-              "Schachkampf"
+              "Combat d’échecs"
             ]
           },
           {
             "name": "Monochrome",
             "recommendedSize": 4,
             "responsibilities": [
-              "Podeste",
-              "Blumen",
+              "Socles",
+              "Fleurs",
               "couleur"
             ]
           },
@@ -136,7 +136,7 @@
             "responsibilities": [
               "jardins",
               "monstre cible",
-              "Manuskript optional"
+              "Manuscrit optionnel"
             ]
           }
         ]
@@ -145,7 +145,7 @@
   },
   "timer": {
     "durationSeconds": 7200,
-    "startTrigger": "capitaine confirmé S0-020 und startet den mode direct.",
+    "startTrigger": "capitaine confirmé S0-020 et startet den mode direct.",
     "expiryBehaviour": "Raid endet ausserhalb eines laufenden finalen combates gemäss en jeu-Verhalten; parallele Finalfälle bleiben à vérifier en jeu.",
     "serverAuthoritative": true,
     "pauseAllowed": false,
@@ -409,7 +409,7 @@
         "en": null,
         "de": null
       },
-      "description": "Lobby, escouades und Startabgleich.",
+      "description": "Lobby, escouades et Startabgleich.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": null,
       "completionTaskId": "S0-020",
@@ -437,7 +437,7 @@
         "en": null,
         "de": null
       },
-      "description": "Papierboote und Bataille navale.",
+      "description": "Bateaux en papier et Bataille navale.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": "S1",
       "completionTaskId": "S1-BEL-030",
@@ -451,7 +451,7 @@
         "en": null,
         "de": null
       },
-      "description": "Schachrätsel.",
+      "description": "Échecsrätsel.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": "S1",
       "completionTaskId": "S1-EPH-040",
@@ -465,7 +465,7 @@
         "en": null,
         "de": null
       },
-      "description": "Objekte, Blumen und Endfarbe.",
+      "description": "Objekte, Fleurs et Endfarbe.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": "S1",
       "completionTaskId": "S1-OUV-040",
@@ -479,7 +479,7 @@
         "en": null,
         "de": null
       },
-      "description": "jardins, Statue und monstre cible.",
+      "description": "jardins, Statue et monstre cible.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": "S1",
       "completionTaskId": "S1-CLO-050",
@@ -640,7 +640,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Erzeugt den Laufzustand, Links und den anonymen Wiederverbindungsrahmen.",
+      "description": "Erzeugt den Laufzustand, Links et den anonymen Wiederverbindungsrahmen.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -680,13 +680,13 @@
       ],
       "instructions": [
         "Raiddefinition Sanctuaire auswählen.",
-        "Sessionname und Sprache festlegen.",
-        "capitaine-, joueurs- und optional Zuschauerlink erzeugen."
+        "Sessionname et Sprache festlegen.",
+        "capitaine-, joueurs- et optional Zuschauerlink erzeugen."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Session-ID und Links wurden erzeugt."
+          "Session-ID et Links wurden erzeugt."
         ],
         "confirmationPolicy": "SYSTEM",
         "resultFields": []
@@ -750,7 +750,7 @@
         {
           "path": "teams",
           "type": "array",
-          "description": "escouades und affectations des joueurs",
+          "description": "escouades et affectations des joueurs",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
@@ -763,8 +763,8 @@
         }
       ],
       "instructions": [
-        "Startbereiche Boote, Schach, Objekte/couleur und jardins abdecken.",
-        "Vorlagen für 8, 12 und 16 joueurs anbieten.",
+        "Startbereiche Bateaux, Échecs, Objekte/couleur et jardins abdecken.",
+        "Vorlagen für 8, 12 et 16 joueurs anbieten.",
         "Mindestens einen éditeur de secours benennen."
       ],
       "completion": {
@@ -816,7 +816,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "appel de préparation und Abgleich mit dem en jeu-Raid.",
+      "description": "appel de préparation et Abgleich mit dem en jeu-Raid.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -854,8 +854,8 @@
       ],
       "instructions": [
         "8–16 joueurs confirmer.",
-        "2-Stunden-Timer und 20 Raid-Leben mit dem Spiel abgleichen.",
-        "capitaine und éditeur de secours online confirmer."
+        "2-Stunden-Timer et 20 Raid-Leben mit dem Spiel abgleichen.",
+        "capitaine et éditeur de secours online confirmer."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
@@ -924,7 +924,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Sechs zufällig verteilte Papierboote aufdecken.",
+      "description": "Sechs zufällig verteilte Bateaux en papier aufdecken.",
       "location": "Ouvrage Monochrome",
       "assignment": {
         "mode": "INDIVIDUAL_OR_TEAM",
@@ -938,7 +938,7 @@
         {
           "path": "sanctuaire.boatsFound",
           "type": "integer",
-          "description": "Gefundene Boote",
+          "description": "Gefundene Bateaux",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true,
           "default": 0,
@@ -948,12 +948,12 @@
         {
           "path": "sanctuaire.boatFinders",
           "type": "array",
-          "description": "Finder und optionale Positionen",
+          "description": "Finder et optionale Positionen",
           "sourceStatus": "PRODUCT_RULE"
         }
       ],
       "instructions": [
-        "Sechs Papierboote finden.",
+        "Sechs Bateaux en papier finden.",
         "Jeweils „Position aufdecken“ utiliser.",
         "Papierblumen nicht vervoirtlich anklicken."
       ],
@@ -981,8 +981,8 @@
       ],
       "uiHints": {
         "primaryComponent": "COUNTER",
-        "participantSummary": "6 Papierboote finden",
-        "captainSummary": "Fortschritt und Finder voir",
+        "participantSummary": "6 Bateaux en papier finden",
+        "captainSummary": "Fortschritt et Finder voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.boatsFound"
@@ -1020,14 +1020,14 @@
         {
           "path": "sanctuaire.battleship.boardA.boatCells",
           "type": "array",
-          "description": "Drei cases de bateau auf [21,17]",
+          "description": "Trois cases de bateau auf [21,17]",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         },
         {
           "path": "sanctuaire.battleship.boardB.boatCells",
           "type": "array",
-          "description": "Drei cases de bateau auf [19,15]",
+          "description": "Trois cases de bateau auf [19,15]",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         }
@@ -1035,12 +1035,12 @@
       "instructions": [
         "Spielfeld A [21,17] saisir.",
         "Spielfeld B [19,15] saisir.",
-        "Je plateau drei cases de bateau confirmer."
+        "Je plateau trois cases de bateau confirmer."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Beide plateauer enthalten je drei eindeutige Zellen."
+          "Beide plateauer enthalten je trois eindeutige Zellen."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -1087,7 +1087,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Abwechselnd feuern, bis alle sechs Boote versenkt sind.",
+      "description": "Abwechselnd feuern, bis alle sechs Bateaux versenkt sind.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -1133,7 +1133,7 @@
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "Alle sechs Boote versenkt.",
+          "Alle sechs Bateaux versenkt.",
           "énigmeabschluss en jeu sichtbar."
         ],
         "confirmationPolicy": "SECOND_PERSON",
@@ -1165,7 +1165,7 @@
         },
         {
           "type": "RESET_SEQUENCE",
-          "description": "indication du guide: Jeder erreur setzt alle versenkten Boote zurück; live confirmer.",
+          "description": "indication du guide: Jeder erreur setzt alle versenkten Bateaux zurück; live confirmer.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.battleship.hits",
           "value": 0
@@ -1179,7 +1179,7 @@
       "uiHints": {
         "primaryComponent": "BOARD",
         "participantSummary": "Abwechselnd feuern",
-        "captainSummary": "Treffer und actifes plateau verfolgen",
+        "captainSummary": "Treffer et actifes plateau suivre",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.battleship.activeBoard",
@@ -1205,7 +1205,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Belladone ansprechen und vier plateauer actifieren.",
+      "description": "Belladone ansprechen et vier plateauer actifieren.",
       "location": "Cour d’Éphèdre [12,14]",
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -1269,7 +1269,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Schwarzen/weissen Läufer und schwarzen/weissen Turm lokalisieren.",
+      "description": "Schwarzen/weissen Läufer et schwarzen/weissen Turm lokalisieren.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -1283,28 +1283,28 @@
         {
           "path": "sanctuaire.chessPieces.blackBishop",
           "type": "object",
-          "description": "plateau und Koordinate schwarzer Läufer",
+          "description": "plateau et Koordinate schwarzer Läufer",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         },
         {
           "path": "sanctuaire.chessPieces.whiteBishop",
           "type": "object",
-          "description": "plateau und Koordinate weisser Läufer",
+          "description": "plateau et Koordinate weisser Läufer",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         },
         {
           "path": "sanctuaire.chessPieces.blackRook",
           "type": "object",
-          "description": "plateau und Koordinate schwarzer Turm",
+          "description": "plateau et Koordinate schwarzer Turm",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         },
         {
           "path": "sanctuaire.chessPieces.whiteRook",
           "type": "object",
-          "description": "plateau und Koordinate weisser Turm",
+          "description": "plateau et Koordinate weisser Turm",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         }
@@ -1317,7 +1317,7 @@
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Alle vier type cibleen besitzen plateau und Koordinate."
+          "Alle vier type cibleen besitzen plateau et Koordinate."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -1363,7 +1363,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Exakt vier joueurs für den Schachkampf festlegen.",
+      "description": "Exakt vier joueurs für den Combat d’échecs festlegen.",
       "location": "Cour d’Éphèdre [12,14]",
       "assignment": {
         "mode": "TEAM",
@@ -1397,7 +1397,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Schachkampf débloquer.",
+          "description": "Combat d’échecs débloquer.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "S1-EPH-040"
         }
@@ -1435,7 +1435,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Türme orthogonal und Läufer diagonal auf positions cibles bewegen.",
+      "description": "Türme orthogonal et Läufer diagonal auf positions cibles bewegen.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -1516,8 +1516,8 @@
       ],
       "uiHints": {
         "primaryComponent": "BOARD",
-        "participantSummary": "pièce und objectif voir",
-        "captainSummary": "Vier pièces und Rundenlimit verfolgen",
+        "participantSummary": "pièce et objectif voir",
+        "captainSummary": "Vier pièces et Rundenlimit suivre",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.chess.assignments",
@@ -1544,7 +1544,7 @@
       "optional": false,
       "initialStatus": "LOCKED",
       "description": "Je Podest zwei sichtbare Objekte saisir.",
-      "location": "Clos [11,21] und [12,20]",
+      "location": "Clos [11,21] et [12,20]",
       "assignment": {
         "mode": "TEAM",
         "minimumParticipants": 1,
@@ -1557,7 +1557,7 @@
         {
           "path": "sanctuaire.pedestals",
           "type": "object",
-          "description": "Podeste I–IV mit je zwei Objekten",
+          "description": "Socles I–IV mit je zwei Objekten",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true,
           "enumValues": [
@@ -1573,13 +1573,13 @@
         }
       ],
       "instructions": [
-        "Podeste I und III in [11,21], II und IV in [12,20] ablesen.",
+        "Socles I et III in [11,21], II et IV in [12,20] ablesen.",
         "Je Podest zwei Objekte speichern."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Vier Podeste vollständig."
+          "Vier Socles vollständig."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -1697,7 +1697,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Die vier Blumen zwingend in Podestreihenfolge actifieren.",
+      "description": "Die vier Fleurs zwingend in Podestreihenfolge actifieren.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -1755,7 +1755,7 @@
       "uiHints": {
         "primaryComponent": "CHECKLIST",
         "participantSummary": "Nächste Blume voir",
-        "captainSummary": "progression de la séquence und erreur voir",
+        "captainSummary": "progression de la séquence et erreur voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.flowerActivationIndex"
@@ -1779,7 +1779,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Endfarbe speichern und an abhängige Module übertragen.",
+      "description": "Endfarbe speichern et an abhängige Module übertragen.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL_OR_TEAM",
@@ -1833,7 +1833,7 @@
         },
         {
           "type": "TRANSFER_DATA",
-          "description": "couleur an Clos und Sentinelle übertragen.",
+          "description": "couleur an Clos et Sentinelle übertragen.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "sanctuaire.monochromeColor"
         }
@@ -1848,7 +1848,7 @@
       "uiHints": {
         "primaryComponent": "FORM",
         "participantSummary": "Endfarbe signaler",
-        "captainSummary": "couleur und confirmation voir",
+        "captainSummary": "couleur et confirmation voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.monochromeColor"
@@ -1872,7 +1872,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Vier Richtungen zwischen Clos und Cour affecter.",
+      "description": "Vier Richtungen zwischen Clos et Cour affecter.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -1893,7 +1893,7 @@
       ],
       "instructions": [
         "Jede Richtung relativ zum Portal abdecken.",
-        "Clos-Garten und Miniaturgarten paaren."
+        "Clos-Garten et Miniaturgarten paaren."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
@@ -1944,7 +1944,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Pro Garten drei fehlende Statuen platzieren und validieren.",
+      "description": "Pro Garten trois fehlende Statuen platzieren et validieren.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -1975,7 +1975,7 @@
         }
       ],
       "instructions": [
-        "Je Richtung drei fehlende Statuen saisir.",
+        "Je Richtung trois fehlende Statuen saisir.",
         "Zellen setzen.",
         "Erst validieren, wenn sicher."
       ],
@@ -2012,7 +2012,7 @@
       "uiHints": {
         "primaryComponent": "BOARD",
         "participantSummary": "Deinen Garten rekonstruieren",
-        "captainSummary": "Vier Validierungen verfolgen",
+        "captainSummary": "Vier Validierungen suivre",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.gardens"
@@ -2115,7 +2115,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Schlussstatue und Monochrome-couleur zum monstre cible kombinieren.",
+      "description": "Schlussstatue et Monochrome-couleur zum monstre cible kombinieren.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -2150,12 +2150,12 @@
       ],
       "instructions": [
         "couleur automatisch prendre.",
-        "Mapping zu Monster und Karte aus versionierter Definition laden."
+        "Mapping zu Monster et Karte aus versionierter Definition laden."
       ],
       "completion": {
         "mode": "AUTOMATIC_RULE",
         "criteria": [
-          "Statue und couleur présent; Mapping aufgelöst."
+          "Statue et couleur présent; Mapping aufgelöst."
         ],
         "confirmationPolicy": "SYSTEM",
         "resultFields": []
@@ -2176,7 +2176,7 @@
       ],
       "uiHints": {
         "primaryComponent": "GATE",
-        "participantSummary": "monstre cible und Karte voir",
+        "participantSummary": "monstre cible et Karte voir",
         "captainSummary": "Automatisches Mapping kontrollieren",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -2228,7 +2228,7 @@
         }
       ],
       "instructions": [
-        "objectif und Karte aus dem System vérifier.",
+        "objectif et Karte aus dem System vérifier.",
         "Maximal vier Charaktere lancer.",
         "résultat du combat signaler."
       ],
@@ -2272,8 +2272,8 @@
       ],
       "uiHints": {
         "primaryComponent": "TASK_CARD",
-        "participantSummary": "monstre cible und Karte voir",
-        "captainSummary": "escouade, objectif und Ergebnis voir",
+        "participantSummary": "monstre cible et Karte voir",
+        "captainSummary": "escouade, objectif et Ergebnis voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.closTarget.expectedMonster",
@@ -2318,7 +2318,7 @@
       "completion": {
         "mode": "AUTOMATIC_RULE",
         "criteria": [
-          "BEL, EPH, OUV und CLO abgeschlossen."
+          "BEL, EPH, OUV et CLO abgeschlossen."
         ],
         "confirmationPolicy": "SYSTEM",
         "resultFields": []
@@ -2506,7 +2506,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "type cible zuerst töten",
-        "captainSummary": "objectif, escouade und risque d’erreur voir",
+        "captainSummary": "objectif, escouade et risque d’erreur voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.closTarget.statueType"
@@ -2577,7 +2577,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "Veilleur besiegen",
-        "captainSummary": "Versuch und état voir",
+        "captainSummary": "Versuch et état voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.guardians.veilleur.vulnerable"
@@ -2601,7 +2601,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Vier Blumenobjekte in Gardien-Karte laden.",
+      "description": "Vier Fleursobjekte in Gardien-Karte laden.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -2719,7 +2719,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "Nur sichere Glyphen auslösen",
-        "captainSummary": "Vier sichere Objekte und Zähler voir",
+        "captainSummary": "Vier sichere Objekte et Zähler voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.flowerSequence",
@@ -2790,7 +2790,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "Gardien besiegen",
-        "captainSummary": "Versuch und état voir",
+        "captainSummary": "Versuch et état voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.guardians.gardien.vulnerable"
@@ -2854,7 +2854,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "combat lancer",
-        "captainSummary": "escouade und Versuch voir",
+        "captainSummary": "escouade et Versuch voir",
         "showMechanicOnDemand": true,
         "criticalFields": [],
         "quickActions": [
@@ -2875,7 +2875,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Passive Stapel, lebende Adds und Doppelzug verfolgen.",
+      "description": "Passive Stapel, lebende Adds et Doppelzug suivre.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -2941,7 +2941,7 @@
       ],
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
-        "participantSummary": "Stapel und Adds actualiser",
+        "participantSummary": "Stapel et Adds actualiser",
         "captainSummary": "Eskalationsrisiko voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -3013,7 +3013,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "Défenseur besiegen",
-        "captainSummary": "Versuch und état voir",
+        "captainSummary": "Versuch et état voir",
         "showMechanicOnDemand": true,
         "criticalFields": [],
         "quickActions": [
@@ -3035,7 +3035,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Monochrome-couleur und Elementzuordnung in Sentinelle-Karte laden.",
+      "description": "Monochrome-couleur et Elementzuordnung in Sentinelle-Karte laden.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -3063,7 +3063,7 @@
       "completion": {
         "mode": "AUTOMATIC_RULE",
         "criteria": [
-          "monochromeColor présent und Element gemappt."
+          "monochromeColor présent et Element gemappt."
         ],
         "confirmationPolicy": "SYSTEM",
         "resultFields": []
@@ -3071,7 +3071,7 @@
       "effects": [
         {
           "type": "TRANSFER_DATA",
-          "description": "couleur und Element afficher.",
+          "description": "couleur et Element afficher.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "sanctuaire.monochromeColor"
         }
@@ -3084,7 +3084,7 @@
       ],
       "uiHints": {
         "primaryComponent": "GATE",
-        "participantSummary": "couleur und élément cible voir",
+        "participantSummary": "couleur et élément cible voir",
         "captainSummary": "Übertragung vérifier",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -3127,7 +3127,7 @@
         }
       ],
       "instructions": [
-        "objectif farblich und textlich afficher.",
+        "objectif farblich et textlich afficher.",
         "Keinen falschen Obelisken auf 1 HP bringen.",
         "Sentinelle in korrekter Glyphe halten."
       ],
@@ -3165,7 +3165,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "Nur objectifobelisk auf 1 HP",
-        "captainSummary": "objectif, Element und risque voir",
+        "captainSummary": "objectif, Element et risque voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.guardians.sentinelle.targetElement"
@@ -3235,7 +3235,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "Sentinelle besiegen",
-        "captainSummary": "Versuch und état voir",
+        "captainSummary": "Versuch et état voir",
         "showMechanicOnDemand": true,
         "criticalFields": [],
         "quickActions": [
@@ -3343,7 +3343,7 @@
       ],
       "instructions": [
         "Im Spiel sichtbare nombre cible ablesen.",
-        "salles und Monster pro salle dokumentieren.",
+        "salles et Monster pro salle dokumentieren.",
         "Definition nach Evidenz versionieren."
       ],
       "completion": {
@@ -3371,7 +3371,7 @@
       "uiHints": {
         "primaryComponent": "FORM",
         "participantSummary": "nombre cible confirmer",
-        "captainSummary": "Quellenkonflikt und Evidenz voir",
+        "captainSummary": "Quellenkonflikt et Evidenz voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.corridorTarget"
@@ -3396,7 +3396,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Konfigurierbare salles und Solokämpfe für die Session erzeugen.",
+      "description": "Konfigurierbare salles et Solokämpfe für die Session erzeugen.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -3410,7 +3410,7 @@
         {
           "path": "sanctuaire.corridorRooms",
           "type": "array",
-          "description": "Erzeugte salles und combats",
+          "description": "Erzeugte salles et combats",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         }
@@ -3445,7 +3445,7 @@
       "uiHints": {
         "primaryComponent": "COUNTER",
         "participantSummary": "Freie Solokämpfe voir",
-        "captainSummary": "salles und Restmenge voir",
+        "captainSummary": "salles et Restmenge voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.corridorRooms"
@@ -3466,7 +3466,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Nächsten freien Solokampf affecter und défaites neu débloquer.",
+      "description": "Nächsten freien Solokampf affecter et défaites neu débloquer.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -3531,7 +3531,7 @@
       "uiHints": {
         "primaryComponent": "BOARD",
         "participantSummary": "Deinen nächsten Solokampf voir",
-        "captainSummary": "Dispatcher, salles und Restzeit voir",
+        "captainSummary": "Dispatcher, salles et Restzeit voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.corridorCompleted",
@@ -3557,7 +3557,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Score vergeben und beide Finalbosse déverrouiller.",
+      "description": "Score vergeben et beide Finalbosse déverrouiller.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -3628,7 +3628,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "escouade bis acht, Versuch und Rollen vorbereiten.",
+      "description": "escouade bis acht, Versuch et Rollen vorbereiten.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -3684,7 +3684,7 @@
       "uiHints": {
         "primaryComponent": "CHECKLIST",
         "participantSummary": "Dein Reine-escouade voir",
-        "captainSummary": "escouade und Startbereitschaft voir",
+        "captainSummary": "escouade et Startbereitschaft voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.queen.teamParticipantIds"
@@ -3708,7 +3708,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "50’000-seuil de dégâts, Gefangene und Châtiment-Timer verfolgen.",
+      "description": "Suivre le seuil de 50’000 dégâts, les prisonniers et le minuteur de Châtiment.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -3746,7 +3746,7 @@
         {
           "path": "sanctuaire.queen.royalPunishmentTurnsRemaining",
           "type": "integer",
-          "description": "Runden bis globaler dégâts",
+          "description": "Tours avant les dégâts globaux",
           "sourceStatus": "GUIDE_CONFIRMED",
           "nullable": true,
           "minimum": 0,
@@ -3754,9 +3754,9 @@
         }
       ],
       "instructions": [
-        "Châtiment nach Auslösung auf 2 Runden setzen.",
-        "Gefangene und Befreiungen signaler.",
-        "seuil de dégâts actualiser."
+        "Après déclenchement, régler Châtiment sur 2 tours.",
+        "Gefangene et Befreiungen signaler.",
+        "Actualiser le seuil de dégâts."
       ],
       "completion": {
         "mode": "COUNTER_TARGET",
@@ -3782,7 +3782,7 @@
       ],
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
-        "participantSummary": "Schwelle, Gefangene und Châtiment voir",
+        "participantSummary": "Voir le seuil, les prisonniers et Châtiment",
         "captainSummary": "Phase-1-Risiken voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -3793,7 +3793,7 @@
         "quickActions": [
           "actualiser les dégâts",
           "Gefangenen signaler",
-          "Châtiment lancer"
+          "Lancer Châtiment"
         ]
       }
     },
@@ -3810,7 +3810,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Phase 2, Heilung, Volonté und Waffen-Spawns confirmer.",
+      "description": "Phase 2, Heilung, Volonté et Waffen-Spawns confirmer.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -3846,8 +3846,8 @@
         }
       ],
       "instructions": [
-        "Bossheilung und Invulnerabilität confirmer.",
-        "Volonté, Pommeau und Lame saisir."
+        "Bossheilung et Invulnerabilität confirmer.",
+        "Volonté, Pommeau et Lame saisir."
       ],
       "completion": {
         "mode": "MANUAL",
@@ -3881,7 +3881,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "Phase-2-objectifs voir",
-        "captainSummary": "Spawnstatus und Invulnerabilität voir",
+        "captainSummary": "Spawnstatus et Invulnerabilität voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.queen.willHp",
@@ -3919,7 +3919,7 @@
       "inputFields": [],
       "instructions": [
         "Erste Runde Invulnerabilität beachten.",
-        "Tod von Pommeau und Lame getrennt signaler."
+        "Tod von Pommeau et Lame getrennt signaler."
       ],
       "completion": {
         "mode": "ALL_SUBTASKS",
@@ -3953,7 +3953,7 @@
       ],
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
-        "participantSummary": "Pommeau und Lame eliminieren",
+        "participantSummary": "Pommeau et Lame eliminieren",
         "captainSummary": "Beide états cibles voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -3979,7 +3979,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Reine besiegen und Finalscore verbuchen.",
+      "description": "Reine besiegen et Finalscore verbuchen.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -4049,7 +4049,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "escouade bis acht und Versuch vorbereiten.",
+      "description": "escouade bis acht et Versuch vorbereiten.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -4105,7 +4105,7 @@
       "uiHints": {
         "primaryComponent": "CHECKLIST",
         "participantSummary": "Dein Princesse-escouade voir",
-        "captainSummary": "escouade und Startbereitschaft voir",
+        "captainSummary": "escouade et Startbereitschaft voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.princess.teamParticipantIds"
@@ -4129,7 +4129,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "seuil de dégâts, Statuen, Floraison und Distanzregel verfolgen.",
+      "description": "Suivre le seuil de dégâts, les statues, Floraison et la règle de distance.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -4175,7 +4175,7 @@
         }
       ],
       "instructions": [
-        "Nur aus Distanz dégâts.",
+        "Dégâts uniquement à distance.",
         "Statuen vor nächstem Bosszug per Waffenangriff befreien.",
         "Floraison actualiser."
       ],
@@ -4203,7 +4203,7 @@
       ],
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
-        "participantSummary": "Schwelle, Statuen und Floraison voir",
+        "participantSummary": "Schwelle, Statuen et Floraison voir",
         "captainSummary": "Phase-1-Risiken voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -4231,7 +4231,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Phase 2, Volonté und Blumenmechanik confirmer.",
+      "description": "Phase 2, Volonté et Fleursmechanik confirmer.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -4264,7 +4264,7 @@
         }
       ],
       "instructions": [
-        "Bossheilung und Invulnerabilität confirmer.",
+        "Bossheilung et Invulnerabilität confirmer.",
         "Fleur maudite auf Gegnerseite halten."
       ],
       "completion": {
@@ -4299,7 +4299,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "Phase-2-objectifs voir",
-        "captainSummary": "Volonté und Blumenseite voir",
+        "captainSummary": "Volonté et Fleursseite voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.princess.willHp",
@@ -4404,7 +4404,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Princesse besiegen und Finalscore verbuchen.",
+      "description": "Princesse besiegen et Finalscore verbuchen.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -4474,7 +4474,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Beide Finalbosse besiegt: Session einfrieren und Zusammenfassung erzeugen.",
+      "description": "Beide Finalbosse besiegt: Session einfrieren et Zusammenfassung erzeugen.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -4511,7 +4511,7 @@
         },
         {
           "type": "SET_STATE",
-          "description": "Endscore und Raid-Leben einfrieren.",
+          "description": "Endscore et Raid-Leben einfrieren.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "session.summary"
         },
@@ -4554,7 +4554,7 @@
       "priority": "P2",
       "optional": true,
       "initialStatus": "READY",
-      "description": "Fünf optionale Manuskriptseiten sammeln und doppelt lesen.",
+      "description": "Fünf optionale Manuskriptseiten sammeln et doppelt lesen.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL_OR_TEAM",
@@ -4575,7 +4575,7 @@
       "instructions": [
         "Seiten 1–4 direkt verfügbar.",
         "Seite 5 erst nach Wächtern.",
-        "Jede Seite aufnehmen und nochmals lesen."
+        "Jede Seite aufnehmen et nochmals lesen."
       ],
       "completion": {
         "mode": "ALL_SUBTASKS",
@@ -4811,7 +4811,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "Statue und couleur müssen présent sein."
+      "description": "Statue et couleur müssen présent sein."
     },
     {
       "id": "D-CLO-FIGHT",
@@ -5245,7 +5245,7 @@
         "EDITOR",
         "ALL"
       ],
-      "recommendedAction": "Riskante combats stoppen, objectifs und escouades vor jedem Start confirmer.",
+      "recommendedAction": "Riskante combats stoppen, objectifs et escouades vor jedem Start confirmer.",
       "sourceStatus": "PRODUCT_RULE",
       "testRefs": [
         "SAN-P0-002"
@@ -5312,7 +5312,7 @@
         "CAPTAIN",
         "EDITOR"
       ],
-      "recommendedAction": "Freie joueur neu répartir und salles priorisieren.",
+      "recommendedAction": "Freie joueur neu répartir et salles priorisieren.",
       "sourceStatus": "PRODUCT_RULE",
       "testRefs": [
         "SAN-P1-010"
@@ -5345,7 +5345,7 @@
   "automations": [
     {
       "id": "SAN-AUTO-PUZZLE-GATE",
-      "trigger": "S1-BEL-030, S1-EPH-040, S1-OUV-040 und S1-CLO-050 sind COMPLETED.",
+      "trigger": "S1-BEL-030, S1-EPH-040, S1-OUV-040 et S1-CLO-050 sind COMPLETED.",
       "guardConditions": [],
       "actions": [
         {
@@ -5411,7 +5411,7 @@
     },
     {
       "id": "SAN-AUTO-END",
-      "trigger": "S4-QUE-050 und S4-PRI-050 sind COMPLETED.",
+      "trigger": "S4-QUE-050 et S4-PRI-050 sind COMPLETED.",
       "guardConditions": [],
       "actions": [
         {
@@ -5541,7 +5541,7 @@
     {
       "id": "SAN-Q-CORRIDOR",
       "question": "Un test RAIDWEAVE en jeu confirme-t-il la base du guide de 10 × 6 = 60 monstres du corridor ?",
-      "impact": "Korridorfortschritt, sallegenerator und Prognose.",
+      "impact": "Korridorfortschritt, sallegenerator et Prognose.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
       "configurationStrategy": "corridorTarget bleibt Session-/Definitionsparameter; Standard 60 mit sichtbarem Unsicherheitsbadge.",
       "testRefs": [
@@ -5550,8 +5550,8 @@
     },
     {
       "id": "SAN-Q-BATTLESHIP-FAIL",
-      "question": "Welche exakten variantes d’erreur und Resetfolgen gelten bei Bataille navale?",
-      "impact": "Raid-Leben und Recovery-UX.",
+      "question": "Welche exakten variantes d’erreur et Resetfolgen gelten bei Bataille navale?",
+      "impact": "Raid-Leben et Recovery-UX.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
       "configurationStrategy": "effet de l’erreur manuell protokollieren; keine automatische Lebensänderung ohne confirmation.",
       "testRefs": [
@@ -5561,9 +5561,9 @@
     {
       "id": "SAN-Q-FINAL-TIME",
       "question": "Wie verhält sich das Raidzeitende bei einem oder zwei laufenden Finalkämpfen?",
-      "impact": "Timeranzeige und Sessionende.",
+      "impact": "Timeranzeige et Sessionende.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
-      "configurationStrategy": "Timer zeigt 0 und markiert Ergebnis als en jeu-abhängig; capitaine confirmé tatsächlichen Ausgang.",
+      "configurationStrategy": "Timer zeigt 0 et markiert Ergebnis als en jeu-abhängig; capitaine confirmé tatsächlichen Ausgang.",
       "testRefs": [
         "COM-006",
         "SAN-P1-011"
@@ -5641,7 +5641,7 @@
     },
     {
       "id": "SAN-CLOS-TARGET-MAPPING",
-      "description": "Statue + Monochrome-couleur zu monstre cible und Karte.",
+      "description": "Statue + Monochrome-couleur zu monstre cible et Karte.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "values": {
         "AMBRE_ORANGE": {
@@ -5720,7 +5720,7 @@
     },
     {
       "id": "SAN-MANUSCRIPT-PAGES",
-      "description": "Optionale Manuskriptseiten und Freischaltung.",
+      "description": "Optionale Manuskriptseiten et Freischaltung.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "values": [
         {

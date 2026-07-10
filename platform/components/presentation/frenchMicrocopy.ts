@@ -15,8 +15,8 @@ export function taskSummaryFr(taskId: string, taskName: string) {
 export function radarItemFr(item: RadarItem): RadarItem {
   const title = item.title
     .replace(/ ist blockiert$/u, " est bloquée")
-    .replace(/ ist unbesetzt$/u, " n’est pas affectée")
-    .replace(/ wartet auf /u, " attend ")
+    .replace(/ n’est pas affectée$/u, " n’est pas affectée")
+    .replace(/ attend /u, " attend ")
     .replace(/ ist offline$/u, " est hors ligne");
 
   const impactBySource: Record<string, string> = {

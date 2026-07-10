@@ -28,7 +28,7 @@ export function SoloTestButton({ onStart, onError }: {
       }}
     >
       <RaidIcon name="team" />
-      {pending ? "Test solo wird vorbereitetâ€¦" : "Test solo starten"}
+      {pending ? "Préparation du test solo…" : "Lancer le test solo"}
     </button>
   );
 }

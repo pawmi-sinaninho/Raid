@@ -38,7 +38,7 @@ export function deriveCaptainRadar(
       items.push({
         id: `unassigned:${task.id}`,
         level: task.status === "ACTIVE" ? "HIGH" : "ATTENTION",
-        title: `${task.definitionId} ist unbesetzt`,
+        title: `${task.definitionId} n’est pas affectée`,
         impact: "Le capitaine doit affecter une équipe ou une personne.",
         taskId: task.id
       });
@@ -48,7 +48,7 @@ export function deriveCaptainRadar(
         items.push({
           id: `locked:${task.id}`,
           level: "ATTENTION",
-          title: `${task.definitionId} wartet auf ${blockers.slice(0, 2).join(", ")}`,
+          title: `${task.definitionId} attend ${blockers.slice(0, 2).join(", ")}`,
           impact: "Une dépendance de la prochaine étape reste ouverte.",
           taskId: task.id
         });

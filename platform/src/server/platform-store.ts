@@ -1161,9 +1161,9 @@ export class PlatformStore {
   }): Promise<RaidState> {
     if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen Lichtwerte nicht ändern.");
     if (![-1, -2, -3, -4, -5].includes(input.floor)) throw new DomainError("INVALID_FLOOR", 400, "Étage invalide.");
-    if (!Number.isInteger(input.level) || input.level < 0 || input.level > 4) throw new DomainError("INVALID_LIGHT_LEVEL", 400, "Lichtlevel muss zwischen 0 und 4 liegen.");
+    if (!Number.isInteger(input.level) || input.level < 0 || input.level > 4) throw new DomainError("INVALID_LIGHT_LEVEL", 400, "Lichtlevel muss zwischen 0 et 4 liegen.");
     const intervalSeconds = input.intervalSeconds ?? 120;
-    if (!Number.isInteger(intervalSeconds) || intervalSeconds < 30 || intervalSeconds > 600) throw new DomainError("INVALID_LIGHT_INTERVAL", 400, "Lichtintervall muss zwischen 30 und 600 Sekunden liegen.");
+    if (!Number.isInteger(intervalSeconds) || intervalSeconds < 30 || intervalSeconds > 600) throw new DomainError("INVALID_LIGHT_INTERVAL", 400, "Lichtintervall muss zwischen 30 et 600 Sekunden liegen.");
     const observedAt = input.observedAt ?? new Date().toISOString();
     if (Number.isNaN(Date.parse(observedAt))) throw new DomainError("INVALID_TIMESTAMP", 400, "Beobachtungszeit ist ungültig.");
     return this.db.transaction(async (tx) => {
@@ -1450,9 +1450,9 @@ export class PlatformStore {
           deposits: [...state.deposits, entry],
           finalReadiness: {
             ...state.finalReadiness,
-            mureineResourceBanked: bossUniqueDrops.mureine.banked,
-            execrabeResourceBanked: bossUniqueDrops.execrabe.banked,
-            willorqueResourceBanked: bossUniqueDrops.willorque.banked,
+            mureineResourceCoffreed: bossUniqueDrops.mureine.banked,
+            execrabeResourceCoffreed: bossUniqueDrops.execrabe.banked,
+            willorqueResourceCoffreed: bossUniqueDrops.willorque.banked,
             criticalUnbankedScore: projectedUnbankedScore,
             staleInventoryParticipantIds: staleInventoryIds(participantInventories)
           }
@@ -1576,9 +1576,9 @@ export class PlatformStore {
       const finalReadiness = {
         ...state.finalReadiness,
         timerAboveSafetyThreshold: remainingSeconds > 180,
-        mureineResourceBanked: state.bossUniqueDrops.mureine.banked,
-        execrabeResourceBanked: state.bossUniqueDrops.execrabe.banked,
-        willorqueResourceBanked: state.bossUniqueDrops.willorque.banked,
+        mureineResourceCoffreed: state.bossUniqueDrops.mureine.banked,
+        execrabeResourceCoffreed: state.bossUniqueDrops.execrabe.banked,
+        willorqueResourceCoffreed: state.bossUniqueDrops.willorque.banked,
         criticalUnbankedScore: state.projectedUnbankedScore,
         activeFights: input.activeFights,
         activeFightsRuleSourceStatus: input.activeFightsRuleSourceStatus,
@@ -1652,7 +1652,7 @@ export class PlatformStore {
     result?: "VICTORY" | "DEFEAT";
   }): Promise<RaidState> {
     if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas mettre à jour le combat final.");
-    if (!Number.isInteger(input.combatRound) || input.combatRound < 1 || input.combatRound > 3) throw new DomainError("INVALID_COMBAT_ROUND", 400, "Runde muss zwischen 1 und 3 liegen.");
+    if (!Number.isInteger(input.combatRound) || input.combatRound < 1 || input.combatRound > 3) throw new DomainError("INVALID_COMBAT_ROUND", 400, "Runde muss zwischen 1 et 3 liegen.");
     if (!Number.isInteger(input.totalDamage) || input.totalDamage < 0) throw new DomainError("INVALID_DAMAGE", 400, "Les dégâts sont invalides.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
@@ -2116,9 +2116,9 @@ export class PlatformStore {
     next.projectedUnbankedScore = calculateProjectedUnbankedScore(definition, next.participantInventories);
     next.finalReadiness = {
       ...next.finalReadiness,
-      mureineResourceBanked: next.bossUniqueDrops.mureine.banked,
-      execrabeResourceBanked: next.bossUniqueDrops.execrabe.banked,
-      willorqueResourceBanked: next.bossUniqueDrops.willorque.banked,
+      mureineResourceCoffreed: next.bossUniqueDrops.mureine.banked,
+      execrabeResourceCoffreed: next.bossUniqueDrops.execrabe.banked,
+      willorqueResourceCoffreed: next.bossUniqueDrops.willorque.banked,
       criticalUnbankedScore: next.projectedUnbankedScore,
       staleInventoryParticipantIds: staleInventoryIds(next.participantInventories)
     };

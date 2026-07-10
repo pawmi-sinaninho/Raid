@@ -99,9 +99,9 @@ export interface GigalodonState {
   fragments: { first: boolean; second: boolean; third: boolean; fourth: boolean };
   finalReadiness: {
     timerAboveSafetyThreshold: boolean;
-    mureineResourceBanked: boolean;
-    execrabeResourceBanked: boolean;
-    willorqueResourceBanked: boolean;
+    mureineResourceCoffreed: boolean;
+    execrabeResourceCoffreed: boolean;
+    willorqueResourceCoffreed: boolean;
     criticalUnbankedScore: number;
     activeFights: number;
     activeFightsRuleSourceStatus: SourceStatus;
@@ -223,9 +223,9 @@ export function getGigalodonState(raidState: RaidState): GigalodonState {
     },
     finalReadiness: {
       timerAboveSafetyThreshold: readiness.timerAboveSafetyThreshold === true,
-      mureineResourceBanked: readiness.mureineResourceBanked === true,
-      execrabeResourceBanked: readiness.execrabeResourceBanked === true,
-      willorqueResourceBanked: readiness.willorqueResourceBanked === true,
+      mureineResourceCoffreed: readiness.mureineResourceCoffreed === true,
+      execrabeResourceCoffreed: readiness.execrabeResourceCoffreed === true,
+      willorqueResourceCoffreed: readiness.willorqueResourceCoffreed === true,
       criticalUnbankedScore: Number.isFinite(readiness.criticalUnbankedScore) ? Number(readiness.criticalUnbankedScore) : 0,
       activeFights: Number.isFinite(readiness.activeFights) ? Number(readiness.activeFights) : 0,
       activeFightsRuleSourceStatus: normalizeSourceStatus(readiness.activeFightsRuleSourceStatus ?? (readiness as typeof readiness & { activeFightsRuleConfirmedInGame?: boolean }).activeFightsRuleConfirmedInGame, "LIVE_REQUIRED"),
@@ -364,9 +364,9 @@ export function finalReadinessSummary(state: GigalodonState): { blocked: string[
   const ready: string[] = [];
   const checks: Array<[boolean, string]> = [
     [state.finalReadiness.timerAboveSafetyThreshold, "Temps de sécurité"],
-    [state.finalReadiness.mureineResourceBanked, "Unité de Mureine déposée"],
-    [state.finalReadiness.execrabeResourceBanked, "Rancune d’Exécrabe déposée"],
-    [state.finalReadiness.willorqueResourceBanked, "Noirceur de Willorque déposée"],
+    [state.finalReadiness.mureineResourceCoffreed, "Unité de Mureine déposée"],
+    [state.finalReadiness.execrabeResourceCoffreed, "Rancune d’Exécrabe déposée"],
+    [state.finalReadiness.willorqueResourceCoffreed, "Noirceur de Willorque déposée"],
     [state.finalReadiness.finalTeamReady, "Équipe finale prête"],
     [state.finalReadiness.captainConfirmed, "Confirmation du capitaine"]
   ];
