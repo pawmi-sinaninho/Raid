@@ -47,15 +47,15 @@ export function getDefinition(idOrSlug: string, version?: string): RaidDefinitio
 export function assertDefinitionIntegrity(definition: RaidDefinition): void {
   const taskIds = new Set(definition.tasks.map((task) => task.id));
   if (taskIds.size !== definition.tasks.length) {
-    throw new DefinitionValidationError(["Task-IDs sind nicht eindeutig"]);
+    throw new DefinitionValidationError(["Les identifiants de mission ne sont pas uniques"]);
   }
   for (const dependency of definition.dependencies) {
     if (!taskIds.has(dependency.toTaskId)) {
-      throw new DefinitionValidationError([`Dependency ${dependency.id}: unbekanntes Ziel`]);
+      throw new DefinitionValidationError([`Dependency ${dependency.id}: destination inconnue`]);
     }
     for (const from of dependency.fromTaskIds) {
       if (!taskIds.has(from)) {
-        throw new DefinitionValidationError([`Dependency ${dependency.id}: unbekannte Quelle ${from}`]);
+        throw new DefinitionValidationError([`Dependency ${dependency.id}: source inconnue ${from}`]);
       }
     }
   }
@@ -68,7 +68,7 @@ export function assertDefinitionIntegrity(definition: RaidDefinition): void {
   const visiting = new Set<string>();
   const visited = new Set<string>();
   const visit = (id: string) => {
-    if (visiting.has(id)) throw new DefinitionValidationError([`Zyklische Abhängigkeit bei ${id}`]);
+    if (visiting.has(id)) throw new DefinitionValidationError([`Dépendance cyclique sur ${id}`]);
     if (visited.has(id)) return;
     visiting.add(id);
     for (const next of edges.get(id) ?? []) visit(next);

@@ -43,6 +43,15 @@ const STATUS_LABELS: Record<TaskStatus, string> = {
   SKIPPED: "IgnorÃ©e"
 };
 
+function sourceStatusLabel(status: string) {
+  if (status === "LIVE_CONFIRMED") return "Confirmé en jeu";
+  if (status === "LIVE_REQUIRED") return "Non confirmé en jeu";
+  if (status === "GUIDE_CONFIRMED") return "Guide confirmé";
+  if (status === "OFFICIAL_CONFIRMED") return "Source officielle";
+  if (status === "PLAYER_CORRECTED") return "Corrigé par les joueurs";
+  return status;
+}
+
 function useClock(interval = 1000) {
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
@@ -490,7 +499,7 @@ function InformationCorrectionPanel({ snapshot, actor, command, onError }: {
       <label>RÃ¨gle ou affichage<input aria-label="RÃ¨gle ou affichage concernÃ©" value={reference} onChange={(event)=>setReference(event.target.value)}/></label>
       <label>Note courte<textarea aria-label="Note sur lâ€™information incorrecte" value={note} onChange={(event)=>setNote(event.target.value)}/></label>
       <button className="secondary" disabled={!reference.trim()||!note.trim()} onClick={()=>void run({type:"REPORT_INFORMATION_INCORRECT",reference,note})}>Envoyer le signalement</button>
-      {reports.length>0&&<div className="information-report-list">{reports.slice(-5).reverse().map((report)=><div key={report.id} className="information-report"><strong>{report.reference}</strong><span className="source-label">{report.sourceStatus}</span><p>{report.note}</p><small>{snapshot.participants.find((participant)=>participant.id===report.reportedByParticipantId)?.displayName??"Participant"} Â· {new Date(report.reportedAt).toLocaleString("fr-CH")}</small>{report.correction&&<small>ConfirmÃ© par {snapshot.participants.find((participant)=>participant.id===report.correction?.actorParticipantId)?.displayName??"Ã‰diteur"} Â· {report.correction.note}</small>}{canConfirm&&report.sourceStatus!=="PLAYER_CORRECTED"&&<div><input aria-label="Note de confirmation de correction joueur" value={confirmationNote} onChange={(event)=>setConfirmationNote(event.target.value)}/><button className="primary" disabled={!confirmationNote.trim()} onClick={()=>void run({type:"CONFIRM_PLAYER_CORRECTION",reportId:report.id,note:confirmationNote})}>Confirmer la correction</button></div>}</div>)}</div>}
+      {reports.length>0&&<div className="information-report-list">{reports.slice(-5).reverse().map((report)=><div key={report.id} className="information-report"><strong>{report.reference}</strong><span className="source-label">{sourceStatusLabel(report.sourceStatus)}</span><p>{report.note}</p><small>{snapshot.participants.find((participant)=>participant.id===report.reportedByParticipantId)?.displayName??"Participant"} Â· {new Date(report.reportedAt).toLocaleString("fr-CH")}</small>{report.correction&&<small>ConfirmÃ© par {snapshot.participants.find((participant)=>participant.id===report.correction?.actorParticipantId)?.displayName??"Ã‰diteur"} Â· {report.correction.note}</small>}{canConfirm&&report.sourceStatus!=="PLAYER_CORRECTED"&&<div><input aria-label="Note de confirmation de correction joueur" value={confirmationNote} onChange={(event)=>setConfirmationNote(event.target.value)}/><button className="primary" disabled={!confirmationNote.trim()} onClick={()=>void run({type:"CONFIRM_PLAYER_CORRECTION",reportId:report.id,note:confirmationNote})}>Confirmer la correction</button></div>}</div>)}</div>}
     </details>
   </aside>;
 }

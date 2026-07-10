@@ -682,7 +682,7 @@ export class PlatformStore {
     const nonReady = participants.filter((p) => p.readyState !== "READY").map((p) => p.id);
     const hasEditor = participants.some((p) => p.role === "EDITOR");
     const blockers: string[] = [];
-    if (participants.length < definition.participation.minimum) blockers.push(`Mindestens ${definition.participation.minimum} Teilnehmer erforderlich.`);
+    if (participants.length < definition.participation.minimum) blockers.push(`${definition.participation.minimum} joueurs minimum requis.`);
     if (nonReady.length) blockers.push(`${nonReady.length} joueurs ne sont pas prêts.`);
     if (!hasEditor) blockers.push("Au moins un éditeur de secours est requis.");
     return {
