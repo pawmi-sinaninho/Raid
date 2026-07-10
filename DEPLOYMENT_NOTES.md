@@ -1,14 +1,14 @@
-﻿# RAIDWEAVE Deployment Notes
+﻿# Deployment Notes
 
 Stand: 10.07.2026
 
 ## Public App
 
-URL: https://raiddofus.onrender.com
+https://raiddofus.onrender.com
 
 ## Hosting
 
-Host: Render Web Service
+Provider: Render Web Service
 Branch: main
 Root Directory: platform
 Runtime: Node
@@ -26,8 +26,7 @@ https://raiddofus.onrender.com/api/health
 ## Database
 
 Provider: Neon PostgreSQL Free
-DATABASE_URL: stored only in Render Environment Variables
-Do not commit the real DATABASE_URL.
+DATABASE_URL is stored only in Render Environment Variables.
 
 ## Required Render Environment Variables
 
@@ -37,8 +36,9 @@ RAIDWEAVE_TOKEN_PEPPER=<secret random token>
 RAIDWEAVE_APP_ORIGIN=https://raiddofus.onrender.com
 NEXT_PUBLIC_ENABLE_SOLO_TEST=false
 
-## Known Notes
+## Deployment Fixes Applied
 
-- Render Free Web Service may sleep after inactivity.
-- Neon Free limits apply.
-- package-lock.json was fixed to use public npm registry instead of internal Codex/OpenAI registry.
+- package-lock.json registry URLs changed from internal Codex/OpenAI registry to public npm registry.
+- package-lock.json BOM removed.
+- Node pinned to 22.16.0.
+- Render PostgreSQL not used because free DB expires.
