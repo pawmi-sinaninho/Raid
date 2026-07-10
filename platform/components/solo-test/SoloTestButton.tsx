@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { RaidIcon } from "@/components/icons/RaidIcon";
 
-const SOLO_TEST_ENABLED = process.env.NODE_ENV !== "production"
-  && process.env.NEXT_PUBLIC_ENABLE_SOLO_TEST === "true";
+const SOLO_TEST_ENABLED = process.env.NEXT_PUBLIC_ENABLE_SOLO_TEST === "true";
 
 export function SoloTestButton({ onStart, onError }: {
   onStart: () => Promise<void>;
@@ -29,7 +28,7 @@ export function SoloTestButton({ onStart, onError }: {
       }}
     >
       <RaidIcon name="team" />
-      {pending ? "Solo-Test wird vorbereitet…" : "Solo-Test starten"}
+      {pending ? "Solo-Test wird vorbereitetâ€¦" : "Solo-Test starten"}
     </button>
   );
 }

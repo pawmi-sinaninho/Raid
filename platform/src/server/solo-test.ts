@@ -5,6 +5,7 @@ import type { PlatformStore } from "./platform-store";
 interface SoloTestEnvironment {
   NODE_ENV?: string;
   NEXT_PUBLIC_ENABLE_SOLO_TEST?: string;
+  RAIDWEAVE_ALLOW_PRODUCTION_SOLO_TEST?: string;
 }
 
 interface TeamTemplate {
@@ -19,13 +20,12 @@ export interface SoloTestResult {
 }
 
 export function isSoloTestEnabled(environment: SoloTestEnvironment = process.env): boolean {
-  return environment.NODE_ENV !== "production"
-    && environment.NEXT_PUBLIC_ENABLE_SOLO_TEST === "true";
+  return environment.NEXT_PUBLIC_ENABLE_SOLO_TEST === "true" && (environment.NODE_ENV !== "production" || environment.RAIDWEAVE_ALLOW_PRODUCTION_SOLO_TEST === "true");
 }
 
 export function assertSoloTestEnabled(environment: SoloTestEnvironment = process.env): void {
   if (!isSoloTestEnabled(environment)) {
-    throw new DomainError("SOLO_TEST_DISABLED", 404, "Solo-Testmodus ist nicht verfügbar.");
+    throw new DomainError("SOLO_TEST_DISABLED", 404, "Solo-Testmodus ist nicht verfÃ¼gbar.");
   }
 }
 
