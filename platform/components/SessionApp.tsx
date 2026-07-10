@@ -25,6 +25,7 @@ import { SoloTestButton } from "@/components/solo-test/SoloTestButton";
 import { PinnedNote } from "@/components/layout/PinnedNote";
 import { PinnedNoteStack } from "@/components/layout/PinnedNoteStack";
 import { radarItemFr, taskSummaryFr } from "@/components/presentation/frenchMicrocopy";
+import { localizeRaidDefinitionFr } from "@/components/presentation/frenchDefinition";
 import { deriveWowLayer } from "@/src/core/wow-layer";
 import { WowLayerPanel } from "@/components/wow/WowLayerPanel";
 
@@ -108,7 +109,8 @@ export function SessionApp({ sessionId }: { sessionId: string }) {
       const response = await fetch(`/api/sessions/${sessionId}/snapshot?cursor=0`, { headers: authHeaders(), cache: "no-store" });
       const body = await response.json();
       if (!response.ok) throw new Error(body.error?.message ?? "Synchronisation impossible.");
-      setSnapshot(body);
+      const localizedBody = { ...body, definition: localizeRaidDefinitionFr(body.definition) };
+      setSnapshot(localizedBody);
       cursorRef.current = body.session.revision;
       setConnection("online");
       setError("");
