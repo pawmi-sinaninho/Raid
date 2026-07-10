@@ -31,7 +31,7 @@ export function deriveCaptainRadar(
         id: `blocked:${task.id}`,
         level: "CRITICAL",
         title: `${task.definitionId} ist blockiert`,
-        impact: task.blockedReason || "Kritischer Pfad kann nicht fortgesetzt werden.",
+        impact: task.blockedReason || "Le chemin critique ne peut pas continuer.",
         taskId: task.id
       });
     } else if (["READY", "ACTIVE"].includes(task.status) && !task.ownerParticipantId && !task.assignedTeamId && task.assignedParticipantIds.length === 0) {
@@ -39,7 +39,7 @@ export function deriveCaptainRadar(
         id: `unassigned:${task.id}`,
         level: task.status === "ACTIVE" ? "HIGH" : "ATTENTION",
         title: `${task.definitionId} ist unbesetzt`,
-        impact: "Captain muss Team oder Person zuweisen.",
+        impact: "Le capitaine doit affecter une équipe ou une personne.",
         taskId: task.id
       });
     } else if (task.status === "LOCKED") {
@@ -49,7 +49,7 @@ export function deriveCaptainRadar(
           id: `locked:${task.id}`,
           level: "ATTENTION",
           title: `${task.definitionId} wartet auf ${blockers.slice(0, 2).join(", ")}`,
-          impact: "Abhängigkeit auf dem nächsten Pfad ist noch offen.",
+          impact: "Une dépendance de la prochaine étape reste ouverte.",
           taskId: task.id
         });
       }
@@ -117,7 +117,7 @@ export function deriveCaptainRadar(
         id: `offline:${participant.id}`,
         level: ageMs > 300_000 ? "HIGH" : "ATTENTION",
         title: `${participant.displayName} ist offline`,
-        impact: participant.currentTaskId ? "Aktuelle Aufgabe kann ohne Neuzuweisung blockieren." : "Teilnehmerstatus prüfen."
+        impact: participant.currentTaskId ? "La mission en cours peut se bloquer sans nouvelle affectation." : "Vérifier l’état du joueur."
       });
     }
   }

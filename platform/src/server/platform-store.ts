@@ -409,8 +409,8 @@ export class PlatformStore {
   async joinByInvite(token: string, displayName: string): Promise<JoinedSession> {
     const tokenHash = hashSecret(token);
     const normalizedName = displayName.trim();
-    if (!normalizedName) throw new DomainError("DISPLAY_NAME_REQUIRED", 400, "Anzeigename fehlt.");
-    if (normalizedName.length > 40) throw new DomainError("DISPLAY_NAME_TOO_LONG", 400, "Anzeigename ist zu lang.");
+    if (!normalizedName) throw new DomainError("DISPLAY_NAME_REQUIRED", 400, "Nom affiché manquant.");
+    if (normalizedName.length > 40) throw new DomainError("DISPLAY_NAME_TOO_LONG", 400, "Nom affiché trop long.");
     const recoveryToken = createSecret();
     const participantId = randomUUID();
 
@@ -438,16 +438,16 @@ export class PlatformStore {
         [tokenHash]
       );
       const invite = inviteResult.rows[0];
-      if (!invite) throw new DomainError("INVITE_INVALID", 404, "Einladungslink ist ungültig.");
-      if (invite.revoked_at) throw new DomainError("INVITE_REVOKED", 410, "Einladungslink wurde widerrufen.");
+      if (!invite) throw new DomainError("INVITE_INVALID", 404, "Lien d’invitation invalide.");
+      if (invite.revoked_at) throw new DomainError("INVITE_REVOKED", 410, "Lien d’invitation révoqué.");
       if (invite.expires_at && new Date(invite.expires_at).getTime() <= Date.now()) {
-        throw new DomainError("INVITE_EXPIRED", 410, "Einladungslink ist abgelaufen.");
+        throw new DomainError("INVITE_EXPIRED", 410, "Lien d’invitation expiré.");
       }
       if (invite.max_uses !== null && invite.use_count >= invite.max_uses) {
-        throw new DomainError("INVITE_EXHAUSTED", 409, "Einladungslink wurde bereits vollständig verwendet.");
+        throw new DomainError("INVITE_EXHAUSTED", 409, "Lien d’invitation déjà entièrement utilisé.");
       }
       if (invite.session_status === "ENDED" || invite.session_status === "FAILED") {
-        throw new DomainError("SESSION_CLOSED", 409, "Session ist bereits beendet.");
+        throw new DomainError("SESSION_CLOSED", 409, "La session est déjà terminée.");
       }
       if (invite.role !== "SPECTATOR") {
         const count = await tx.query<{ count: string }>(
@@ -456,7 +456,7 @@ export class PlatformStore {
           [invite.session_id]
         );
         if (Number(count.rows[0]?.count ?? 0) >= invite.definition_payload.participation.maximum) {
-          throw new DomainError("SESSION_FULL", 409, "Maximale Teilnehmerzahl ist erreicht.");
+          throw new DomainError("SESSION_FULL", 409, "Nombre maximal de joueurs atteint.");
         }
       }
 
@@ -471,7 +471,7 @@ export class PlatformStore {
         );
       } catch (error) {
         if (String(error).includes("participants_session_id_display_name_key")) {
-          throw new DomainError("DISPLAY_NAME_TAKEN", 409, "Anzeigename wird bereits verwendet.");
+          throw new DomainError("DISPLAY_NAME_TAKEN", 409, "Ce nom affiché est déjà utilisé.");
         }
         throw error;
       }
@@ -513,7 +513,7 @@ export class PlatformStore {
       [participantId, sessionId, hashSecret(recoveryToken)]
     );
     const row = result.rows[0];
-    if (!row) throw new DomainError("RECOVERY_INVALID", 401, "Wiederverbindungsdaten sind ungültig.");
+    if (!row) throw new DomainError("RECOVERY_INVALID", 401, "Données de reconnexion invalides.");
     await this.db.query(
       `UPDATE participants SET connection_state='ONLINE', last_seen_at=now() WHERE id=$1`,
       [participantId]
@@ -581,7 +581,7 @@ export class PlatformStore {
   async createTeam(actor: ActorContext, name: string): Promise<TeamRecord> {
     this.requireRole(actor, ["CAPTAIN", "EDITOR"]);
     if (actor.role === "EDITOR" && (actor.scope.teamIds?.length || actor.scope.taskDefinitionIds?.length)) {
-      throw new DomainError("EDITOR_SCOPE_VIOLATION", 403, "Beschränkter Editor darf keine globalen Teams erstellen.");
+      throw new DomainError("EDITOR_SCOPE_VIOLATION", 403, "Un éditeur restreint ne peut pas créer d’escouades globales.");
     }
     const id = randomUUID();
     await this.db.transaction(async (tx) => {
@@ -610,7 +610,7 @@ export class PlatformStore {
   async assignParticipantToTeam(actor: ActorContext, participantId: string, teamId: string | null): Promise<void> {
     this.requireRole(actor, ["CAPTAIN", "EDITOR"]);
     if (actor.role === "EDITOR" && teamId && actor.scope.teamIds?.length && !actor.scope.teamIds.includes(teamId)) {
-      throw new DomainError("EDITOR_SCOPE_VIOLATION", 403, "Editor darf dieses Team nicht verwalten.");
+      throw new DomainError("EDITOR_SCOPE_VIOLATION", 403, "L’éditeur ne peut pas gérer cette escouade.");
     }
     await this.db.transaction(async (tx) => {
       const before = (await tx.query<ParticipantRow>(
@@ -619,12 +619,12 @@ export class PlatformStore {
          FROM participants WHERE id=$1 AND session_id=$2 FOR UPDATE`,
         [participantId, actor.sessionId]
       )).rows[0];
-      if (!before) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Teilnehmer wurde nicht gefunden.");
+      if (!before) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Joueur introuvable.");
       if (teamId) {
         const team = await tx.query<{ id: string }>(
           `SELECT id FROM teams WHERE id=$1 AND session_id=$2`, [teamId, actor.sessionId]
         );
-        if (!team.rows[0]) throw new DomainError("TEAM_NOT_FOUND", 404, "Team wurde nicht gefunden.");
+        if (!team.rows[0]) throw new DomainError("TEAM_NOT_FOUND", 404, "Escouade introuvable.");
       }
       await tx.query(`UPDATE participants SET team_id=$2 WHERE id=$1`, [participantId, teamId]);
       const revision = await this.bumpRevision(tx, actor.sessionId);
@@ -651,7 +651,7 @@ export class PlatformStore {
          FROM participants WHERE id=$1 AND session_id=$2 FOR UPDATE`,
         [participantId, actor.sessionId]
       )).rows[0];
-      if (!before) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Teilnehmer wurde nicht gefunden.");
+      if (!before) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Joueur introuvable.");
       const next = ready ? "READY" : "NOT_READY";
       if (before.ready_state === next) return;
       await tx.query(`UPDATE participants SET ready_state=$2,last_seen_at=now() WHERE id=$1`, [participantId, next]);
@@ -683,8 +683,8 @@ export class PlatformStore {
     const hasEditor = participants.some((p) => p.role === "EDITOR");
     const blockers: string[] = [];
     if (participants.length < definition.participation.minimum) blockers.push(`Mindestens ${definition.participation.minimum} Teilnehmer erforderlich.`);
-    if (nonReady.length) blockers.push(`${nonReady.length} Teilnehmer sind nicht bereit.`);
-    if (!hasEditor) blockers.push("Mindestens ein Ersatzeditor ist erforderlich.");
+    if (nonReady.length) blockers.push(`${nonReady.length} joueurs ne sont pas prêts.`);
+    if (!hasEditor) blockers.push("Au moins un éditeur de secours est requis.");
     return {
       canStart: blockers.length === 0,
       participantCount: participants.length,
@@ -698,13 +698,13 @@ export class PlatformStore {
   async startSession(actor: ActorContext): Promise<void> {
     this.requireRole(actor, ["CAPTAIN"]);
     const check = await this.getReadyCheck(actor.sessionId);
-    if (!check.canStart) throw new DomainError("READY_CHECK_FAILED", 409, "Session kann noch nicht gestartet werden.", check);
+    if (!check.canStart) throw new DomainError("READY_CHECK_FAILED", 409, "La session ne peut pas encore démarrer.", check);
     await this.db.transaction(async (tx) => {
       const before = (await tx.query<SessionRow>(
         `SELECT * FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId]
       )).rows[0];
-      if (!before) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
-      if (before.status !== "LOBBY") throw new DomainError("SESSION_NOT_IN_LOBBY", 409, "Session ist nicht mehr in der Lobby.");
+      if (!before) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
+      if (before.status !== "LOBBY") throw new DomainError("SESSION_NOT_IN_LOBBY", 409, "La session n’est plus dans le hall.");
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
       const startedAt = new Date().toISOString();
       let raidState = structuredClone(before.raid_state ?? {});
@@ -747,7 +747,7 @@ export class PlatformStore {
   }
 
   async claimTask(actor: ActorContext, taskId: string, expectedRevision: number): Promise<TaskInstanceRecord> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen nicht schreiben.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas modifier la session.");
     await this.assertTaskScope(actor, taskId);
     return this.db.transaction(async (tx) => {
       const result = await tx.query<TaskRow>(
@@ -760,8 +760,8 @@ export class PlatformStore {
       const updated = result.rows[0];
       if (!updated) {
         const current = (await tx.query<TaskRow>(`SELECT * FROM task_instances WHERE id=$1 AND session_id=$2`, [taskId, actor.sessionId])).rows[0];
-        if (!current) throw new DomainError("TASK_NOT_FOUND", 404, "Aufgabe wurde nicht gefunden.");
-        throw new DomainError("REVISION_CONFLICT", 409, "Aufgabe wurde bereits geändert.", taskFromRow(current));
+        if (!current) throw new DomainError("TASK_NOT_FOUND", 404, "Mission introuvable.");
+        throw new DomainError("REVISION_CONFLICT", 409, "La mission a déjà été modifiée.", taskFromRow(current));
       }
       await tx.query(`UPDATE participants SET current_task_id=$2 WHERE id=$1`, [actor.participantId, taskId]);
       const revision = await this.bumpRevision(tx, actor.sessionId);
@@ -785,18 +785,18 @@ export class PlatformStore {
     expectedRevision: number;
     resultData: Record<string, unknown>;
   }): Promise<TaskInstanceRecord> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen nicht schreiben.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas modifier la session.");
     await this.assertTaskScope(actor, input.taskId);
     return this.db.transaction(async (tx) => {
       const beforeRow = (await tx.query<TaskRow>(
         `SELECT * FROM task_instances WHERE id=$1 AND session_id=$2 FOR UPDATE`, [input.taskId, actor.sessionId]
       )).rows[0];
-      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Aufgabe wurde nicht gefunden.");
+      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Mission introuvable.");
       const before = taskFromRow(beforeRow);
-      if (before.revision !== input.expectedRevision) throw new DomainError("REVISION_CONFLICT", 409, "Aufgabe wurde bereits geändert.", before);
-      if (["COMPLETED", "SKIPPED"].includes(before.status)) throw new DomainError("TASK_FINAL", 409, "Abgeschlossene Aufgabe muss zuerst korrigiert werden.");
+      if (before.revision !== input.expectedRevision) throw new DomainError("REVISION_CONFLICT", 409, "La mission a déjà été modifiée.", before);
+      if (["COMPLETED", "SKIPPED"].includes(before.status)) throw new DomainError("TASK_FINAL", 409, "Une mission terminée doit d’abord être corrigée.");
       if (actor.role === "PARTICIPANT" && before.ownerParticipantId && before.ownerParticipantId !== actor.participantId) {
-        throw new DomainError("TASK_NOT_OWNED", 403, "Aufgabe gehört einer anderen Person.");
+        throw new DomainError("TASK_NOT_OWNED", 403, "Cette mission appartient à une autre personne.");
       }
       const updatedRow = (await tx.query<TaskRow>(
         `UPDATE task_instances SET result_data=result_data || $2::jsonb,revision=revision+1,updated_at=now()
@@ -818,27 +818,27 @@ export class PlatformStore {
     expectedRevision: number;
     resultData: Record<string, unknown>;
   }): Promise<TaskInstanceRecord> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen nicht schreiben.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas modifier la session.");
     await this.assertTaskScope(actor, input.taskId);
     return this.db.transaction(async (tx) => {
       const beforeRow = (await tx.query<TaskRow>(
         `SELECT * FROM task_instances WHERE id=$1 AND session_id=$2 FOR UPDATE`, [input.taskId, actor.sessionId]
       )).rows[0];
-      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Aufgabe wurde nicht gefunden.");
+      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Mission introuvable.");
       const before = taskFromRow(beforeRow);
-      if (before.revision !== input.expectedRevision) throw new DomainError("REVISION_CONFLICT", 409, "Aufgabe wurde bereits geändert.", before);
-      if (!["ACTIVE", "CLAIMED", "WAITING"].includes(before.status)) throw new DomainError("TASK_NOT_SUBMITTABLE", 409, "Aufgabe ist in diesem Zustand nicht einreichbar.");
+      if (before.revision !== input.expectedRevision) throw new DomainError("REVISION_CONFLICT", 409, "La mission a déjà été modifiée.", before);
+      if (!["ACTIVE", "CLAIMED", "WAITING"].includes(before.status)) throw new DomainError("TASK_NOT_SUBMITTABLE", 409, "La mission ne peut pas être envoyée dans cet état.");
       if (actor.role === "PARTICIPANT" && before.ownerParticipantId && before.ownerParticipantId !== actor.participantId) {
-        throw new DomainError("TASK_NOT_OWNED", 403, "Aufgabe gehört einer anderen Person.");
+        throw new DomainError("TASK_NOT_OWNED", 403, "Cette mission appartient à une autre personne.");
       }
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
       const taskDefinition = definition.tasks.find((task) => task.id === before.definitionId);
-      if (!taskDefinition) throw new DomainError("TASK_DEFINITION_MISSING", 500, "Aufgabendefinition fehlt.");
+      if (!taskDefinition) throw new DomainError("TASK_DEFINITION_MISSING", 500, "Définition de mission manquante.");
       const merged = { ...before.resultData, ...input.resultData };
       const validation = validateTaskResultFields(taskDefinition, merged);
-      if (validation.missing.length || validation.invalid.length) throw new DomainError("TASK_RESULT_INVALID", 400, "Resultat ist unvollständig oder ungültig.", validation);
+      if (validation.missing.length || validation.invalid.length) throw new DomainError("TASK_RESULT_INVALID", 400, "Le résultat est incomplet ou invalide.", validation);
       const policy = taskDefinition.completion.confirmationPolicy;
-      if (policy === "SYSTEM") throw new DomainError("SYSTEM_TASK", 409, "Diese Aufgabe wird automatisch abgeschlossen.");
+      if (policy === "SYSTEM") throw new DomainError("SYSTEM_TASK", 409, "Cette mission se termine automatiquement.");
       const pending = withPendingConfirmation(merged, policy, actor.participantId);
       const completed = policy === "SELF";
       const resultData = completed ? withConfirmedConfirmation(pending, actor.participantId) : pending;
@@ -867,22 +867,22 @@ export class PlatformStore {
     taskId: string;
     expectedRevision: number;
   }): Promise<TaskInstanceRecord> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen nicht bestätigen.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas confirmer.");
     await this.assertTaskScope(actor, input.taskId);
     return this.db.transaction(async (tx) => {
       const beforeRow = (await tx.query<TaskRow>(
         `SELECT * FROM task_instances WHERE id=$1 AND session_id=$2 FOR UPDATE`, [input.taskId, actor.sessionId]
       )).rows[0];
-      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Aufgabe wurde nicht gefunden.");
+      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Mission introuvable.");
       const before = taskFromRow(beforeRow);
-      if (before.revision !== input.expectedRevision) throw new DomainError("REVISION_CONFLICT", 409, "Aufgabe wurde bereits geändert.", before);
+      if (before.revision !== input.expectedRevision) throw new DomainError("REVISION_CONFLICT", 409, "La mission a déjà été modifiée.", before);
       const confirmation = taskConfirmation(before.resultData);
-      if (before.status !== "WAITING" || confirmation?.status !== "PENDING") throw new DomainError("NO_PENDING_CONFIRMATION", 409, "Keine offene Bestätigung vorhanden.");
+      if (before.status !== "WAITING" || confirmation?.status !== "PENDING") throw new DomainError("NO_PENDING_CONFIRMATION", 409, "Aucune confirmation ouverte.");
       if (confirmation.policy === "SECOND_PERSON" && confirmation.submittedBy === actor.participantId) {
-        throw new DomainError("SECOND_PERSON_REQUIRED", 409, "Eine andere Person muss bestätigen.");
+        throw new DomainError("SECOND_PERSON_REQUIRED", 409, "Une autre personne doit confirmer.");
       }
       if (confirmation.policy === "CAPTAIN" && actor.role !== "CAPTAIN") {
-        throw new DomainError("CAPTAIN_CONFIRMATION_REQUIRED", 403, "Nur der Captain darf bestätigen.");
+        throw new DomainError("CAPTAIN_CONFIRMATION_REQUIRED", 403, "Seul le capitaine peut confirmer.");
       }
       const confirmedData = withConfirmedConfirmation(before.resultData, actor.participantId);
       const updatedRow = (await tx.query<TaskRow>(
@@ -908,18 +908,18 @@ export class PlatformStore {
     resultData?: Record<string, unknown>;
     blockedReason?: string | null;
   }): Promise<TaskInstanceRecord> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen nicht schreiben.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas modifier la session.");
     await this.assertTaskScope(actor, input.taskId);
     return this.db.transaction(async (tx) => {
       const beforeRow = (await tx.query<TaskRow>(
         `SELECT * FROM task_instances WHERE id=$1 AND session_id=$2 FOR UPDATE`, [input.taskId, actor.sessionId]
       )).rows[0];
-      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Aufgabe wurde nicht gefunden.");
+      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Mission introuvable.");
       const before = taskFromRow(beforeRow);
-      if (before.revision !== input.expectedRevision) throw new DomainError("REVISION_CONFLICT", 409, "Aufgabe wurde bereits geändert.", before);
+      if (before.revision !== input.expectedRevision) throw new DomainError("REVISION_CONFLICT", 409, "La mission a déjà été modifiée.", before);
       this.assertTransition(before.status, input.status, actor.role);
       if (actor.role === "PARTICIPANT" && before.ownerParticipantId && before.ownerParticipantId !== actor.participantId) {
-        throw new DomainError("TASK_NOT_OWNED", 403, "Aufgabe gehört einer anderen Person.");
+        throw new DomainError("TASK_NOT_OWNED", 403, "Cette mission appartient à une autre personne.");
       }
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
       const taskDefinition = definition.tasks.find((task) => task.id === before.definitionId);
@@ -927,11 +927,11 @@ export class PlatformStore {
       if (input.status === "COMPLETED" && taskDefinition) {
         const policy = taskDefinition.completion.confirmationPolicy;
         if (policy === "SECOND_PERSON" || policy === "CAPTAIN") {
-          throw new DomainError("CONFIRMATION_FLOW_REQUIRED", 409, "Resultat muss zuerst eingereicht und bestätigt werden.");
+          throw new DomainError("CONFIRMATION_FLOW_REQUIRED", 409, "Le résultat doit d’abord être envoyé et confirmé.");
         }
-        if (policy === "SYSTEM") throw new DomainError("SYSTEM_TASK", 409, "Diese Aufgabe wird automatisch abgeschlossen.");
+        if (policy === "SYSTEM") throw new DomainError("SYSTEM_TASK", 409, "Cette mission se termine automatiquement.");
         const validation = validateTaskResultFields(taskDefinition, nextResult);
-        if (validation.missing.length || validation.invalid.length) throw new DomainError("TASK_RESULT_INVALID", 400, "Resultat ist unvollständig oder ungültig.", validation);
+        if (validation.missing.length || validation.invalid.length) throw new DomainError("TASK_RESULT_INVALID", 400, "Le résultat est incomplet ou invalide.", validation);
         nextResult = withConfirmedConfirmation(withPendingConfirmation(nextResult, "SELF", actor.participantId), actor.participantId);
       }
       const result = await tx.query<TaskRow>(
@@ -963,11 +963,11 @@ export class PlatformStore {
     correctionOf?: string | null;
   }): Promise<RaidState> {
     this.requireRole(actor, ["CAPTAIN", "EDITOR"]);
-    if (!Number.isInteger(input.delta) || input.delta === 0 || Math.abs(input.delta) > 20) throw new DomainError("INVALID_LIFE_DELTA", 400, "Ungültige Lebensänderung.");
-    if (!input.cause.trim()) throw new DomainError("LIFE_CAUSE_REQUIRED", 400, "Ursache fehlt.");
+    if (!Number.isInteger(input.delta) || input.delta === 0 || Math.abs(input.delta) > 20) throw new DomainError("INVALID_LIFE_DELTA", 400, "Variation de vie invalide.");
+    if (!input.cause.trim()) throw new DomainError("LIFE_CAUSE_REQUIRED", 400, "Cause manquante.");
     return this.db.transaction(async (tx) => {
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getSanctuaireState(beforeState);
       const before = state.raidLife;
@@ -991,15 +991,15 @@ export class PlatformStore {
 
   async setCorridorTarget(actor: ActorContext, target: number, confirmedInGame: boolean): Promise<RaidState> {
     this.requireRole(actor, ["CAPTAIN"]);
-    if (!Number.isInteger(target) || target < 1 || target > 500) throw new DomainError("INVALID_CORRIDOR_TARGET", 400, "Korridorziel muss zwischen 1 und 500 liegen.");
+    if (!Number.isInteger(target) || target < 1 || target > 500) throw new DomainError("INVALID_CORRIDOR_TARGET", 400, "L’objectif du corridor doit être compris entre 1 et 500.");
     return this.db.transaction(async (tx) => {
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getSanctuaireState(beforeState);
-      if (target < state.corridorCompleted) throw new DomainError("TARGET_BELOW_PROGRESS", 409, "Ziel liegt unter dem bestätigten Fortschritt.");
+      if (target < state.corridorCompleted) throw new DomainError("TARGET_BELOW_PROGRESS", 409, "L’objectif est inférieur à la progression confirmée.");
       if (state.corridorCompleted >= state.corridorTarget && target !== state.corridorTarget) {
-        throw new DomainError("CORRIDOR_ALREADY_COMPLETED", 409, "Das Korridorziel kann nach Abschluss nicht mehr geändert werden.");
+        throw new DomainError("CORRIDOR_ALREADY_COMPLETED", 409, "L’objectif du corridor ne peut plus être modifié après son achèvement.");
       }
       const corridorTargetSourceStatus: SourceStatus = confirmedInGame ? "LIVE_CONFIRMED" : "GUIDE_CONFIRMED";
       const nextState: RaidState = { ...beforeState, sanctuaire: { ...state, corridorTarget: target, corridorTargetSourceStatus } };
@@ -1018,13 +1018,13 @@ export class PlatformStore {
   async setCorridorAssignment(actor: ActorContext, assignment: Omit<CorridorAssignment, "updatedAt">): Promise<RaidState> {
     this.requireRole(actor, ["CAPTAIN", "EDITOR"]);
     if (!Number.isInteger(assignment.room) || assignment.room < 1 || !Number.isInteger(assignment.slot) || assignment.slot < 1) {
-      throw new DomainError("INVALID_CORRIDOR_ASSIGNMENT", 400, "Raum und Slot sind ungültig.");
+      throw new DomainError("INVALID_CORRIDOR_ASSIGNMENT", 400, "Salle ou emplacement invalide.");
     }
     return this.db.transaction(async (tx) => {
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const participant = (await tx.query<{ id: string }>(`SELECT id FROM participants WHERE id=$1 AND session_id=$2`, [assignment.participantId, actor.sessionId])).rows[0];
-      if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Teilnehmer wurde nicht gefunden.");
+      if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Joueur introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getSanctuaireState(beforeState);
       const nextAssignment: CorridorAssignment = { ...assignment, updatedAt: new Date().toISOString() };
@@ -1044,11 +1044,11 @@ export class PlatformStore {
   }
 
   async incrementCorridor(actor: ActorContext, delta: number): Promise<RaidState> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen nicht schreiben.");
-    if (!Number.isInteger(delta) || delta === 0 || Math.abs(delta) > 20) throw new DomainError("INVALID_CORRIDOR_DELTA", 400, "Ungültige Korridoränderung.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas modifier la session.");
+    if (!Number.isInteger(delta) || delta === 0 || Math.abs(delta) > 20) throw new DomainError("INVALID_CORRIDOR_DELTA", 400, "Variation de corridor invalide.");
     return this.db.transaction(async (tx) => {
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getSanctuaireState(beforeState);
       const corridorTask = (await tx.query<{ status: TaskStatus }>(
@@ -1056,7 +1056,7 @@ export class PlatformStore {
          AND status IN ('READY','CLAIMED','ACTIVE','WAITING','FAILED') LIMIT 1`,
         [actor.sessionId]
       )).rows[0];
-      if (!corridorTask) throw new DomainError("CORRIDOR_NOT_AVAILABLE", 409, "Der Korridor ist noch nicht freigeschaltet oder bereits abgeschlossen.");
+      if (!corridorTask) throw new DomainError("CORRIDOR_NOT_AVAILABLE", 409, "Le corridor n’est pas encore déverrouillé ou est déjà terminé.");
       const completed = Math.max(0, Math.min(state.corridorTarget, state.corridorCompleted + delta));
       const nextState: RaidState = { ...beforeState, sanctuaire: { ...state, corridorCompleted: completed } };
       await tx.query(`UPDATE raid_sessions SET raid_state=$2::jsonb WHERE id=$1`, [actor.sessionId, JSON.stringify(nextState)]);
@@ -1083,17 +1083,17 @@ export class PlatformStore {
 
   async setGigalodonFloor1Target(actor: ActorContext, target: number, confirmedInGame: boolean): Promise<RaidState> {
     this.requireRole(actor, ["CAPTAIN"]);
-    if (!Number.isInteger(target) || target < 1 || target > 100) throw new DomainError("INVALID_GROUP_TARGET", 400, "Gruppenziel muss zwischen 1 und 100 liegen.");
+    if (!Number.isInteger(target) || target < 1 || target > 100) throw new DomainError("INVALID_GROUP_TARGET", 400, "L’objectif de groupes doit être compris entre 1 et 100.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const floor = (state.floorStates["-1"] ?? {}) as Record<string, unknown>;
       const completed = Number(floor.groupsCompleted ?? 0);
-      if (target < completed) throw new DomainError("TARGET_BELOW_PROGRESS", 409, "Ziel liegt unter dem bestätigten Fortschritt.");
+      if (target < completed) throw new DomainError("TARGET_BELOW_PROGRESS", 409, "L’objectif est inférieur à la progression confirmée.");
       const nextState: RaidState = {
         ...beforeState,
         gigalodon: {
@@ -1116,15 +1116,15 @@ export class PlatformStore {
   }
 
   async incrementGigalodonFloorGroups(actor: ActorContext, delta: number): Promise<RaidState> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen den Etagenfortschritt nicht ändern.");
-    if (!Number.isInteger(delta) || delta === 0 || Math.abs(delta) > 20) throw new DomainError("INVALID_GROUP_DELTA", 400, "Ungültige Gruppenänderung.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas modifier la progression des étages.");
+    if (!Number.isInteger(delta) || delta === 0 || Math.abs(delta) > 20) throw new DomainError("INVALID_GROUP_DELTA", 400, "Variation de groupes invalide.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const task = (await tx.query<TaskRow>(`SELECT * FROM task_instances WHERE session_id=$1 AND definition_id='G1-020' FOR UPDATE`, [actor.sessionId])).rows[0];
       if (!task || !["READY","CLAIMED","ACTIVE","WAITING"].includes(task.status)) throw new DomainError("FLOOR_PROGRESS_NOT_AVAILABLE", 409, "Etagenfortschritt ist noch nicht verfügbar.");
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const floor = (state.floorStates["-1"] ?? {}) as Record<string, unknown>;
@@ -1168,9 +1168,9 @@ export class PlatformStore {
     if (Number.isNaN(Date.parse(observedAt))) throw new DomainError("INVALID_TIMESTAMP", 400, "Beobachtungszeit ist ungültig.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       if (input.responsibleParticipantId) {
         const participant = (await tx.query<{ id: string }>(`SELECT id FROM participants WHERE id=$1 AND session_id=$2`, [input.responsibleParticipantId, actor.sessionId])).rows[0];
         if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Lichtverantwortlicher wurde nicht gefunden.");
@@ -1237,9 +1237,9 @@ export class PlatformStore {
     if (!input.cause.trim()) throw new DomainError("SALT_CAUSE_REQUIRED", 400, "Ursache der Salzänderung fehlt.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const responsibleParticipantId = input.responsibleParticipantId ?? actor.participantId;
       const participant = (await tx.query<{ id: string }>(`SELECT id FROM participants WHERE id=$1 AND session_id=$2`, [responsibleParticipantId, actor.sessionId])).rows[0];
       if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Salzverantwortlicher wurde nicht gefunden.");
@@ -1290,9 +1290,9 @@ export class PlatformStore {
     if (!Number.isInteger(input.targetLevel) || input.targetLevel < 1 || input.targetLevel > 4) throw new DomainError("INVALID_LIGHT_LEVEL", 400, "Ziellevel muss zwischen 1 und 4 liegen.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const responsibleParticipantId = input.responsibleParticipantId ?? actor.participantId;
       const participant = (await tx.query<{ id: string }>(`SELECT id FROM participants WHERE id=$1 AND session_id=$2`, [responsibleParticipantId, actor.sessionId])).rows[0];
       if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Auffüllverantwortlicher wurde nicht gefunden.");
@@ -1361,11 +1361,11 @@ export class PlatformStore {
     if (Number.isNaN(Date.parse(confirmedAt))) throw new DomainError("INVALID_TIMESTAMP", 400, "Bestätigungszeit ist ungültig.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const participant = (await tx.query<{ id: string }>(`SELECT id FROM participants WHERE id=$1 AND session_id=$2`, [input.participantId, actor.sessionId])).rows[0];
-      if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Teilnehmer wurde nicht gefunden.");
+      if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Joueur introuvable.");
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const previous = state.participantInventories.find((item) => item.participantId === input.participantId) ?? null;
@@ -1415,9 +1415,9 @@ export class PlatformStore {
     if (actor.role === "PARTICIPANT" && participantId !== actor.participantId) throw new DomainError("FORBIDDEN", 403, "Teilnehmer dürfen nur das eigene Inventar einzahlen.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const inventory = state.participantInventories.find((item) => item.participantId === participantId);
@@ -1485,9 +1485,9 @@ export class PlatformStore {
     if (Object.prototype.hasOwnProperty.call(input.lostResources, "salt")) throw new DomainError("PERSONAL_SALT_FORBIDDEN", 400, "Gemeinsames Salz kann nicht als persönlicher Verlust verbucht werden.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const inventory = state.participantInventories.find((item) => item.participantId === input.participantId);
@@ -1538,9 +1538,9 @@ export class PlatformStore {
     this.requireRole(actor, ["CAPTAIN", "EDITOR"]);
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const fragments = { ...state.fragments, [fragment]: obtained };
@@ -1567,9 +1567,9 @@ export class PlatformStore {
     if (!Number.isInteger(input.activeFights) || input.activeFights < 0 || input.activeFights > 20) throw new DomainError("INVALID_ACTIVE_FIGHTS", 400, "Ungültige Zahl aktiver Kämpfe.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState; timer_started_at: string | Date | null; timer_duration_seconds: number }>(`SELECT raid_state,timer_started_at,timer_duration_seconds FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const remainingSeconds = row.timer_started_at ? Math.max(0, row.timer_duration_seconds - Math.floor((Date.now() - new Date(row.timer_started_at).getTime()) / 1000)) : row.timer_duration_seconds;
@@ -1614,9 +1614,9 @@ export class PlatformStore {
     if (!Number.isInteger(preparationSeconds) || preparationSeconds < 0 || preparationSeconds > 900) throw new DomainError("INVALID_PREPARATION_TIME", 400, "Ungültige Vorbereitungszeit.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState; status: SessionRecord["status"]; timer_started_at: string | Date | null; timer_duration_seconds: number }>(`SELECT raid_state,status,timer_started_at,timer_duration_seconds FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const state = getGigalodonState(row.raid_state ?? {});
       if (!state.finalReadiness.captainConfirmed) throw new DomainError("FINAL_NOT_CONFIRMED", 409, "Der Finalstartcheck wurde nicht bestätigt.");
       if (state.finalReadiness.activeFightsRuleSourceStatus === "LIVE_CONFIRMED" && state.finalReadiness.activeFights > 0) throw new DomainError("ACTIVE_FIGHTS_BLOCK_FINAL", 409, "Aktive Kämpfe blockieren den live bestätigten Finalstart.");
@@ -1656,9 +1656,9 @@ export class PlatformStore {
     if (!Number.isInteger(input.totalDamage) || input.totalDamage < 0) throw new DomainError("INVALID_DAMAGE", 400, "Schaden ist ungültig.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState; status: SessionRecord["status"] }>(`SELECT raid_state,status FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       if (row.status !== "FINAL_ACTIVE") throw new DomainError("FINAL_NOT_ACTIVE", 409, "Der Gigalodon-Finalkampf ist nicht aktiv.");
       const state = getGigalodonState(row.raid_state ?? {});
       if (state.final.result) throw new DomainError("FINAL_ALREADY_COMPLETED", 409, "Der Finalversuch ist bereits abgeschlossen.");
@@ -1713,9 +1713,9 @@ export class PlatformStore {
     this.requireRole(actor, ["CAPTAIN"]);
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
-      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Diese Aktion ist nur für Gigalodon verfügbar.");
+      if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const row = (await tx.query<{ raid_state: RaidState; status: SessionRecord["status"] }>(`SELECT raid_state,status FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       if (row.status !== "FINAL_ACTIVE") throw new DomainError("FINAL_NOT_ACTIVE", 409, "Finalkampf ist nicht aktiv.");
       const state = getGigalodonState(row.raid_state ?? {});
       if (!state.final.result) throw new DomainError("FINAL_RESULT_REQUIRED", 409, "Der Finalkampf benötigt vor Raidabschluss ein Ergebnis.");
@@ -1742,7 +1742,7 @@ export class PlatformStore {
     if (!input.note.trim() || input.note.trim().length > 800) throw new DomainError("INVALID_INFORMATION_NOTE", 400, "Eine kurze, konkrete Notiz ist erforderlich.");
     return this.db.transaction(async (tx) => {
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const report: InformationReport = {
         id: randomUUID(), reference: input.reference.trim(), note: input.note.trim(),
         reportedByParticipantId: actor.participantId, reportedAt: new Date().toISOString(),
@@ -1766,7 +1766,7 @@ export class PlatformStore {
     if (!input.note.trim() || input.note.trim().length > 800) throw new DomainError("PLAYER_CORRECTION_NOTE_REQUIRED", 400, "PLAYER_CORRECTED benötigt eine Bestätigungsnotiz.");
     return this.db.transaction(async (tx) => {
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+      if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const reports = getInformationReports(row.raid_state ?? {});
       const current = reports.find((report) => report.id === input.reportId);
       if (!current) throw new DomainError("INFORMATION_REPORT_NOT_FOUND", 404, "Abweichungsmeldung wurde nicht gefunden.");
@@ -1793,13 +1793,13 @@ export class PlatformStore {
     key: string;
     delta: number;
   }): Promise<TaskInstanceRecord> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen nicht schreiben.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas modifier la session.");
     if (!/^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(input.key)) throw new DomainError("INVALID_COUNTER_KEY", 400, "Ungültiger Zählername.");
     if (!Number.isInteger(input.delta) || Math.abs(input.delta) > 1000) throw new DomainError("INVALID_COUNTER_DELTA", 400, "Ungültige Zähleränderung.");
     await this.assertTaskScope(actor, input.taskId);
     return this.db.transaction(async (tx) => {
       const beforeRow = (await tx.query<TaskRow>(`SELECT * FROM task_instances WHERE id=$1 AND session_id=$2 FOR UPDATE`, [input.taskId, actor.sessionId])).rows[0];
-      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Aufgabe wurde nicht gefunden.");
+      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Mission introuvable.");
       const updatedRow = (await tx.query<TaskRow>(
         `UPDATE task_instances SET
           result_data=jsonb_set(
@@ -1842,7 +1842,7 @@ export class PlatformStore {
     }
     return this.db.transaction(async (tx) => {
       const beforeRow = (await tx.query<TaskRow>(`SELECT * FROM task_instances WHERE id=$1 AND session_id=$2 FOR UPDATE`, [input.taskId, actor.sessionId])).rows[0];
-      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Aufgabe wurde nicht gefunden.");
+      if (!beforeRow) throw new DomainError("TASK_NOT_FOUND", 404, "Mission introuvable.");
       const updatedRow = (await tx.query<TaskRow>(
         `UPDATE task_instances SET assigned_team_id=$2,assigned_participant_ids=$3::jsonb,
                 revision=revision+1,updated_at=now()
@@ -1905,7 +1905,7 @@ export class PlatformStore {
 
   async getSession(sessionId: string): Promise<SessionRecord> {
     const row = (await this.db.query<SessionRow>(`SELECT * FROM raid_sessions WHERE id=$1`, [sessionId])).rows[0];
-    if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+    if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
     return sessionFromRow(row);
   }
 
@@ -2358,7 +2358,7 @@ export class PlatformStore {
        ON d.id=s.definition_id AND d.definition_version=s.definition_version
        WHERE s.id=$1`, [sessionId]
     );
-    if (!result.rows[0]) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+    if (!result.rows[0]) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
     return result.rows[0].payload;
   }
 
@@ -2367,7 +2367,7 @@ export class PlatformStore {
     const row = (await this.db.query<{ definition_id: string; assigned_team_id: string | null }>(
       `SELECT definition_id,assigned_team_id FROM task_instances WHERE id=$1 AND session_id=$2`, [taskId, actor.sessionId]
     )).rows[0];
-    if (!row) throw new DomainError("TASK_NOT_FOUND", 404, "Aufgabe wurde nicht gefunden.");
+    if (!row) throw new DomainError("TASK_NOT_FOUND", 404, "Mission introuvable.");
     const allowedTask = !actor.scope.taskDefinitionIds?.length || actor.scope.taskDefinitionIds.includes(row.definition_id);
     const allowedTeam = !actor.scope.teamIds?.length || (row.assigned_team_id !== null && actor.scope.teamIds.includes(row.assigned_team_id));
     if (!allowedTask || !allowedTeam) throw new DomainError("EDITOR_SCOPE_VIOLATION", 403, "Editor darf diese Aufgabe nicht verwalten.");
@@ -2396,7 +2396,7 @@ export class PlatformStore {
     const result = await tx.query<{ revision: string | number }>(
       `UPDATE raid_sessions SET revision=revision+1 WHERE id=$1 RETURNING revision`, [sessionId]
     );
-    if (!result.rows[0]) throw new DomainError("SESSION_NOT_FOUND", 404, "Session wurde nicht gefunden.");
+    if (!result.rows[0]) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
     return Number(result.rows[0].revision);
   }
 

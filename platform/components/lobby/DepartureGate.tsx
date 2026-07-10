@@ -40,7 +40,7 @@ export function DepartureGate({
       <div className="departure-checks">
         <span><b className={enough ? "ok" : "warn"}>{enough ? "OK" : "À VOIR"}</b> Minimum de joueurs</span>
         <span><b className={hasEditor ? "ok" : "warn"}>{hasEditor ? "OK" : "MANQUE"}</b> Éditeur de secours</span>
-        <span><b className={missing === 0 ? "ok" : "warn"}>{missing === 0 ? "OK" : `${missing} MANQUENT`}</b> Ready check</span>
+        <span><b className={missing === 0 ? "ok" : "warn"}>{missing === 0 ? "OK" : `${missing} MANQUENT`}</b> Appel de préparation</span>
       </div>
       {isCaptain && !actorReady && (
         <button className="secondary" data-testid="ready-button" onClick={onToggleReady}>

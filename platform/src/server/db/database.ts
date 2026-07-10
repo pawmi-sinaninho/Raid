@@ -84,7 +84,7 @@ class PgDatabase implements Database {
   }
 
   async listen(channel: string, callback: (payload: string) => void): Promise<() => Promise<void>> {
-    if (!/^[a-z_][a-z0-9_]*$/i.test(channel)) throw new Error("Invalid PostgreSQL channel");
+    if (!/^[a-z_][a-z0-9_]*$/i.test(channel)) throw new Error("Canal PostgreSQL invalide");
     const client = await this.pool.connect();
     const handler = (message: { channel: string; payload?: string }) => {
       if (message.channel === channel) callback(message.payload ?? "");
@@ -112,7 +112,7 @@ export async function createDatabase(): Promise<Database> {
   const mode = process.env.RAIDWEAVE_DB_MODE ?? (process.env.DATABASE_URL ? "postgres" : "pglite");
   if (mode === "postgres") {
     const url = process.env.DATABASE_URL;
-    if (!url) throw new Error("DATABASE_URL fehlt für RAIDWEAVE_DB_MODE=postgres");
+    if (!url) throw new Error("DATABASE_URL manquante pour RAIDWEAVE_DB_MODE=postgres");
     return new PgDatabase(url);
   }
   const dataDir = process.env.RAIDWEAVE_PGLITE_PATH ?? "memory://";

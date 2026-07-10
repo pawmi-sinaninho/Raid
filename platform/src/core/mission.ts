@@ -51,6 +51,6 @@ export function derivePersonalMission(
     now: available,
     next: null,
     waitingFor: [],
-    reason: available ? "Aufgabe ist bereit und kann übernommen werden." : "Warte auf Zuweisung oder Freischaltung."
+    reason: available ? "La mission est prête et peut être prise." : "En attente d’une affectation ou d’un déverrouillage."
   };
 }

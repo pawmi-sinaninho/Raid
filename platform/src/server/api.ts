@@ -9,7 +9,7 @@ export async function actorFromRequest(request: NextRequest, sessionId: string):
   const participantId = request.headers.get("x-participant-id");
   const recoveryToken = request.headers.get("x-recovery-token");
   if (!participantId || !recoveryToken) {
-    throw new DomainError("AUTH_REQUIRED", 401, "Wiederverbindungsdaten fehlen.");
+    throw new DomainError("AUTH_REQUIRED", 401, "Données de reconnexion manquantes.");
   }
   const { store } = await getRuntime();
   return store.authenticateRecovery(sessionId, participantId, recoveryToken);
@@ -30,7 +30,7 @@ export function apiError(error: unknown): NextResponse {
   }
   console.error(error);
   return NextResponse.json(
-    { error: { code: "INTERNAL_ERROR", message: "Interner Fehler.", details: null } },
+    { error: { code: "INTERNAL_ERROR", message: "Erreur interne.", details: null } },
     { status: 500 }
   );
 }
