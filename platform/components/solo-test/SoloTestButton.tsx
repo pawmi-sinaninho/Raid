@@ -22,13 +22,13 @@ export function SoloTestButton({ onStart, onError }: {
         try {
           await onStart();
         } catch (cause) {
-          onError(cause instanceof Error ? cause.message : "Solo-Test konnte nicht gestartet werden.");
+          onError(cause instanceof Error ? cause.message : "Le test solo n’a pas pu démarrer.");
           setPending(false);
         }
       }}
     >
       <RaidIcon name="team" />
-      {pending ? "Solo-Test wird vorbereitetâ€¦" : "Solo-Test starten"}
+      {pending ? "Test solo wird vorbereitetâ€¦" : "Test solo starten"}
     </button>
   );
 }

@@ -131,7 +131,7 @@ export function SessionApp({ sessionId }: { sessionId: string }) {
           const response = await fetch(`/api/sessions/${sessionId}/events?cursor=${cursorRef.current}`, {
             headers: authHeaders(), signal: controller.signal, cache: "no-store"
           });
-          if (!response.ok || !response.body) throw new Error("SSE unavailable");
+          if (!response.ok || !response.body) throw new Error("Flux de synchronisation indisponible");
           setConnection("online");
           const reader = response.body.getReader();
           const decoder = new TextDecoder();
@@ -183,7 +183,7 @@ export function SessionApp({ sessionId }: { sessionId: string }) {
       headers: authHeaders()
     });
     const payload = await response.json();
-    if (!response.ok) throw new Error(payload.error?.message ?? "Solo-Test konnte nicht gestartet werden.");
+    if (!response.ok) throw new Error(payload.error?.message ?? "Le test solo n’a pas pu démarrer.");
     await refresh();
   }, [authHeaders, refresh, sessionId]);
 
@@ -363,7 +363,7 @@ function CaptainView({ snapshot, actor, onSelectTask, now, tab, command, onError
 function TeamView({ snapshot }: { snapshot: SessionSnapshot }) {
   return (
     <section className="panel stack" data-testid="team-view">
-      <div><div className="eyebrow">Team overview</div><h2>Équipes et missions</h2></div>
+      <div><div className="eyebrow">Vue des escouades</div><h2>Équipes et missions</h2></div>
       <div className="grid-2">
         {snapshot.teams.map((team) => (
           <div className="card" key={team.id}>

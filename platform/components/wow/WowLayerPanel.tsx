@@ -13,6 +13,13 @@ const STATUS_LABELS: Record<string, string> = {
   SKIPPED: "Ignoré"
 };
 
+const RISK_LABELS: Record<string, string> = {
+  NORMAL: "Normal",
+  ATTENTION: "Attention",
+  HIGH: "Élevé",
+  CRITICAL: "Critique"
+};
+
 function trustLabel(trust: string) {
   if (trust === "LIVE_REQUIRED") return "NON CONFIRMÉ EN JEU";
   if (trust === "PARTIAL") return "PARTIEL";
@@ -32,7 +39,7 @@ export function WowLayerPanel({
     <section className={`wow-layer-panel ${model.map.orientation.toLowerCase()}`} data-testid="wow-layer-panel">
       <header className="wow-layer-head">
         <div>
-          <div className="eyebrow">Phase 9B · Wow Layer</div>
+          <div className="eyebrow">Phase 9B · Couche tactique</div>
           <h2>{model.map.title}</h2>
         </div>
         <span className={`source-label trust-${model.dataQuality.trust.toLowerCase()}`}>{trustLabel(model.dataQuality.trust)}</span>
@@ -47,7 +54,7 @@ export function WowLayerPanel({
                 <>
                   <span className={`wow-node-status status-${node.status}`}>{STATUS_LABELS[node.status] ?? node.status}</span>
                   <strong>{node.label}</strong>
-                  <small>{node.ownerLabel ?? "Responsabilité non confirmée"}</small>
+                  <small>{node.ownerLabel ?? "Responsable non confirmé"}</small>
                   {node.blockedBy.length > 0 && <em>Attend {node.blockedBy.slice(0, 2).join(", ")}</em>}
                   {node.trust !== "CONFIRMED" && <span className="source-label">{trustLabel(node.trust)}</span>}
                 </>
@@ -68,9 +75,9 @@ export function WowLayerPanel({
 
         <aside className="wow-decision-card">
           <div className="wow-next-action">
-            <div className="eyebrow">Action intelligente</div>
-            <h3>{model.nextAction?.label ?? "Aucune action prioritaire"}</h3>
-            <p>{model.nextAction?.reason ?? "Le raid ne signale aucune priorité calculable."}</p>
+            <div className="eyebrow">Prochaine action conseillée</div>
+            <h3>{model.nextAction?.label ?? "Aucune priorité immédiate"}</h3>
+            <p>{model.nextAction?.reason ?? "Aucune priorité fiable ne ressort de l’état actuel du raid."}</p>
             {model.nextAction?.taskId && <button className="secondary" onClick={() => onSelectTask(model.nextAction!.taskId!)}><RaidIcon name="mission" />Ouvrir</button>}
           </div>
 
@@ -92,10 +99,10 @@ export function WowLayerPanel({
         </aside>
       </div>
 
-      <div className="wow-risk-strip" aria-label="Risques calculés">
+      <div className="wow-risk-strip" aria-label="Risques détectés">
         {model.risks.slice(0, 3).map((risk) => (
           <button key={risk.id} className={`wow-risk-note level-${risk.level.toLowerCase()}`} onClick={() => risk.taskId && onSelectTask(risk.taskId)} disabled={!risk.taskId}>
-            <span>{risk.level}</span>
+            <span>{RISK_LABELS[risk.level] ?? risk.level}</span>
             <strong>{risk.title}</strong>
             <small>{risk.impact}</small>
           </button>

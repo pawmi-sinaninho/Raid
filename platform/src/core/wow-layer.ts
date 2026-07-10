@@ -172,7 +172,7 @@ function ownerLabel(snapshot: SessionSnapshot, task: TaskInstanceRecord): string
 
 function deriveMap(input: WowLayerInput, blockersByTask: Map<string, string[]>): LiveRaidMapModel {
   const { snapshot } = input;
-  const title = snapshot.definition.slug.includes("gigalodon") ? "Carte de plongée vivante" : "Carte de route vivante";
+  const title = snapshot.definition.slug.includes("gigalodon") ? "Carte de plongée dynamique" : "Plan de raid dynamique";
   const orientation = snapshot.definition.slug.includes("gigalodon") ? "VERTICAL" : "HORIZONTAL";
   const nodes: LiveRaidMapNode[] = snapshot.definition.phases
     .slice()
@@ -203,7 +203,7 @@ function deriveMap(input: WowLayerInput, blockersByTask: Map<string, string[]>):
     orientation,
     nodes,
     legend: [
-      "Carte de workflow, pas une capture de la carte du jeu.",
+      "Carte de progression, pas une capture de la carte du jeu.",
       "Équipe affectée = responsabilité déclarée dans RAIDWEAVE.",
       "NON CONFIRMÉ EN JEU reste visible si la règle vient d’une baseline guide."
     ]
@@ -270,7 +270,7 @@ function deriveCriticalPath(snapshot: SessionSnapshot, blockersByTask: Map<strin
 
   return {
     title: "Chemin critique structurel",
-    explanation: "Ordre structurel calculé depuis les statuts et dépendances. Aucune durée restante n’est inventée.",
+    explanation: "Ordre critique déduit des statuts et des dépendances. Aucune durée restante n’est inventée.",
     steps: requiredOpenTasks.map((task) => ({
       id: `critical:${task.id}`,
       label: taskName(snapshot.definition, task),
@@ -319,7 +319,7 @@ function deriveCues(nextAction: SmartNextAction | null, risks: RiskSignal[], rep
   if (nextAction) cues.push({ id: `cue:${nextAction.id}`, kind: "MISSION", message: nextAction.label, level: "NORMAL" });
   const critical = risks.find((risk) => risk.level === "CRITICAL");
   if (critical) cues.push({ id: `cue:${critical.id}`, kind: "RISK", message: critical.title, level: "CRITICAL" });
-  if (replay?.coverage === "PARTIAL") cues.push({ id: "cue:replay-partial", kind: "REPLAY", message: "Replay partiel", level: "ATTENTION" });
+  if (replay?.coverage === "PARTIAL") cues.push({ id: "cue:replay-partial", kind: "REPLAY", message: "Résumé partiel", level: "ATTENTION" });
   return cues;
 }
 
