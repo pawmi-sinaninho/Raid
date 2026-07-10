@@ -25,6 +25,8 @@ import { SoloTestButton } from "@/components/solo-test/SoloTestButton";
 import { PinnedNote } from "@/components/layout/PinnedNote";
 import { PinnedNoteStack } from "@/components/layout/PinnedNoteStack";
 import { radarItemFr, taskSummaryFr } from "@/components/presentation/frenchMicrocopy";
+import { deriveWowLayer } from "@/src/core/wow-layer";
+import { WowLayerPanel } from "@/components/wow/WowLayerPanel";
 
 interface Credentials { participantId: string; recoveryToken: string }
 type MainTab = "mission" | "raid" | "team" | "messages";
@@ -322,10 +324,19 @@ function CaptainView({ snapshot, actor, onSelectTask, now, tab, command, onError
   onError: (message: string) => void;
 }) {
   const radar = useMemo(() => deriveCaptainRadar(snapshot.definition, snapshot.tasks, snapshot.participants, now, snapshot.session.raidState), [snapshot, now]);
+  const wowLayer = useMemo(() => deriveWowLayer({
+    snapshot,
+    actor: { participantId: actor.id, role: actor.role, sessionId: snapshot.session.id, scope: {} },
+    serverNowMs: now,
+    locale: "fr",
+    devicePreferences: { soundMode: "OFF", reducedMotion: false }
+  }), [snapshot, actor.id, actor.role, now]);
   if (tab === "team") return <TeamView snapshot={snapshot} />;
   if (tab === "messages") return <RadarView items={radar} />;
   return (
     <div className="captain-layout" data-testid="captain-command-center">
+      <div className="captain-primary-stack">
+        <WowLayerPanel model={wowLayer} onSelectTask={onSelectTask} />
       {isSanctuaire(snapshot.definition) ? (
         <SanctuaireCommandCenter snapshot={snapshot} actor={actor} onSelectTask={onSelectTask} command={command} onError={onError} />
       ) : isGigalodon(snapshot.definition) ? (
@@ -343,6 +354,7 @@ function CaptainView({ snapshot, actor, onSelectTask, now, tab, command, onError
           </div>
         </section>
       )}
+      </div>
       <RadarView items={radar} />
     </div>
   );

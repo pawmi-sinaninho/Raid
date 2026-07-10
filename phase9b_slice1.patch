@@ -1,0 +1,601 @@
+diff -ruN base/platform/components/SessionApp.tsx extracted/platform/components/SessionApp.tsx
+--- base/platform/components/SessionApp.tsx	2026-07-10 08:26:34.564284616 +0000
++++ extracted/platform/components/SessionApp.tsx	2026-07-10 08:26:22.397447909 +0000
+@@ -26,6 +26,8 @@
+ import { PinnedNote } from "@/components/layout/PinnedNote";
+ import { PinnedNoteStack } from "@/components/layout/PinnedNoteStack";
+ import { radarItemFr, taskSummaryFr } from "@/components/presentation/frenchMicrocopy";
++import { deriveWowLayer } from "@/src/core/wow-layer";
++import { WowLayerPanel } from "@/components/wow/WowLayerPanel";
+ 
+ interface Credentials { participantId: string; recoveryToken: string }
+ type MainTab = "mission" | "raid" | "team" | "messages";
+@@ -323,10 +325,19 @@
+   onError: (message: string) => void;
+ }) {
+   const radar = useMemo(() => deriveCaptainRadar(snapshot.definition, snapshot.tasks, snapshot.participants, now, snapshot.session.raidState), [snapshot, now]);
++  const wowLayer = useMemo(() => deriveWowLayer({
++    snapshot,
++    actor: { participantId: actor.id, role: actor.role, sessionId: snapshot.session.id, scope: {} },
++    serverNowMs: now,
++    locale: "fr",
++    devicePreferences: { soundMode: "OFF", reducedMotion: false }
++  }), [snapshot, actor.id, actor.role, now]);
+   if (tab === "team") return <TeamView snapshot={snapshot} />;
+   if (tab === "messages") return <RadarView items={radar} />;
+   return (
+     <div className="captain-layout" data-testid="captain-command-center">
++      <div className="captain-primary-stack">
++        <WowLayerPanel model={wowLayer} onSelectTask={onSelectTask} />
+       {isSanctuaire(snapshot.definition) ? (
+         <SanctuaireCommandCenter snapshot={snapshot} actor={actor} onSelectTask={onSelectTask} command={command} onError={onError} />
+       ) : isGigalodon(snapshot.definition) ? (
+@@ -344,6 +355,7 @@
+           </div>
+         </section>
+       )}
++      </div>
+       <RadarView items={radar} />
+     </div>
+   );
+diff -ruN base/platform/components/wow/WowLayerPanel.tsx extracted/platform/components/wow/WowLayerPanel.tsx
+--- base/platform/components/wow/WowLayerPanel.tsx	1970-01-01 00:00:00.000000000 +0000
++++ extracted/platform/components/wow/WowLayerPanel.tsx	2026-07-10 08:26:22.395204515 +0000
+@@ -0,0 +1,107 @@
++import type { WowLayerViewModel } from "@/src/core/wow-layer";
++import { RaidIcon } from "@/components/icons/RaidIcon";
++
++const STATUS_LABELS: Record<string, string> = {
++  LOCKED: "Verrouillé",
++  READY: "Prêt",
++  CLAIMED: "Attribué",
++  ACTIVE: "Actif",
++  WAITING: "En attente",
++  BLOCKED: "Bloqué",
++  FAILED: "Échoué",
++  COMPLETED: "Terminé",
++  SKIPPED: "Ignoré"
++};
++
++function trustLabel(trust: string) {
++  if (trust === "LIVE_REQUIRED") return "NON CONFIRMÉ EN JEU";
++  if (trust === "PARTIAL") return "PARTIEL";
++  if (trust === "STALE") return "OBSOLÈTE";
++  if (trust === "DERIVED") return "CALCULÉ";
++  return "CONFIRMÉ";
++}
++
++export function WowLayerPanel({
++  model,
++  onSelectTask
++}: {
++  model: WowLayerViewModel;
++  onSelectTask: (taskId: string) => void;
++}) {
++  return (
++    <section className={`wow-layer-panel ${model.map.orientation.toLowerCase()}`} data-testid="wow-layer-panel">
++      <header className="wow-layer-head">
++        <div>
++          <div className="eyebrow">Phase 9B · Wow Layer</div>
++          <h2>{model.map.title}</h2>
++        </div>
++        <span className={`source-label trust-${model.dataQuality.trust.toLowerCase()}`}>{trustLabel(model.dataQuality.trust)}</span>
++      </header>
++
++      <div className="wow-layer-grid">
++        <div className="wow-route-card">
++          <div className="wow-route-thread" aria-label="Carte vivante du raid">
++            {model.map.nodes.map((node) => {
++              const clickable = Boolean(node.taskId);
++              const content = (
++                <>
++                  <span className={`wow-node-status status-${node.status}`}>{STATUS_LABELS[node.status] ?? node.status}</span>
++                  <strong>{node.label}</strong>
++                  <small>{node.ownerLabel ?? "Responsabilité non confirmée"}</small>
++                  {node.blockedBy.length > 0 && <em>Attend {node.blockedBy.slice(0, 2).join(", ")}</em>}
++                  {node.trust !== "CONFIRMED" && <span className="source-label">{trustLabel(node.trust)}</span>}
++                </>
++              );
++              return clickable ? (
++                <button key={node.id} className={`wow-route-node kind-${node.kind.toLowerCase()} status-${node.status}`} onClick={() => node.taskId && onSelectTask(node.taskId)}>
++                  {content}
++                </button>
++              ) : (
++                <div key={node.id} className={`wow-route-node kind-${node.kind.toLowerCase()} status-${node.status}`}>
++                  {content}
++                </div>
++              );
++            })}
++          </div>
++          <footer>{model.map.legend[0]}</footer>
++        </div>
++
++        <aside className="wow-decision-card">
++          <div className="wow-next-action">
++            <div className="eyebrow">Action intelligente</div>
++            <h3>{model.nextAction?.label ?? "Aucune action prioritaire"}</h3>
++            <p>{model.nextAction?.reason ?? "Le raid ne signale aucune priorité calculable."}</p>
++            {model.nextAction?.taskId && <button className="secondary" onClick={() => onSelectTask(model.nextAction!.taskId!)}><RaidIcon name="mission" />Ouvrir</button>}
++          </div>
++
++          <div className="wow-critical-thread">
++            <div className="eyebrow">{model.criticalPath.title}</div>
++            <ol>
++              {model.criticalPath.steps.slice(0, 5).map((step) => (
++                <li key={step.id}>
++                  <button onClick={() => onSelectTask(step.taskId)}>
++                    <span className={`status status-${step.status}`}>{STATUS_LABELS[step.status] ?? step.status}</span>
++                    <strong>{step.label}</strong>
++                    {step.blockedBy.length > 0 && <small>Attend {step.blockedBy.slice(0, 2).join(", ")}</small>}
++                  </button>
++                </li>
++              ))}
++            </ol>
++            <p>{model.criticalPath.explanation}</p>
++          </div>
++        </aside>
++      </div>
++
++      <div className="wow-risk-strip" aria-label="Risques calculés">
++        {model.risks.slice(0, 3).map((risk) => (
++          <button key={risk.id} className={`wow-risk-note level-${risk.level.toLowerCase()}`} onClick={() => risk.taskId && onSelectTask(risk.taskId)} disabled={!risk.taskId}>
++            <span>{risk.level}</span>
++            <strong>{risk.title}</strong>
++            <small>{risk.impact}</small>
++          </button>
++        ))}
++        {!model.risks.length && <div className="wow-risk-note level-normal"><span>NORMAL</span><strong>Aucune exception critique</strong><small>Les signaux sont dérivés de l’état confirmé.</small></div>}
++      </div>
++    </section>
++  );
++}
+diff -ruN base/platform/src/core/wow-layer.ts extracted/platform/src/core/wow-layer.ts
+--- base/platform/src/core/wow-layer.ts	1970-01-01 00:00:00.000000000 +0000
++++ extracted/platform/src/core/wow-layer.ts	2026-07-10 08:26:22.394961766 +0000
+@@ -0,0 +1,342 @@
++import { evaluateDependencies } from "./dependency-engine";
++import { derivePersonalMission } from "./mission";
++import { deriveCaptainRadar, type RadarItem } from "./radar";
++import type {
++  ActorContext,
++  RaidDefinition,
++  SessionSnapshot,
++  TaskInstanceRecord,
++  TaskStatus
++} from "./types";
++
++export type WowTrust = "CONFIRMED" | "DERIVED" | "LIVE_REQUIRED" | "STALE" | "PARTIAL";
++export type WowRiskLevel = "NORMAL" | "ATTENTION" | "HIGH" | "CRITICAL";
++export type MapNodeKind =
++  | "PREPARATION"
++  | "TASK"
++  | "SYSTEM_GATE"
++  | "PUZZLE_BRANCH"
++  | "GUARDIAN_BRANCH"
++  | "CORRIDOR"
++  | "FLOOR"
++  | "BOSS"
++  | "RETURN"
++  | "FINAL";
++
++export interface WowLayerInput {
++  snapshot: SessionSnapshot;
++  actor: ActorContext | null;
++  serverNowMs: number;
++  locale: "fr" | "en" | "de";
++  devicePreferences: {
++    soundMode: "OFF" | "CRITICAL_ONLY" | "CRITICAL_AND_MISSION";
++    reducedMotion: boolean;
++  };
++}
++
++export interface LiveRaidMapNode {
++  id: string;
++  label: string;
++  kind: MapNodeKind;
++  status: TaskStatus;
++  order: number;
++  phaseId: string;
++  taskId: string | null;
++  ownerLabel: string | null;
++  blockedBy: string[];
++  trust: WowTrust;
++}
++
++export interface LiveRaidMapModel {
++  title: string;
++  orientation: "HORIZONTAL" | "VERTICAL";
++  nodes: LiveRaidMapNode[];
++  legend: string[];
++}
++
++export interface SmartNextAction {
++  id: string;
++  label: string;
++  action: "OPEN_TASK" | "CLAIM_TASK" | "WAIT" | "REVIEW_RISK";
++  taskId: string | null;
++  reason: string;
++  trust: WowTrust;
++}
++
++export interface RiskSignal {
++  id: string;
++  level: Exclude<WowRiskLevel, "NORMAL">;
++  title: string;
++  impact: string;
++  taskId: string | null;
++  trust: WowTrust;
++}
++
++export interface CriticalPathStep {
++  id: string;
++  label: string;
++  status: TaskStatus;
++  taskId: string;
++  blockedBy: string[];
++}
++
++export interface CriticalPathModel {
++  title: "Chemin critique structurel";
++  steps: CriticalPathStep[];
++  explanation: string;
++}
++
++export interface ReplaySummaryModel {
++  eventCount: number;
++  lastEventAt: string | null;
++  coverage: WowTrust;
++  highlights: string[];
++}
++
++export interface InformationCue {
++  id: string;
++  kind: "MISSION" | "RISK" | "TRANSFER" | "REPLAY";
++  message: string;
++  level: WowRiskLevel;
++}
++
++export interface DataQualityState {
++  trust: WowTrust;
++  liveRequiredCount: number;
++  staleSignalCount: number;
++  partialReason: string | null;
++}
++
++export interface WowLayerViewModel {
++  map: LiveRaidMapModel;
++  nextAction: SmartNextAction | null;
++  risks: RiskSignal[];
++  criticalPath: CriticalPathModel;
++  replay: ReplaySummaryModel | null;
++  cues: InformationCue[];
++  dataQuality: DataQualityState;
++}
++
++const ACTIVE_STATUS_RANK: Record<TaskStatus, number> = {
++  BLOCKED: 0,
++  FAILED: 1,
++  ACTIVE: 2,
++  WAITING: 3,
++  CLAIMED: 4,
++  READY: 5,
++  LOCKED: 6,
++  COMPLETED: 7,
++  SKIPPED: 8
++};
++
++function taskName(definition: RaidDefinition, task: TaskInstanceRecord): string {
++  return definition.tasks.find((item) => item.id === task.definitionId)?.names.fr ?? task.definitionId;
++}
++
++function sourceTrust(sourceStatus: unknown): WowTrust {
++  if (sourceStatus === "LIVE_REQUIRED" || sourceStatus === "GUIDE_CONFIRMED") return "LIVE_REQUIRED";
++  if (sourceStatus === "OFFICIAL_CONFIRMED" || sourceStatus === "LIVE_CONFIRMED" || sourceStatus === "PLAYER_CORRECTED") return "CONFIRMED";
++  return "DERIVED";
++}
++
++function statusFor(tasks: TaskInstanceRecord[]): TaskStatus {
++  if (!tasks.length) return "LOCKED";
++  const candidates = tasks.filter((task) => task.status !== "SKIPPED");
++  const required = candidates.length ? candidates : tasks;
++  if (required.every((task) => task.status === "COMPLETED" || task.status === "SKIPPED")) return "COMPLETED";
++  return required.reduce<TaskStatus>((best, task) => ACTIVE_STATUS_RANK[task.status] < ACTIVE_STATUS_RANK[best] ? task.status : best, "LOCKED");
++}
++
++function nodeKind(definition: RaidDefinition, task: TaskInstanceRecord): MapNodeKind {
++  const def = definition.tasks.find((item) => item.id === task.definitionId);
++  const text = `${task.phaseId} ${task.definitionId} ${def?.type ?? ""} ${def?.uiHints?.primaryComponent ?? ""}`.toLowerCase();
++  if (text.includes("final")) return "FINAL";
++  if (text.includes("boss") || text.includes("mureine") || text.includes("execrabe") || text.includes("willorque")) return "BOSS";
++  if (text.includes("corridor")) return "CORRIDOR";
++  if (text.includes("guardian") || text.includes("sentinelle") || text.includes("gardien")) return "GUARDIAN_BRANCH";
++  if (text.includes("puzzle") || text.includes("enig") || text.includes("luminarium")) return "PUZZLE_BRANCH";
++  if (text.includes("floor") || text.includes("etage") || text.includes("étage")) return "FLOOR";
++  return "TASK";
++}
++
++function actorParticipant(input: WowLayerInput) {
++  return input.actor ? input.snapshot.participants.find((participant) => participant.id === input.actor?.participantId) ?? null : null;
++}
++
++function ownerLabel(snapshot: SessionSnapshot, task: TaskInstanceRecord): string | null {
++  if (task.ownerParticipantId) return snapshot.participants.find((participant) => participant.id === task.ownerParticipantId)?.displayName ?? "Joueur affecté";
++  if (task.assignedParticipantIds.length) return task.assignedParticipantIds.map((id) => snapshot.participants.find((participant) => participant.id === id)?.displayName ?? "Joueur").join(", ");
++  if (task.assignedTeamId) return snapshot.teams.find((team) => team.id === task.assignedTeamId)?.name ?? "Équipe affectée";
++  return null;
++}
++
++function deriveMap(input: WowLayerInput, blockersByTask: Map<string, string[]>): LiveRaidMapModel {
++  const { snapshot } = input;
++  const title = snapshot.definition.slug.includes("gigalodon") ? "Carte de plongée vivante" : "Carte de route vivante";
++  const orientation = snapshot.definition.slug.includes("gigalodon") ? "VERTICAL" : "HORIZONTAL";
++  const nodes: LiveRaidMapNode[] = snapshot.definition.phases
++    .slice()
++    .sort((a, b) => a.order - b.order)
++    .map((phase) => {
++      const phaseTasks = snapshot.tasks.filter((task) => task.phaseId === phase.id);
++      const phaseStatus = statusFor(phaseTasks);
++      const firstOpenTask = phaseTasks
++        .filter((task) => !["COMPLETED", "SKIPPED"].includes(task.status))
++        .sort((a, b) => ACTIVE_STATUS_RANK[a.status] - ACTIVE_STATUS_RANK[b.status] || a.order - b.order)[0] ?? phaseTasks[0];
++      const firstDef = firstOpenTask ? snapshot.definition.tasks.find((task) => task.id === firstOpenTask.definitionId) : null;
++      return {
++        id: `phase:${phase.id}`,
++        label: phase.names.fr,
++        kind: firstOpenTask ? nodeKind(snapshot.definition, firstOpenTask) : "SYSTEM_GATE",
++        status: phaseStatus,
++        order: phase.order,
++        phaseId: phase.id,
++        taskId: firstOpenTask?.id ?? null,
++        ownerLabel: firstOpenTask ? ownerLabel(snapshot, firstOpenTask) : null,
++        blockedBy: firstOpenTask ? blockersByTask.get(firstOpenTask.definitionId) ?? [] : [],
++        trust: firstDef ? sourceTrust(firstDef.sourceStatus) : "DERIVED"
++      } satisfies LiveRaidMapNode;
++    });
++
++  return {
++    title,
++    orientation,
++    nodes,
++    legend: [
++      "Carte de workflow, pas une capture de la carte du jeu.",
++      "Équipe affectée = responsabilité déclarée dans RAIDWEAVE.",
++      "NON CONFIRMÉ EN JEU reste visible si la règle vient d’une baseline guide."
++    ]
++  };
++}
++
++function deriveNextAction(input: WowLayerInput, radar: RadarItem[]): SmartNextAction | null {
++  const { snapshot } = input;
++  const participant = actorParticipant(input);
++  if (!participant) return null;
++
++  if (participant.role === "CAPTAIN" || participant.role === "EDITOR") {
++    const firstRisk = radar[0];
++    if (firstRisk) {
++      return {
++        id: `risk:${firstRisk.id}`,
++        label: firstRisk.title,
++        action: "REVIEW_RISK",
++        taskId: firstRisk.taskId ?? null,
++        reason: firstRisk.impact,
++        trust: firstRisk.title.includes("guide") || firstRisk.impact.includes("pas encore confirmé") ? "LIVE_REQUIRED" : "DERIVED"
++      };
++    }
++    const unassigned = snapshot.tasks.find((task) => ["READY", "ACTIVE"].includes(task.status) && !task.ownerParticipantId && !task.assignedTeamId && task.assignedParticipantIds.length === 0);
++    if (unassigned) return {
++      id: `assign:${unassigned.id}`,
++      label: taskName(snapshot.definition, unassigned),
++      action: "OPEN_TASK",
++      taskId: unassigned.id,
++      reason: "Affecter une personne ou une équipe avant de poursuivre.",
++      trust: "DERIVED"
++    };
++  }
++
++  const mission = derivePersonalMission(participant, snapshot.tasks, snapshot.definition);
++  if (!mission.now) return {
++    id: `wait:${participant.id}`,
++    label: "Attendre la prochaine ouverture",
++    action: "WAIT",
++    taskId: null,
++    reason: mission.reason ?? "Aucune mission disponible pour ce rôle maintenant.",
++    trust: "DERIVED"
++  };
++
++  return {
++    id: `mission:${mission.now.id}`,
++    label: taskName(snapshot.definition, mission.now),
++    action: mission.now.status === "READY" && !mission.now.ownerParticipantId ? "CLAIM_TASK" : mission.now.status === "LOCKED" ? "WAIT" : "OPEN_TASK",
++    taskId: mission.now.id,
++    reason: mission.waitingFor.length ? `Attend ${mission.waitingFor.slice(0, 2).join(", ")}` : mission.reason ?? "Mission déterminée depuis l’état confirmé.",
++    trust: "DERIVED"
++  };
++}
++
++function deriveCriticalPath(snapshot: SessionSnapshot, blockersByTask: Map<string, string[]>): CriticalPathModel {
++  const requiredOpenTasks = snapshot.tasks
++    .filter((task) => !["COMPLETED", "SKIPPED"].includes(task.status))
++    .filter((task) => {
++      const def = snapshot.definition.tasks.find((item) => item.id === task.definitionId);
++      return def?.priority === "P0" || def?.optional === false;
++    })
++    .sort((a, b) => ACTIVE_STATUS_RANK[a.status] - ACTIVE_STATUS_RANK[b.status] || a.order - b.order)
++    .slice(0, 7);
++
++  return {
++    title: "Chemin critique structurel",
++    explanation: "Ordre structurel calculé depuis les statuts et dépendances. Aucune durée restante n’est inventée.",
++    steps: requiredOpenTasks.map((task) => ({
++      id: `critical:${task.id}`,
++      label: taskName(snapshot.definition, task),
++      status: task.status,
++      taskId: task.id,
++      blockedBy: blockersByTask.get(task.definitionId) ?? []
++    }))
++  };
++}
++
++function deriveRisks(radar: RadarItem[]): RiskSignal[] {
++  return radar.slice(0, 10).map((item) => ({
++    id: item.id,
++    level: item.level,
++    title: item.title,
++    impact: item.impact,
++    taskId: item.taskId ?? null,
++    trust: item.title.includes("guide") || item.impact.includes("pas encore confirmé") || item.impact.includes("vérifier en jeu") ? "LIVE_REQUIRED" : "DERIVED"
++  }));
++}
++
++function deriveReplay(snapshot: SessionSnapshot): ReplaySummaryModel | null {
++  if (!snapshot.events.length) return null;
++  return {
++    eventCount: snapshot.events.length,
++    lastEventAt: snapshot.events.at(-1)?.createdAt ?? null,
++    coverage: snapshot.events.length >= snapshot.session.revision ? "CONFIRMED" : "PARTIAL",
++    highlights: snapshot.events.slice(-5).reverse().map((event) => `${event.type} · révision ${event.sessionRevision}`)
++  };
++}
++
++function deriveQuality(snapshot: SessionSnapshot, risks: RiskSignal[], replay: ReplaySummaryModel | null): DataQualityState {
++  const liveRequiredCount = snapshot.definition.tasks.filter((task) => sourceTrust(task.sourceStatus) === "LIVE_REQUIRED").length + risks.filter((risk) => risk.trust === "LIVE_REQUIRED").length;
++  const staleSignalCount = risks.filter((risk) => risk.trust === "STALE").length;
++  const partialReason = replay?.coverage === "PARTIAL" ? "Le journal local ne couvre pas toutes les révisions connues." : null;
++  return {
++    trust: partialReason ? "PARTIAL" : liveRequiredCount > 0 ? "LIVE_REQUIRED" : "DERIVED",
++    liveRequiredCount,
++    staleSignalCount,
++    partialReason
++  };
++}
++
++function deriveCues(nextAction: SmartNextAction | null, risks: RiskSignal[], replay: ReplaySummaryModel | null): InformationCue[] {
++  const cues: InformationCue[] = [];
++  if (nextAction) cues.push({ id: `cue:${nextAction.id}`, kind: "MISSION", message: nextAction.label, level: "NORMAL" });
++  const critical = risks.find((risk) => risk.level === "CRITICAL");
++  if (critical) cues.push({ id: `cue:${critical.id}`, kind: "RISK", message: critical.title, level: "CRITICAL" });
++  if (replay?.coverage === "PARTIAL") cues.push({ id: "cue:replay-partial", kind: "REPLAY", message: "Replay partiel", level: "ATTENTION" });
++  return cues;
++}
++
++export function deriveWowLayer(input: WowLayerInput): WowLayerViewModel {
++  const dependencyResults = evaluateDependencies(input.snapshot.definition, input.snapshot.tasks);
++  const blockersByTask = new Map(dependencyResults.map((result) => [result.taskDefinitionId, result.blockingTaskDefinitionIds]));
++  const radar = deriveCaptainRadar(input.snapshot.definition, input.snapshot.tasks, input.snapshot.participants, input.serverNowMs, input.snapshot.session.raidState);
++  const risks = deriveRisks(radar);
++  const replay = deriveReplay(input.snapshot);
++  const nextAction = deriveNextAction(input, radar);
++  return {
++    map: deriveMap(input, blockersByTask),
++    nextAction,
++    risks,
++    criticalPath: deriveCriticalPath(input.snapshot, blockersByTask),
++    replay,
++    cues: deriveCues(nextAction, risks, replay),
++    dataQuality: deriveQuality(input.snapshot, risks, replay)
++  };
++}
+diff -ruN base/platform/styles/components.css extracted/platform/styles/components.css
+--- base/platform/styles/components.css	2026-07-10 08:26:34.581520054 +0000
++++ extracted/platform/styles/components.css	2026-07-10 08:26:22.397789024 +0000
+@@ -65,3 +65,13 @@
+ .final-clearance{display:grid;grid-template-columns:230px minmax(0,1fr);gap:12px;align-items:start}.final-clearance h2{margin:5px 0 0;font-size:1rem}.clearance-bands{display:grid;gap:6px}.clearance-band{min-height:35px;padding:7px 9px;display:grid;grid-template-columns:90px 1fr;gap:8px;border-left:3px solid var(--danger);background:#11191d;font-size:.59rem}.clearance-band.unconfirmed{border-color:var(--blocked)}.clearance-band.ready{border-color:var(--success)}.clearance-band>strong{font-family:var(--font-display)}.clearance-band>span{color:var(--text-2)}.clearance-controls{grid-column:1/-1}.final-controls{align-items:center}.final-controls label{display:flex;align-items:center;gap:6px;font-size:.64rem}.final-controls label input{width:80px}.final-controls>.checkbox input{width:18px}.final-controls button{font-size:.66rem}.final-tracker{padding:14px}.final-damage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.giga-metric{display:grid;gap:3px;padding:8px;border-bottom:1px solid var(--line)}.giga-metric>span{color:var(--muted);font-size:.55rem}.giga-metric>strong{font:700 .9rem/1 var(--font-mono)}
+ @media(max-width:1199px){.gigalodon-layout{grid-template-columns:1fr}.depth-route{position:static;min-height:auto}.depth-route-line{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.depth-route-line::before{display:none}.depth-route-node{grid-template-columns:30px 1fr}.route-lumen{display:none}.return-marker{grid-column:1/-1}.gigalodon-instrument-grid{grid-template-columns:1fr 1fr}}
+ @media(max-width:767px){.information-correction{right:14px;bottom:76px}.depth-route-line{grid-template-columns:1fr 1fr}.situation-strap{grid-template-columns:1fr 1fr}.situation-strap>div:first-child{grid-column:1/-1}.situation-cell{padding:8px;border-left:0;border-top:1px solid var(--line)}.gigalodon-instrument-grid{grid-template-columns:1fr}.cargo-manifest{grid-column:auto}.light-bank{grid-template-columns:repeat(3,1fr)}.final-clearance{grid-template-columns:1fr}.clearance-controls{grid-column:auto}.cargo-row{grid-template-columns:1fr auto}.cargo-head{display:none}.cargo-row>:nth-child(n+3){grid-column:2}.final-controls,.salt-controls{display:grid;grid-template-columns:1fr}.final-controls>*,.salt-controls>*{width:100%}}
++
++
++/* Phase 9B Wow Layer slice */
++.captain-primary-stack{min-width:0;display:grid;align-content:start;gap:14px}
++.wow-layer-panel{padding:14px 16px;background:color-mix(in srgb,var(--sheet) 82%,#000);border:1px solid var(--line);clip-path:polygon(0 0,calc(100% - 13px) 0,100% 13px,100% 100%,0 100%)}
++.wow-layer-head{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:12px}.wow-layer-head h2{margin:4px 0 0;font-size:1.05rem}
++.wow-layer-grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:12px}.wow-route-card{min-width:0}.wow-route-thread{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:8px}.wow-route-thread::before{content:"";position:absolute;left:12px;right:12px;top:22px;height:1px;background:linear-gradient(90deg,var(--raid),transparent);opacity:.42}.wow-layer-panel.vertical .wow-route-thread{grid-template-columns:repeat(auto-fit,minmax(92px,1fr))}
++.wow-route-node{position:relative;z-index:1;min-height:96px;display:grid;align-content:start;gap:5px;padding:9px;border:1px solid var(--line);background:var(--inset);color:inherit;text-align:left;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}.wow-route-node:hover{border-color:var(--raid-line)}.wow-route-node strong{font-size:.68rem}.wow-route-node small,.wow-route-node em{color:var(--muted);font-size:.54rem;font-style:normal}.wow-route-node.status-ACTIVE,.wow-route-node.status-READY{border-color:var(--raid)}.wow-route-node.status-BLOCKED,.wow-route-node.status-FAILED{border-color:var(--danger)}.wow-node-status{width:max-content;font:.47rem/1 var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}.wow-route-card footer{margin-top:7px;color:var(--muted);font-size:.56rem}.wow-decision-card{display:grid;gap:10px}.wow-next-action,.wow-critical-thread{padding:11px;background:var(--strap);border-left:3px solid var(--raid)}.wow-next-action h3{margin:4px 0 6px;font-size:.9rem}.wow-next-action p,.wow-critical-thread p{margin:0;color:var(--text-2);font-size:.6rem}.wow-next-action button{margin-top:8px}.wow-critical-thread{border-color:var(--brass)}.wow-critical-thread ol{display:grid;gap:5px;margin:8px 0;padding:0;list-style:none}.wow-critical-thread li button{width:100%;display:grid;gap:4px;text-align:left;color:inherit;background:transparent;border:0;border-bottom:1px solid var(--line-muted);padding:0 0 5px;clip-path:none}.wow-critical-thread li strong{font-size:.62rem}.wow-critical-thread li small{color:var(--muted);font-size:.54rem}.wow-risk-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.wow-risk-note{min-height:74px;display:grid;align-content:start;gap:4px;padding:9px;border:1px solid var(--line);background:var(--note);color:inherit;text-align:left}.wow-risk-note:disabled{opacity:1}.wow-risk-note span{font:.47rem/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.wow-risk-note strong{font-size:.65rem}.wow-risk-note small{color:var(--text-2);font-size:.54rem}.wow-risk-note.level-critical{border-color:var(--danger)}.wow-risk-note.level-high{border-color:var(--blocked)}.wow-risk-note.level-attention{border-color:var(--waiting)}.wow-risk-note.level-normal{border-color:var(--success)}
++@media(max-width:1199px){.wow-layer-grid{grid-template-columns:1fr}.wow-risk-strip{grid-template-columns:1fr 1fr}}
++@media(max-width:767px){.wow-layer-panel{padding:12px}.wow-route-thread{grid-template-columns:1fr 1fr}.wow-route-thread::before{display:none}.wow-layer-head{display:grid}.wow-risk-strip{grid-template-columns:1fr}}
+diff -ruN base/platform/tests/wow-layer.test.ts extracted/platform/tests/wow-layer.test.ts
+--- base/platform/tests/wow-layer.test.ts	1970-01-01 00:00:00.000000000 +0000
++++ extracted/platform/tests/wow-layer.test.ts	2026-07-10 08:26:22.395356090 +0000
+@@ -0,0 +1,83 @@
++import { describe, expect, test } from "vitest";
++import { getDefinition } from "@/src/core/definition-loader";
++import { createInitialRaidState } from "@/src/core/raid-state";
++import type { ActorContext, ParticipantRecord, SessionSnapshot, TaskInstanceRecord } from "@/src/core/types";
++import { deriveWowLayer } from "@/src/core/wow-layer";
++
++function snapshotFor(slug: string): { snapshot: SessionSnapshot; actor: ActorContext } {
++  const definition = getDefinition(slug);
++  const sessionId = "session-wow";
++  const participant: ParticipantRecord = {
++    id: "captain-1",
++    sessionId,
++    displayName: "Capitaine",
++    role: "CAPTAIN",
++    teamId: null,
++    readyState: "READY",
++    connectionState: "ONLINE",
++    currentTaskId: null,
++    lastSeenAt: "2026-06-28T20:00:00.000Z"
++  };
++  const tasks: TaskInstanceRecord[] = definition.tasks.map((task, index) => ({
++    id: `task-${task.id}`,
++    sessionId,
++    definitionId: task.id,
++    phaseId: task.phaseId,
++    order: task.order,
++    status: index === 0 ? "READY" : task.initialStatus,
++    assignedTeamId: null,
++    assignedParticipantIds: [],
++    ownerParticipantId: null,
++    resultData: {},
++    blockedReason: null,
++    revision: 1,
++    startedAt: null,
++    completedAt: null,
++    updatedAt: "2026-06-28T20:00:00.000Z"
++  }));
++  return {
++    snapshot: {
++      session: {
++        id: sessionId,
++        definitionId: definition.id,
++        definitionVersion: definition.definitionVersion,
++        name: "Wow test",
++        language: "fr",
++        status: "LIVE",
++        captainParticipantId: participant.id,
++        revision: 1,
++        createdAt: "2026-06-28T20:00:00.000Z",
++        startedAt: "2026-06-28T20:00:00.000Z",
++        endedAt: null,
++        timerStartedAt: "2026-06-28T20:00:00.000Z",
++        timerDurationSeconds: definition.timer.durationSeconds,
++        raidState: createInitialRaidState(definition)
++      },
++      participants: [participant],
++      teams: [],
++      tasks,
++      events: [],
++      definition
++    },
++    actor: { participantId: participant.id, role: "CAPTAIN", sessionId, scope: {} }
++  };
++}
++
++describe("Phase 9B Wow Layer slice", () => {
++  test("derives a deterministic read-only map and smart next action", () => {
++    const { snapshot, actor } = snapshotFor("sanctuaire-jardins-eternels");
++    const model = deriveWowLayer({ snapshot, actor, serverNowMs: Date.parse("2026-06-28T20:01:00.000Z"), locale: "fr", devicePreferences: { soundMode: "OFF", reducedMotion: true } });
++    expect(model.map.nodes.length).toBe(snapshot.definition.phases.length);
++    expect(model.nextAction).not.toBeNull();
++    expect(model.criticalPath.title).toBe("Chemin critique structurel");
++    expect(model.criticalPath.explanation).toContain("Aucune durée restante");
++    expect(snapshot.tasks[0].status).toBe("READY");
++  });
++
++  test("keeps guide/live-required information visible in data quality", () => {
++    const { snapshot, actor } = snapshotFor("gouffre-gigalodon");
++    const model = deriveWowLayer({ snapshot, actor, serverNowMs: Date.parse("2026-06-28T20:01:00.000Z"), locale: "fr", devicePreferences: { soundMode: "OFF", reducedMotion: true } });
++    expect(model.dataQuality.liveRequiredCount).toBeGreaterThan(0);
++    expect(["LIVE_REQUIRED", "DERIVED", "PARTIAL"]).toContain(model.dataQuality.trust);
++  });
++});
