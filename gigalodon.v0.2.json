@@ -287,7 +287,7 @@
       {
         "path": "gigalodon.saltPool",
         "type": "object",
-        "description": "Serverautoritärer gemeinsamer selpool avec unveränderlichem Änderungsledger",
+        "description": "Etape du raid a suivre et a confirmer en jeu.",
         "sourceStatus": "GUIDE_CONFIRMED",
         "default": {
           "amount": 0,
@@ -436,7 +436,7 @@
         "en": null,
         "de": null
       },
-      "description": "Lobby, Rollen, Timer et erstes lumière.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": null,
       "completionTaskId": "G0-020",
@@ -569,7 +569,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Sichtbares niveau de lumière et Ablesezeit saisir.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -577,7 +577,7 @@
         "maximumParticipants": 1,
         "exclusiveClaim": false,
         "recommendedParticipants": 1,
-        "requiredRoleLabel": "lumièreverantwortlicher"
+        "requiredRoleLabel": "Responsable"
       },
       "inputFields": [
         {
@@ -606,14 +606,14 @@
         {
           "path": "gigalodon.lightStates[].observedAt",
           "type": "timestamp",
-          "description": "Ablesezeit",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
         {
           "path": "gigalodon.lightStates[].nextDecayAt",
           "type": "timestamp",
-          "description": "Berechneter nächster perte",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         }
@@ -621,7 +621,7 @@
       "instructions": [
         "Im Spiel visibles Level ablesen.",
         "Zeitpunkt confirmer.",
-        "Nächsten erwarteten perte auf Basis der versionierten Intervallregel berechnen."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
@@ -657,7 +657,7 @@
         ],
         "quickActions": [
           "Level confirmer",
-          "Timer korrigieren"
+          "Confirmer"
         ]
       }
     },
@@ -703,7 +703,7 @@
       "effects": [
         {
           "type": "CREATE_WARNING",
-          "description": "alerte d’étage entsprechend Level erzeugen.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.lightWarnings"
         }
@@ -717,7 +717,7 @@
       ],
       "uiHints": {
         "primaryComponent": "RADAR_ONLY",
-        "participantSummary": "Aktuelle lumièrewarnung voir",
+        "participantSummary": "Suivre cette etape.",
         "captainSummary": "alertes d’étage priorisiert voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -739,7 +739,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "niveau cible, consommation de sel et verantwortliche Person consigner.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -747,7 +747,7 @@
         "maximumParticipants": 1,
         "exclusiveClaim": false,
         "recommendedParticipants": 1,
-        "requiredRoleLabel": "lumièreverantwortlicher"
+        "requiredRoleLabel": "Responsable"
       },
       "inputFields": [
         {
@@ -792,9 +792,9 @@
         }
       ],
       "instructions": [
-        "Vorheriges et niveau cible saisir.",
+        "Suivre l indication en jeu et confirmer.",
         "quantité de sel confirmer.",
-        "Neue Ablesezeit définir."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
@@ -813,7 +813,7 @@
         },
         {
           "type": "DECREMENT",
-          "description": "Persönlichen selbestand reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.participantInventories[].salt",
           "value": "saltUsed"
@@ -943,7 +943,7 @@
         {
           "path": "gigalodon.participantInventories[].lastConfirmedAt",
           "type": "timestamp",
-          "description": "Letzte confirmation",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         },
@@ -1049,7 +1049,7 @@
         }
       ],
       "instructions": [
-        "Vorherigen Bestand afficher.",
+        "Suivre l indication en jeu et confirmer.",
         "perte confirmer.",
         "position du joueur auf Vorposten définir."
       ],
@@ -1064,7 +1064,7 @@
       "effects": [
         {
           "type": "CLEAR_INVENTORY",
-          "description": "Getragenes Raidinventar gemäss confirmé perte leeren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.participantInventories[]"
         },
@@ -1099,7 +1099,7 @@
         ],
         "quickActions": [
           "perte confirmer",
-          "Korrigieren"
+          "Confirmer"
         ]
       }
     },
@@ -1144,7 +1144,7 @@
         {
           "path": "gigalodon.deposit.confirmedScoreDelta",
           "type": "integer",
-          "description": "Berechneter Scorezuwachs",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         }
@@ -1210,7 +1210,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "8–12 joueurs, Sessionlinks et Grundzustand erzeugen.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -1243,12 +1243,12 @@
       ],
       "instructions": [
         "Gigalodon-Definition choisir.",
-        "Session et Einladungslinks erzeugen."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Session-ID et Links erzeugt."
+          "Condition confirmee en jeu."
         ],
         "confirmationPolicy": "SYSTEM",
         "resultFields": []
@@ -1269,14 +1269,14 @@
       "uiHints": {
         "primaryComponent": "FORM",
         "participantSummary": "Session beitreten",
-        "captainSummary": "Session erstellen",
+        "captainSummary": "Controler cette etape.",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "session.name",
           "session.language"
         ],
         "quickActions": [
-          "Session erstellen"
+          "Confirmer"
         ]
       }
     },
@@ -1322,7 +1322,7 @@
       "instructions": [
         "responsable d’escouade de combat benennen.",
         "lumière-, ressources-, Luminarium-, Exécrabe-, Pincen- et Finalrollen abdecken.",
-        "Rollen dürfen kombiniert werden."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
@@ -1372,7 +1372,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "60-Minuten-Timer lancer et erstes lumière d’étage saisir.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -1392,7 +1392,7 @@
         {
           "path": "gigalodon.lightStates[-1]",
           "type": "object",
-          "description": "Erster lumièrestatus",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "LIVE_REQUIRED",
           "required": true
         }
@@ -1421,13 +1421,13 @@
         },
         {
           "type": "START_TIMER",
-          "description": "Globalen Timer lancer.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "session.timer"
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "étage--1-groupes erzeugen.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G1-010"
         }
@@ -1497,7 +1497,7 @@
         }
       ],
       "instructions": [
-        "Charger la valeur standard 18 du guide détaillé.",
+        "Suivre l indication en jeu et confirmer.",
         "Confirmer le nombre cible visible pendant le pilote."
       ],
       "completion": {
@@ -1577,8 +1577,8 @@
       ],
       "instructions": [
         "Freie groupe prendre.",
-        "Nach jedem combat Registre actualiser.",
-        "groupes respawnen hier nicht."
+        "Suivre l indication en jeu et confirmer.",
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "COUNTER_TARGET",
@@ -1687,7 +1687,7 @@
       "uiHints": {
         "primaryComponent": "CHECKLIST",
         "participantSummary": "Fragmentstatus voir",
-        "captainSummary": "Globalen Fragmentstatus voir",
+        "captainSummary": "Controler cette etape.",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.fragments.first"
@@ -1781,7 +1781,7 @@
         "maximumParticipants": 12,
         "exclusiveClaim": false,
         "recommendedParticipants": 1,
-        "requiredRoleLabel": "lumièreverantwortlicher"
+        "requiredRoleLabel": "Responsable"
       },
       "inputFields": [
         {
@@ -1795,8 +1795,8 @@
         }
       ],
       "instructions": [
-        "Aktuelles Level saisir.",
-        "Bei Bedarf Luminomachine auffüllen.",
+        "Suivre l indication en jeu et confirmer.",
+        "Suivre l indication en jeu et confirmer.",
         "escouade über actife Modifier informieren."
       ],
       "completion": {
@@ -1849,7 +1849,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Einmaligen Bosskampf avec confirmé groupe lancer.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": "Loch [4,7]",
       "assignment": {
         "mode": "TEAM",
@@ -1861,7 +1861,7 @@
       },
       "inputFields": [],
       "instructions": [
-        "Bossgruppe confirmer.",
+        "Suivre l indication en jeu et confirmer.",
         "Einmaligkeit behuiten.",
         "combat lancer."
       ],
@@ -1941,7 +1941,7 @@
       ],
       "instructions": [
         "Victoire confirmer.",
-        "Genau einen porteur der Unité saisir.",
+        "Suivre l indication en jeu et confirmer.",
         "Fragment 2 global définir.",
         "sel der combattants actualiser."
       ],
@@ -2233,7 +2233,7 @@
         {
           "path": "gigalodon.luminarium.executedClicks",
           "type": "integer",
-          "description": "Ausgeführte Klicks",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "default": 0,
           "minimum": 0
@@ -2290,7 +2290,7 @@
           "gigalodon.luminarium.executedClicks"
         ],
         "quickActions": [
-          "Klick ausgeführt",
+          "Confirmer",
           "Reset signaler",
           "Terminé"
         ]
@@ -2317,7 +2317,7 @@
         "maximumParticipants": 12,
         "exclusiveClaim": false,
         "recommendedParticipants": 1,
-        "requiredRoleLabel": "lumièreverantwortlicher"
+        "requiredRoleLabel": "Responsable"
       },
       "inputFields": [
         {
@@ -2345,7 +2345,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "séquenceschreiber bestimmen.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "G4-020"
         }
@@ -2384,7 +2384,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Mindestens eine Person dokumentiert die quatre Erscheinungen.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -2398,19 +2398,19 @@
         {
           "path": "gigalodon.execrabe.sequenceRecorderParticipantId",
           "type": "participantId",
-          "description": "séquenceschreiber",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         }
       ],
       "instructions": [
-        "Eine klare verantwortliche Person bestimmen.",
+        "Suivre l indication en jeu et confirmer.",
         "Optional deuxte personne de confirmation."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
-          "séquenceschreiber défini."
+          "Condition confirmee en jeu."
         ],
         "confirmationPolicy": "CAPTAIN",
         "resultFields": []
@@ -2431,14 +2431,14 @@
       ],
       "uiHints": {
         "primaryComponent": "FORM",
-        "participantSummary": "Deine Schreiberrolle voir",
-        "captainSummary": "Schreiber festlegen",
+        "participantSummary": "Suivre cette etape.",
+        "captainSummary": "Controler cette etape.",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.execrabe.sequenceRecorderParticipantId"
         ],
         "quickActions": [
-          "Schreiber choisir"
+          "Confirmer"
         ]
       }
     },
@@ -2559,7 +2559,7 @@
           "Oursin",
           "Perle",
           "Poulpe",
-          "Korrigieren"
+          "Confirmer"
         ]
       }
     },
@@ -2618,7 +2618,7 @@
         "mode": "CAPTAIN_CONFIRMATION",
         "criteria": [
           "Boss vaincu.",
-          "Beide porteur défini.",
+          "Condition confirmee en jeu.",
           "Fragment 3 confirmé."
         ],
         "confirmationPolicy": "SECOND_PERSON",
@@ -2694,7 +2694,7 @@
         {
           "path": "gigalodon.execrabe.puzzle.progressIndex",
           "type": "integer",
-          "description": "Richtige Eingaben 0–4",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "default": 0,
           "minimum": 0,
@@ -2780,8 +2780,8 @@
           "gigalodon.execrabe.puzzle.progressIndex"
         ],
         "quickActions": [
-          "Richtige Statue",
-          "Falsche Statue"
+          "Confirmer",
+          "Confirmer"
         ]
       }
     },
@@ -2962,7 +2962,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Globalen Alterationsstatus pour alle quatre Fragmente vérifier.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL_OR_TEAM",
@@ -3116,7 +3116,7 @@
         {
           "path": "gigalodon.floorStates[-5].farmAssignments",
           "type": "array",
-          "description": "Farmgruppen↔escouades",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE"
         },
         {
@@ -3130,7 +3130,7 @@
       ],
       "instructions": [
         "groupes parallel répartir.",
-        "Nach jedem combat inventaire confirmer.",
+        "Suivre l indication en jeu et confirmer.",
         "Autopilotproblem an [12,13] behuiten."
       ],
       "completion": {
@@ -3157,7 +3157,7 @@
       ],
       "uiHints": {
         "primaryComponent": "BOARD",
-        "participantSummary": "Deine Farmgruppe voir",
+        "participantSummary": "Suivre cette etape.",
         "captainSummary": "escouades, lumière, Chance et score non sécurisé voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -3455,7 +3455,7 @@
       ],
       "instructions": [
         "Victoire confirmer.",
-        "Genau einen Noirceur-porteur définir.",
+        "Suivre l indication en jeu et confirmer.",
         "Final-retour activer."
       ],
       "completion": {
@@ -3789,7 +3789,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Produktwarnungen bei >10, 6–10, 3–6 et <3 Minuten.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -3817,7 +3817,7 @@
       "effects": [
         {
           "type": "CREATE_WARNING",
-          "description": "Zeitwarnung erzeugen.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.timeRisk"
         }
@@ -3852,7 +3852,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "combat final avant Ablauf des globalen Timers lancer.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -3966,7 +3966,7 @@
         {
           "path": "gigalodon.final.totalDamage",
           "type": "integer",
-          "description": "Gesamtschaden",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "default": 0,
           "minimum": 0
@@ -3981,9 +3981,9 @@
         }
       ],
       "instructions": [
-        "Gesamtschaden actualiser.",
+        "Suivre l indication en jeu et confirmer.",
         "Runde jusqu’à 3 suivre.",
-        "Gebietsschaden nur einmal pour das Gigalodon zählen."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
@@ -4076,7 +4076,7 @@
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Aktueller état gemeldet."
+          "Condition confirmee en jeu."
         ],
         "confirmationPolicy": "SELF",
         "resultFields": []
@@ -4084,7 +4084,7 @@
       "effects": [
         {
           "type": "CREATE_WARNING",
-          "description": "escouadewarnung zur Verschluckmechanik.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "gigalodon.swallowWarning"
         }
@@ -4098,7 +4098,7 @@
       "uiHints": {
         "primaryComponent": "FORM",
         "participantSummary": "Verschluckzustand signaler",
-        "captainSummary": "Sofortwarnung voir",
+        "captainSummary": "Controler cette etape.",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "gigalodon.final.swallowedParticipantId",
@@ -4108,7 +4108,7 @@
           "joueur avalé",
           "Feld frei",
           "Feld belegt",
-          "Entwarnung"
+          "Confirmer"
         ]
       }
     },
@@ -4147,7 +4147,7 @@
         }
       ],
       "instructions": [
-        "Zwischenwerte auf letzte erreichte Schwelle abrunden."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "AUTOMATIC_RULE",
@@ -4679,7 +4679,7 @@
       "conditions": [],
       "onSatisfied": "SET_READY",
       "sourceStatus": "PRODUCT_RULE",
-      "description": "Zeitwarnungen laufen ab Raidstart kontinuierlich."
+      "description": "Etape du raid a suivre et a confirmer en jeu."
     },
     {
       "id": "D-GG-GF-030-TO-GG-010",
@@ -4830,7 +4830,7 @@
   "scoreRules": [
     {
       "id": "GIG-SCORE-SALT",
-      "trigger": "Gemeinsames sel gesammelt ou pour lumière verbraucht.",
+      "trigger": "Declencheur a confirmer.",
       "operation": "ADD",
       "value": 0,
       "cap": null,
@@ -4951,7 +4951,7 @@
     },
     {
       "id": "GIG-SCORE-EXE-PENALTY",
-      "trigger": "Falsche Statue im Exécrabe-énigme.",
+      "trigger": "Declencheur a confirmer.",
       "operation": "SUBTRACT",
       "value": 1000,
       "cap": null,
@@ -4962,7 +4962,7 @@
     },
     {
       "id": "GIG-SCORE-DAMAGE",
-      "trigger": "Finalschaden erreicht Schwellenwert.",
+      "trigger": "Declencheur a confirmer.",
       "operation": "LOOKUP_THRESHOLD",
       "value": [
         [
@@ -5121,7 +5121,7 @@
         "EDITOR",
         "AFFECTED_TEAM"
       ],
-      "recommendedAction": "selverantwortlichen activer.",
+      "recommendedAction": "Verifier la situation et confirmer l action.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "testRefs": [
         "GIG-P0-001"
@@ -5207,7 +5207,7 @@
         "value": true,
         "description": ""
       },
-      "message": "Mindestens ein inventaire ist seit über 5 Minuten unconfirmé.",
+      "message": "Une situation demande l attention du capitaine.",
       "audience": [
         "CAPTAIN",
         "EDITOR",
@@ -5429,7 +5429,7 @@
         "task.GF-020.input.mureineHolder"
       ],
       "trigger": "Mureine-Drops confirmé",
-      "validation": "Genau ein joueurs.",
+      "validation": "Validation a confirmer.",
       "sourceStatus": "PRODUCT_RULE"
     },
     {
@@ -5466,7 +5466,7 @@
         "task.GF-020.input.willorqueHolder"
       ],
       "trigger": "Willorque-Drops confirmé",
-      "validation": "Genau ein joueurs.",
+      "validation": "Validation a confirmer.",
       "sourceStatus": "PRODUCT_RULE"
     },
     {
@@ -5500,7 +5500,7 @@
       "title": "Ankama – Raid is not dead / Update 3.6",
       "url": "https://www.dofus.com/fr/mmorpg/actualites/maj/1770516-raid-not-dead/details",
       "checkedAt": "2026-06-26",
-      "notes": "Offizielle Raidgrundlagen."
+      "notes": "Notes de reference."
     },
     {
       "id": "GIG-PATCH-3.6.4.3",
@@ -5508,7 +5508,7 @@
       "title": "Patch 3.6.4.3 – 24.06.2026",
       "url": "https://www.dofus.com/fr/mmorpg/actualites/maj/1770516-raid-not-dead/correctifs/1770644-patch-notes-3-6-4-3-24-06-2026",
       "checkedAt": "2026-06-26",
-      "notes": "Timerende-Fix erwähnt; aktuelles Verhalten vérifier en jeu."
+      "notes": "Notes de reference."
     },
     {
       "id": "GIG-GUIDE-DPLN",
@@ -5568,7 +5568,7 @@
     },
     {
       "id": "GIG-Q-UNIQUE-LOSS",
-      "question": "Gehen Unique-Bossressourcen bei Défaite verloren?",
+      "question": "Point a verifier en jeu.",
       "impact": "moteur de risque et Recovery.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
       "configurationStrategy": "Confirmer manuellement en jeu avant d’automatiser.",
@@ -5608,10 +5608,10 @@
     },
     {
       "id": "GIG-Q-INGAME-INFO",
-      "question": "Welche globalen Informationen zeigt der Client prêts?",
+      "question": "Point a verifier en jeu.",
       "impact": "Redundanz der UI.",
       "status": "OPEN",
-      "configurationStrategy": "Persönliche nächste Aktion et verteilte Informationen priorisieren; Duplikate après Screenshots reduzieren.",
+      "configurationStrategy": "Confirmer manuellement en jeu avant automatisation.",
       "testRefs": [
         "COM-007"
       ]
@@ -5686,7 +5686,7 @@
     },
     {
       "id": "GIG-RESOURCE-SCORE",
-      "description": "Punkte pro déposéer persönlicher Ressource; sel bleibt gemeinsame ressource de raid avec 0 Punkten.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "values": {
         "salt": 0,
@@ -5808,7 +5808,7 @@
           "finalHandover": null,
           "sourceStatus": "LIVE_REQUIRED",
           "status": "OPEN",
-          "note": "Funktionsort bekannt, Kartenwert nicht eindeutig belegt."
+          "note": "Information de raid a verifier."
         },
         "-1": {
           "luminomachines": [

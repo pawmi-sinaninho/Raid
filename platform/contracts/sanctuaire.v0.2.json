@@ -3,9 +3,9 @@
   "id": "sanctuaire-jardins-eternels",
   "slug": "sanctuaire-des-jardins-eternels",
   "names": {
-    "fr": "Sanctuaire des Jardins éternels",
+    "fr": "Sanctuaire des Jardins eternels",
     "en": "Sanctuary of the Eternal Gardens",
-    "de": "Sanctuaire des Jardins éternels"
+    "de": "Sanctuaire des Jardins eternels"
   },
   "gameVersion": "3.6.4.3",
   "definitionVersion": "0.2.1",
@@ -44,7 +44,7 @@
             ]
           },
           {
-            "name": "Monochrome",
+            "name": "Equipe",
             "recommendedSize": 2,
             "responsibilities": [
               "Socles",
@@ -83,7 +83,7 @@
             ]
           },
           {
-            "name": "Monochrome",
+            "name": "Equipe",
             "recommendedSize": 2,
             "responsibilities": [
               "Socles",
@@ -122,7 +122,7 @@
             ]
           },
           {
-            "name": "Monochrome",
+            "name": "Equipe",
             "recommendedSize": 4,
             "responsibilities": [
               "Socles",
@@ -332,7 +332,7 @@
       {
         "path": "sanctuaire.raidLife",
         "type": "integer",
-        "description": "Aktuelles Raid-Leben",
+        "description": "Etape du raid a suivre et a confirmer en jeu.",
         "sourceStatus": "OFFICIAL_CONFIRMED",
         "required": true,
         "default": 20,
@@ -360,7 +360,7 @@
       {
         "path": "sanctuaire.corridorTarget",
         "type": "integer",
-        "description": "Konfigurierbares Korridorziel: base du guide 10 salles × 6 Monster = 60",
+        "description": "Etape du raid a suivre et a confirmer en jeu.",
         "sourceStatus": "GUIDE_CONFIRMED",
         "default": 60,
         "minimum": 1
@@ -461,7 +461,7 @@
       "id": "S1-OUV",
       "order": 13,
       "names": {
-        "fr": "Ouvrage Monochrome",
+        "fr": "Etape du raid",
         "en": null,
         "de": null
       },
@@ -640,7 +640,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "READY",
-      "description": "Erzeugt den Laufzustand, Links et den anonymen Wiederverbindungsrahmen.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "CAPTAIN",
@@ -681,7 +681,7 @@
       "instructions": [
         "Raiddefinition Sanctuaire choisir.",
         "Sessionname et Sprache festlegen.",
-        "capitaine-, joueurs- et optional Zuschauerlink erzeugen."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
@@ -701,7 +701,7 @@
         },
         {
           "type": "LOG_EVENT",
-          "description": "Sessionerstellung consigner.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE"
         }
       ],
@@ -712,14 +712,14 @@
       "uiHints": {
         "primaryComponent": "FORM",
         "participantSummary": "Session beitreten",
-        "captainSummary": "Session erstellen",
+        "captainSummary": "Controler cette etape.",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "session.name",
           "session.language"
         ],
         "quickActions": [
-          "Session erstellen"
+          "Confirmer"
         ]
       }
     },
@@ -757,7 +757,7 @@
         {
           "path": "backupEditorParticipantId",
           "type": "participantId",
-          "description": "Mindestens ein éditeur de secours",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         }
@@ -765,7 +765,7 @@
       "instructions": [
         "zones de départ Bateaux, Échecs, Objekte/couleur et jardins abdecken.",
         "Proposer les modèles pour 8, 12 et 16 joueurs.",
-        "Mindestens einen éditeur de secours benennen."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "CAPTAIN_CONFIRMATION",
@@ -877,7 +877,7 @@
         },
         {
           "type": "START_TIMER",
-          "description": "Globalen Raidtimer lancer.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "session.timer"
         },
@@ -925,7 +925,7 @@
       "optional": false,
       "initialStatus": "LOCKED",
       "description": "Révéler six bateaux en papier répartis aléatoirement.",
-      "location": "Ouvrage Monochrome",
+      "location": "Position a verifier en jeu.",
       "assignment": {
         "mode": "INDIVIDUAL_OR_TEAM",
         "minimumParticipants": 1,
@@ -938,7 +938,7 @@
         {
           "path": "sanctuaire.boatsFound",
           "type": "integer",
-          "description": "Gefundene Bateaux",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true,
           "default": 0,
@@ -1006,7 +1006,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "cases de bateau beider Schlhuitfelder saisir.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -1040,7 +1040,7 @@
       "completion": {
         "mode": "FORM_SUBMIT",
         "criteria": [
-          "Beide plateaux enthalten je trois eindeutige Zellen."
+          "Condition confirmee en jeu."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -1062,7 +1062,7 @@
       "uiHints": {
         "primaryComponent": "BOARD",
         "participantSummary": "Bootspositionen eintragen",
-        "captainSummary": "Beide plateaux kontrollieren",
+        "captainSummary": "Controler cette etape.",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.battleship.boardA.boatCells",
@@ -1121,7 +1121,7 @@
         {
           "path": "sanctuaire.battleship.lastShot",
           "type": "object",
-          "description": "Letzter Schuss",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE"
         }
       ],
@@ -1312,7 +1312,7 @@
       "instructions": [
         "pièces vérifier; grün bedeutet type cible.",
         "Alle quatre positions cibles saisir.",
-        "Falsches Prüfen kostet laut Guide kein Leben."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
@@ -1383,7 +1383,7 @@
         }
       ],
       "instructions": [
-        "Genau quatre choisir les joueurs.",
+        "Suivre l indication en jeu et confirmer.",
         "Un nombre inférieur ou supérieur bloque le départ."
       ],
       "completion": {
@@ -1455,7 +1455,7 @@
         {
           "path": "sanctuaire.chess.turnsRemaining",
           "type": "integer",
-          "description": "Verbleibende Belladone-Züge",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "default": 4,
           "minimum": 0,
@@ -1503,7 +1503,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben pro combattants reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": "participantCount"
@@ -1720,7 +1720,7 @@
       ],
       "instructions": [
         "Reihenfolge I → II → III → IV einhalten.",
-        "Jede richtige Aktiquatreung confirmer."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "COUNTER_TARGET",
@@ -1886,7 +1886,7 @@
         {
           "path": "sanctuaire.gardens",
           "type": "array",
-          "description": "NORTH/EAST/SOUTH/WEST avec Verantwortlichen",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "required": true
         }
@@ -1998,7 +1998,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Falsche Validierung kostet 1 Raid-Leben.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": 1
@@ -2115,7 +2115,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Combiner la statue finale et la couleur monochrome pour déterminer le monstre cible.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -2136,14 +2136,14 @@
         {
           "path": "sanctuaire.closTarget.expectedMonster",
           "type": "string",
-          "description": "Erwartetes monstre cible",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         },
         {
           "path": "sanctuaire.closTarget.expectedMap",
           "type": "string",
-          "description": "Erwartete Karte",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         }
@@ -2421,7 +2421,7 @@
       ],
       "uiHints": {
         "primaryComponent": "GATE",
-        "participantSummary": "Richtiges Begleitmonster voir",
+        "participantSummary": "Suivre cette etape.",
         "captainSummary": "Vérifier la transmission",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -2470,12 +2470,12 @@
       "instructions": [
         "type cible gross afficher.",
         "Vaincre uniquement ce type en premier.",
-        "Falschen ersten Kill sofort signaler."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "MANUAL",
         "criteria": [
-          "Richtiger erster Kill confirmé."
+          "Condition confirmee en jeu."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -2492,7 +2492,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben pro combattants reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": "participantCount"
@@ -2563,7 +2563,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben pro Charakter reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": "participantCount"
@@ -2673,7 +2673,7 @@
         {
           "path": "sanctuaire.guardians.gardien.correctGlyphsTriggered",
           "type": "integer",
-          "description": "Richtige Glyphen",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "default": 0,
           "minimum": 0,
@@ -2683,7 +2683,7 @@
       "instructions": [
         "Quatre sichere Objekte gross afficher.",
         "Beschwörungen können Glyphen auslösen.",
-        "Falsche Glyphe sofort signaler."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "COUNTER_TARGET",
@@ -2705,7 +2705,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben pro combattants reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": "participantCount"
@@ -2727,7 +2727,7 @@
         ],
         "quickActions": [
           "Glyphe korrekt",
-          "Falsche Glyphe"
+          "Confirmer"
         ]
       }
     },
@@ -2776,7 +2776,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben pro Charakter reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": "participantCount"
@@ -2914,13 +2914,13 @@
       ],
       "instructions": [
         "Pro Bosszug Stapel erhöhen.",
-        "Adds après Tod reduzieren.",
+        "Suivre l indication en jeu et confirmer.",
         "Bei 0 Adds Doppelzug markieren."
       ],
       "completion": {
         "mode": "MANUAL",
         "criteria": [
-          "combat beendet ou Tracker nicht mehr benötigt."
+          "Condition confirmee en jeu."
         ],
         "confirmationPolicy": "SELF",
         "resultFields": []
@@ -2999,7 +2999,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben pro Charakter reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": "participantCount"
@@ -3027,7 +3027,7 @@
       "phaseId": "S2-SEN",
       "order": 10,
       "names": {
-        "fr": "Charger la couleur monochrome",
+        "fr": "Etape du raid",
         "en": null,
         "de": null
       },
@@ -3035,7 +3035,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Monochrome-couleur et Elementzuordnung in Sentinelle-Karte charger.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -3063,7 +3063,7 @@
       "completion": {
         "mode": "AUTOMATIC_RULE",
         "criteria": [
-          "monochromeColor présent et Element gemappt."
+          "Condition confirmee en jeu."
         ],
         "confirmationPolicy": "SYSTEM",
         "resultFields": []
@@ -3121,20 +3121,20 @@
         {
           "path": "sanctuaire.guardians.sentinelle.targetObeliskConfirmed",
           "type": "boolean",
-          "description": "Richtiges objectif auf 1 HP",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "default": false
         }
       ],
       "instructions": [
         "objectif farblich et textlich afficher.",
-        "Keinen falschen Obelisken auf 1 HP bringen.",
+        "Suivre l indication en jeu et confirmer.",
         "Sentinelle in korrekter Glyphe halten."
       ],
       "completion": {
         "mode": "MANUAL",
         "criteria": [
-          "Korrekte Glyphe erzeugt; Sentinelle verwundbar."
+          "Condition confirmee en jeu."
         ],
         "confirmationPolicy": "SECOND_PERSON",
         "resultFields": []
@@ -3151,7 +3151,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben pro combattants reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": "participantCount"
@@ -3221,7 +3221,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben pro Charakter reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": "participantCount"
@@ -3280,7 +3280,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Korridorziel confirmer.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "S3-COR-010"
         }
@@ -3294,7 +3294,7 @@
       "uiHints": {
         "primaryComponent": "GATE",
         "participantSummary": "Korridor ouvert",
-        "captainSummary": "Korridorziel charger",
+        "captainSummary": "Controler cette etape.",
         "showMechanicOnDemand": true,
         "criticalFields": [],
         "quickActions": []
@@ -3357,7 +3357,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Korridorräume erzeugen.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "S3-COR-020"
         }
@@ -3396,7 +3396,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Konfigurierbare salles et combats solo pour die Session erzeugen.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -3410,19 +3410,19 @@
         {
           "path": "sanctuaire.corridorRooms",
           "type": "array",
-          "description": "Erzeugte salles et combats",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         }
       ],
       "instructions": [
-        "Hypothèse standard: 10 salles × 6 combats solo.",
+        "Suivre l indication en jeu et confirmer.",
         "Tatsächliche nombre cible depuis la session utiliser."
       ],
       "completion": {
         "mode": "AUTOMATIC_RULE",
         "criteria": [
-          "Summe der erzeugten combats = corridorTarget."
+          "Condition confirmee en jeu."
         ],
         "confirmationPolicy": "SYSTEM",
         "resultFields": []
@@ -3517,7 +3517,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben gemäss combatregel reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": 1
@@ -3557,7 +3557,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Score vergeben et beide boss finaux déverrouiller.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -3906,7 +3906,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Beide Waffen eliminieren, um dauerhafte Verwundbarkeit herzustellen.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -3954,7 +3954,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "Pommeau et Lame eliminieren",
-        "captainSummary": "Beide états cibles voir",
+        "captainSummary": "Controler cette etape.",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.queen.pommeauAlive",
@@ -4011,7 +4011,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben pro Charakter reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": "participantCount"
@@ -4436,7 +4436,7 @@
       "failureEffects": [
         {
           "type": "DECREMENT",
-          "description": "Raid-Leben pro Charakter reduzieren.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "GUIDE_CONFIRMED",
           "target": "sanctuaire.raidLife",
           "value": "participantCount"
@@ -4474,7 +4474,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Beide boss finaux vaincu: Session figer et Zusammenfassung erzeugen.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -4575,7 +4575,7 @@
       "instructions": [
         "Seiten 1–4 direkt verfügbar.",
         "Seite 5 erst après gardienn.",
-        "Jede Seite aufnehmen et nochmals lesen."
+        "Suivre l indication en jeu et confirmer."
       ],
       "completion": {
         "mode": "ALL_SUBTASKS",
@@ -5206,7 +5206,7 @@
     },
     {
       "id": "SAN-SCORE-CORRIDOR",
-      "trigger": "Korridorziel vollständig erreicht.",
+      "trigger": "Declencheur a confirmer.",
       "operation": "ADD",
       "value": 2000,
       "cap": null,
@@ -5239,7 +5239,7 @@
         "value": 5,
         "description": ""
       },
-      "message": "Raid-Leben kritisch: höchstens 5 verbleibend.",
+      "message": "Une situation demande l attention du capitaine.",
       "audience": [
         "CAPTAIN",
         "EDITOR",
@@ -5363,11 +5363,11 @@
         }
       ],
       "sourceStatus": "PRODUCT_RULE",
-      "description": "Verhindert manuelle Freischaltfehler."
+      "description": "Etape du raid a suivre et a confirmer en jeu."
     },
     {
       "id": "SAN-AUTO-GUARDIAN-GATE",
-      "trigger": "Alle quatre gardienabschlussaufgaben sind COMPLETED.",
+      "trigger": "Declencheur a confirmer.",
       "guardConditions": [],
       "actions": [
         {
@@ -5401,7 +5401,7 @@
         },
         {
           "type": "UNLOCK_TASK",
-          "description": "Beide boss finaux déverrouiller.",
+          "description": "Etape du raid a suivre et a confirmer en jeu.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "S4"
         }
@@ -5466,7 +5466,7 @@
         "ui.guardian.gardien.safeObjects"
       ],
       "trigger": "S1-OUV-020 deuxtconfirmé",
-      "validation": "Genau quatre Objekte in Podestreihenfolge.",
+      "validation": "Validation a confirmer.",
       "sourceStatus": "PRODUCT_RULE"
     },
     {
@@ -5476,7 +5476,7 @@
         "task.S1-ALL-900",
         "phase.S2"
       ],
-      "trigger": "Alle Puzzleabschlussaufgaben COMPLETED",
+      "trigger": "Declencheur a confirmer.",
       "validation": "Quatre eindeutige Abschlüsse.",
       "sourceStatus": "PRODUCT_RULE"
     },
@@ -5487,7 +5487,7 @@
         "task.S2-ALL-900",
         "phase.S3"
       ],
-      "trigger": "Alle gardienabschlussaufgaben COMPLETED",
+      "trigger": "Declencheur a confirmer.",
       "validation": "Quatre eindeutige Victoiree.",
       "sourceStatus": "PRODUCT_RULE"
     },
@@ -5510,7 +5510,7 @@
       "title": "Ankama – Raid is not dead / Update 3.6",
       "url": "https://www.dofus.com/fr/mmorpg/actualites/maj/1770516-raid-not-dead/details",
       "checkedAt": "2026-06-26",
-      "notes": "Offizielle Raidgrundlagen."
+      "notes": "Notes de reference."
     },
     {
       "id": "SAN-GUIDE-DPLN",
@@ -5571,10 +5571,10 @@
     },
     {
       "id": "SAN-Q-INGAME-INFO",
-      "question": "Welche globalen Fortschrittsinformationen zeigt der Client prêts?",
+      "question": "Point a verifier en jeu.",
       "impact": "Vermeidung redundanter UI.",
       "status": "OPEN",
-      "configurationStrategy": "Wireframes priorisieren fehlende nächste Aktion; doppelte Kennzahlen später anhand Screenshots reduzieren.",
+      "configurationStrategy": "Confirmer manuellement en jeu avant automatisation.",
       "testRefs": [
         "COM-007"
       ]
@@ -5630,7 +5630,7 @@
     },
     {
       "id": "SAN-SENTINELLE-COLOR-ELEMENT",
-      "description": "Monochrome-couleur zu Sentinelle-Element.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "values": {
         "AMBRE_ORANGE": "EARTH",
@@ -5641,7 +5641,7 @@
     },
     {
       "id": "SAN-CLOS-TARGET-MAPPING",
-      "description": "Statue + Monochrome-couleur zu monstre cible et Karte.",
+      "description": "Etape du raid a suivre et a confirmer en jeu.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "values": {
         "AMBRE_ORANGE": {

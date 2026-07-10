@@ -271,7 +271,7 @@ export class PlatformStore {
             delta: sessionSalt,
             before: existingAmount,
             after: existingAmount + sessionSalt,
-            cause: "Phase 8.6.1: persönliche Salzbestände verlustfrei in den gemeinsamen Raidpool aggregiert",
+            cause: "Phase 8.6.1 : reserve de sel commune recalculee sans perte",
             actorParticipantId: null,
             responsibleParticipantId: null,
             floor: null,
@@ -1159,11 +1159,11 @@ export class PlatformStore {
     intervalSourceStatus?: SourceStatus;
     saltCostSourceStatus?: SourceStatus;
   }): Promise<RaidState> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen Lichtwerte nicht ändern.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas modifier les valeurs de lumiere.");
     if (![-1, -2, -3, -4, -5].includes(input.floor)) throw new DomainError("INVALID_FLOOR", 400, "Étage invalide.");
-    if (!Number.isInteger(input.level) || input.level < 0 || input.level > 4) throw new DomainError("INVALID_LIGHT_LEVEL", 400, "Lichtlevel muss zwischen 0 et 4 liegen.");
+    if (!Number.isInteger(input.level) || input.level < 0 || input.level > 4) throw new DomainError("INVALID_LIGHT_LEVEL", 400, "Le niveau de lumiere doit etre compris entre 0 et 4.");
     const intervalSeconds = input.intervalSeconds ?? 120;
-    if (!Number.isInteger(intervalSeconds) || intervalSeconds < 30 || intervalSeconds > 600) throw new DomainError("INVALID_LIGHT_INTERVAL", 400, "Lichtintervall muss zwischen 30 et 600 Sekunden liegen.");
+    if (!Number.isInteger(intervalSeconds) || intervalSeconds < 30 || intervalSeconds > 600) throw new DomainError("INVALID_LIGHT_INTERVAL", 400, "L intervalle de lumiere doit etre compris entre 30 et 600 secondes.");
     const observedAt = input.observedAt ?? new Date().toISOString();
     if (Number.isNaN(Date.parse(observedAt))) throw new DomainError("INVALID_TIMESTAMP", 400, "Beobachtungszeit ist ungültig.");
     return this.db.transaction(async (tx) => {
@@ -1173,7 +1173,7 @@ export class PlatformStore {
       if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       if (input.responsibleParticipantId) {
         const participant = (await tx.query<{ id: string }>(`SELECT id FROM participants WHERE id=$1 AND session_id=$2`, [input.responsibleParticipantId, actor.sessionId])).rows[0];
-        if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Lichtverantwortlicher wurde nicht gefunden.");
+        if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Responsable lumiere introuvable.");
       }
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
@@ -1181,7 +1181,7 @@ export class PlatformStore {
       if (input.floor !== -1 && (!accessKey || state.access[accessKey] !== true)) throw new DomainError("LIGHT_NOT_UNLOCKED", 409, "La lumière d’étage commence seulement après le déverrouillage de l’étage.");
       const previous = state.lightStates.find((item) => item.floor === input.floor) ?? null;
       if (previous && input.level > effectiveLightLevel(previous)) {
-        throw new DomainError("LIGHT_REFILL_COMMAND_REQUIRED", 409, "Eine Lichterhöhung muss Salz aus dem gemeinsamen Pool verbrauchen.");
+        throw new DomainError("LIGHT_REFILL_COMMAND_REQUIRED", 409, "Une recharge de lumiere doit consommer du sel de la reserve commune.");
       }
       const next: GigalodonLightState = {
         floor: input.floor,
@@ -1231,9 +1231,9 @@ export class PlatformStore {
     cause: string;
     responsibleParticipantId?: string | null;
   }): Promise<RaidState> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen den Salzpool nicht ändern.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas modifier la reserve de sel.");
     if (!Number.isInteger(input.delta) || input.delta === 0 || Math.abs(input.delta) > 10_000) throw new DomainError("INVALID_SALT_DELTA", 400, "Ungültige Salzänderung.");
-    if (input.delta < 0 && actor.role !== "CAPTAIN" && actor.role !== "EDITOR") throw new DomainError("FORBIDDEN", 403, "Nur Captain oder Editor dürfen den Salzpool korrigieren.");
+    if (input.delta < 0 && actor.role !== "CAPTAIN" && actor.role !== "EDITOR") throw new DomainError("FORBIDDEN", 403, "Seuls le capitaine ou l editeur peuvent corriger la reserve de sel.");
     if (!input.cause.trim()) throw new DomainError("SALT_CAUSE_REQUIRED", 400, "Ursache der Salzänderung fehlt.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
@@ -1242,11 +1242,11 @@ export class PlatformStore {
       if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const responsibleParticipantId = input.responsibleParticipantId ?? actor.participantId;
       const participant = (await tx.query<{ id: string }>(`SELECT id FROM participants WHERE id=$1 AND session_id=$2`, [responsibleParticipantId, actor.sessionId])).rows[0];
-      if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Salzverantwortlicher wurde nicht gefunden.");
+      if (!participant) throw new DomainError("PARTICIPANT_NOT_FOUND", 404, "Responsable sel introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const after = state.saltPool.amount + input.delta;
-      if (after < 0) throw new DomainError("INSUFFICIENT_SHARED_SALT", 409, "Der gemeinsame Salzpool darf nicht negativ werden.");
+      if (after < 0) throw new DomainError("INSUFFICIENT_SHARED_SALT", 409, "La reserve commune de sel ne peut pas devenir negative.");
       const entry: GigalodonSaltChange = {
         id: randomUUID(),
         kind: input.delta > 0 ? "COLLECTION" : "CORRECTION",
@@ -1285,9 +1285,9 @@ export class PlatformStore {
     targetLevel: number;
     responsibleParticipantId?: string | null;
   }): Promise<RaidState> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen Licht nicht auffüllen.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas recharger la lumiere.");
     if (![-1, -2, -3, -4, -5].includes(input.floor)) throw new DomainError("INVALID_FLOOR", 400, "Étage invalide.");
-    if (!Number.isInteger(input.targetLevel) || input.targetLevel < 1 || input.targetLevel > 4) throw new DomainError("INVALID_LIGHT_LEVEL", 400, "Le niveau cible doit être compris entre 1 et 4.");
+    if (!Number.isInteger(input.targetLevel) || input.targetLevel < 1 || input.targetLevel > 4) throw new DomainError("INVALID_LIGHT_LEVEL", 400, "Le niveau de lumiere doit etre compris entre 0 et 4.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
       if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
@@ -1303,7 +1303,7 @@ export class PlatformStore {
       const currentLevel = effectiveLightLevel(previous);
       const saltCost = calculateLightRefillCost(definition, currentLevel, input.targetLevel);
       if (saltCost <= 0) throw new DomainError("LIGHT_NOT_INCREASED", 409, "Le niveau cible doit être supérieur au niveau de lumière actuel.");
-      if (state.saltPool.amount < saltCost) throw new DomainError("INSUFFICIENT_SHARED_SALT", 409, "Der gemeinsame Salzpool reicht für diese Auffüllung nicht aus.", { available: state.saltPool.amount, required: saltCost });
+      if (state.saltPool.amount < saltCost) throw new DomainError("INSUFFICIENT_SHARED_SALT", 409, "La reserve commune de sel est insuffisante pour cette recharge.", { available: state.saltPool.amount, required: saltCost });
       const observedAt = new Date().toISOString();
       const nextLight: GigalodonLightState = {
         ...previous,
@@ -1652,7 +1652,7 @@ export class PlatformStore {
     result?: "VICTORY" | "DEFEAT";
   }): Promise<RaidState> {
     if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas mettre à jour le combat final.");
-    if (!Number.isInteger(input.combatRound) || input.combatRound < 1 || input.combatRound > 3) throw new DomainError("INVALID_COMBAT_ROUND", 400, "Runde muss zwischen 1 et 3 liegen.");
+    if (!Number.isInteger(input.combatRound) || input.combatRound < 1 || input.combatRound > 3) throw new DomainError("INVALID_COMBAT_ROUND", 400, "Le tour doit etre compris entre 1 et 3.");
     if (!Number.isInteger(input.totalDamage) || input.totalDamage < 0) throw new DomainError("INVALID_DAMAGE", 400, "Les dégâts sont invalides.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
@@ -1737,7 +1737,7 @@ export class PlatformStore {
   }
 
   async reportInformationIncorrect(actor: ActorContext, input: { reference: string; note: string }): Promise<InformationReport> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen keine fachliche Abweichung melden.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas signaler d ecart fonctionnel.");
     if (!input.reference.trim() || input.reference.trim().length > 160) throw new DomainError("INVALID_INFORMATION_REFERENCE", 400, "Regel oder Anzeige muss referenziert werden.");
     if (!input.note.trim() || input.note.trim().length > 800) throw new DomainError("INVALID_INFORMATION_NOTE", 400, "Eine kurze, konkrete Notiz ist erforderlich.");
     return this.db.transaction(async (tx) => {
