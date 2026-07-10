@@ -1122,7 +1122,7 @@ export class PlatformStore {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
       if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
       const task = (await tx.query<TaskRow>(`SELECT * FROM task_instances WHERE session_id=$1 AND definition_id='G1-020' FOR UPDATE`, [actor.sessionId])).rows[0];
-      if (!task || !["READY","CLAIMED","ACTIVE","WAITING"].includes(task.status)) throw new DomainError("FLOOR_PROGRESS_NOT_AVAILABLE", 409, "Etagenfortschritt ist noch nicht verfügbar.");
+      if (!task || !["READY","CLAIMED","ACTIVE","WAITING"].includes(task.status)) throw new DomainError("FLOOR_PROGRESS_NOT_AVAILABLE", 409, "La progression des étages n’est pas encore disponible.");
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
       if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const beforeState = structuredClone(row.raid_state ?? {});
@@ -1160,7 +1160,7 @@ export class PlatformStore {
     saltCostSourceStatus?: SourceStatus;
   }): Promise<RaidState> {
     if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen Lichtwerte nicht ändern.");
-    if (![-1, -2, -3, -4, -5].includes(input.floor)) throw new DomainError("INVALID_FLOOR", 400, "Ungültige Etage.");
+    if (![-1, -2, -3, -4, -5].includes(input.floor)) throw new DomainError("INVALID_FLOOR", 400, "Étage invalide.");
     if (!Number.isInteger(input.level) || input.level < 0 || input.level > 4) throw new DomainError("INVALID_LIGHT_LEVEL", 400, "Lichtlevel muss zwischen 0 und 4 liegen.");
     const intervalSeconds = input.intervalSeconds ?? 120;
     if (!Number.isInteger(intervalSeconds) || intervalSeconds < 30 || intervalSeconds > 600) throw new DomainError("INVALID_LIGHT_INTERVAL", 400, "Lichtintervall muss zwischen 30 und 600 Sekunden liegen.");
@@ -1178,7 +1178,7 @@ export class PlatformStore {
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const accessKey = ({ "-2": "floor2", "-3": "floor3", "-4": "floor4", "-5": "floor5" } as const)[String(input.floor) as "-2" | "-3" | "-4" | "-5"];
-      if (input.floor !== -1 && (!accessKey || state.access[accessKey] !== true)) throw new DomainError("LIGHT_NOT_UNLOCKED", 409, "Das Etagenlicht beginnt erst mit der Freischaltung der Etage.");
+      if (input.floor !== -1 && (!accessKey || state.access[accessKey] !== true)) throw new DomainError("LIGHT_NOT_UNLOCKED", 409, "La lumière d’étage commence seulement après le déverrouillage de l’étage.");
       const previous = state.lightStates.find((item) => item.floor === input.floor) ?? null;
       if (previous && input.level > effectiveLightLevel(previous)) {
         throw new DomainError("LIGHT_REFILL_COMMAND_REQUIRED", 409, "Eine Lichterhöhung muss Salz aus dem gemeinsamen Pool verbrauchen.");
@@ -1286,8 +1286,8 @@ export class PlatformStore {
     responsibleParticipantId?: string | null;
   }): Promise<RaidState> {
     if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen Licht nicht auffüllen.");
-    if (![-1, -2, -3, -4, -5].includes(input.floor)) throw new DomainError("INVALID_FLOOR", 400, "Ungültige Etage.");
-    if (!Number.isInteger(input.targetLevel) || input.targetLevel < 1 || input.targetLevel > 4) throw new DomainError("INVALID_LIGHT_LEVEL", 400, "Ziellevel muss zwischen 1 und 4 liegen.");
+    if (![-1, -2, -3, -4, -5].includes(input.floor)) throw new DomainError("INVALID_FLOOR", 400, "Étage invalide.");
+    if (!Number.isInteger(input.targetLevel) || input.targetLevel < 1 || input.targetLevel > 4) throw new DomainError("INVALID_LIGHT_LEVEL", 400, "Le niveau cible doit être compris entre 1 et 4.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
       if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
@@ -1299,10 +1299,10 @@ export class PlatformStore {
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const previous = state.lightStates.find((light) => light.floor === input.floor);
-      if (!previous) throw new DomainError("LIGHT_NOT_UNLOCKED", 409, "Das Etagenlicht wurde noch nicht freigeschaltet.", { floor: input.floor });
+      if (!previous) throw new DomainError("LIGHT_NOT_UNLOCKED", 409, "La lumière d’étage n’est pas encore déverrouillée.", { floor: input.floor });
       const currentLevel = effectiveLightLevel(previous);
       const saltCost = calculateLightRefillCost(definition, currentLevel, input.targetLevel);
-      if (saltCost <= 0) throw new DomainError("LIGHT_NOT_INCREASED", 409, "Das Ziellevel muss über dem aktuellen Lichtlevel liegen.");
+      if (saltCost <= 0) throw new DomainError("LIGHT_NOT_INCREASED", 409, "Le niveau cible doit être supérieur au niveau de lumière actuel.");
       if (state.saltPool.amount < saltCost) throw new DomainError("INSUFFICIENT_SHARED_SALT", 409, "Der gemeinsame Salzpool reicht für diese Auffüllung nicht aus.", { available: state.saltPool.amount, required: saltCost });
       const observedAt = new Date().toISOString();
       const nextLight: GigalodonLightState = {
@@ -1353,12 +1353,12 @@ export class PlatformStore {
     risk?: "LOW" | "MEDIUM" | "HIGH";
     confirmedAt?: string;
   }): Promise<RaidState> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen Inventare nicht ändern.");
-    if (actor.role === "PARTICIPANT" && input.participantId !== actor.participantId) throw new DomainError("FORBIDDEN", 403, "Teilnehmer dürfen nur ihr eigenes Inventar ändern.");
-    if (Object.prototype.hasOwnProperty.call(input.resources, "salt")) throw new DomainError("PERSONAL_SALT_FORBIDDEN", 400, "Salz ist eine gemeinsame Raidressource und darf nicht im persönlichen Inventar gespeichert werden.");
-    if (input.currentFloor !== null && ![-1, -2, -3, -4, -5, -6, 0].includes(input.currentFloor)) throw new DomainError("INVALID_FLOOR", 400, "Ungültige Etage.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas modifier les inventaires.");
+    if (actor.role === "PARTICIPANT" && input.participantId !== actor.participantId) throw new DomainError("FORBIDDEN", 403, "Les joueurs ne peuvent modifier que leur propre inventaire.");
+    if (Object.prototype.hasOwnProperty.call(input.resources, "salt")) throw new DomainError("PERSONAL_SALT_FORBIDDEN", 400, "Le sel est une ressource commune du raid et ne doit pas être stocké dans l’inventaire personnel.");
+    if (input.currentFloor !== null && ![-1, -2, -3, -4, -5, -6, 0].includes(input.currentFloor)) throw new DomainError("INVALID_FLOOR", 400, "Étage invalide.");
     const confirmedAt = input.confirmedAt ?? new Date().toISOString();
-    if (Number.isNaN(Date.parse(confirmedAt))) throw new DomainError("INVALID_TIMESTAMP", 400, "Bestätigungszeit ist ungültig.");
+    if (Number.isNaN(Date.parse(confirmedAt))) throw new DomainError("INVALID_TIMESTAMP", 400, "L’heure de confirmation est invalide.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
       if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
@@ -1411,8 +1411,8 @@ export class PlatformStore {
   }
 
   async depositGigalodonInventory(actor: ActorContext, participantId: string): Promise<RaidState> {
-    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen keine Einzahlung bestätigen.");
-    if (actor.role === "PARTICIPANT" && participantId !== actor.participantId) throw new DomainError("FORBIDDEN", 403, "Teilnehmer dürfen nur das eigene Inventar einzahlen.");
+    if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Les spectateurs ne peuvent pas confirmer un dépôt.");
+    if (actor.role === "PARTICIPANT" && participantId !== actor.participantId) throw new DomainError("FORBIDDEN", 403, "Les joueurs ne peuvent déposer que leur propre inventaire.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
       if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
@@ -1421,11 +1421,11 @@ export class PlatformStore {
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const inventory = state.participantInventories.find((item) => item.participantId === participantId);
-      if (!inventory) throw new DomainError("INVENTORY_NOT_FOUND", 409, "Für diesen Teilnehmer wurde noch kein Inventar bestätigt.");
+      if (!inventory) throw new DomainError("INVENTORY_NOT_FOUND", 409, "Aucun inventaire n’a encore été confirmé pour ce joueur.");
       const depositResources = normalizeGigalodonResources(inventory.resources);
       depositResources.pinceExecrabe = 0;
       const scoreDelta = calculateResourceScore(definition, depositResources);
-      if (scoreDelta <= 0) throw new DomainError("NOTHING_TO_DEPOSIT", 409, "Es sind keine scorefähigen Ressourcen vorhanden.");
+      if (scoreDelta <= 0) throw new DomainError("NOTHING_TO_DEPOSIT", 409, "Aucune ressource comptant pour le score n’est disponible.");
       const remaining = normalizeGigalodonResources(inventory.resources);
       for (const key of GIGALODON_RESOURCE_KEYS) if (key !== "pinceExecrabe") remaining[key] = 0;
       const participantInventories = state.participantInventories.map((item) => item.participantId === participantId ? { ...item, resources: remaining, lastConfirmedAt: new Date().toISOString(), updatedBy: actor.participantId } : item);
@@ -1491,7 +1491,7 @@ export class PlatformStore {
       const beforeState = structuredClone(row.raid_state ?? {});
       const state = getGigalodonState(beforeState);
       const inventory = state.participantInventories.find((item) => item.participantId === input.participantId);
-      if (!inventory) throw new DomainError("INVENTORY_NOT_FOUND", 409, "Inventar wurde nicht gefunden.");
+      if (!inventory) throw new DomainError("INVENTORY_NOT_FOUND", 409, "Inventaire introuvable.");
       const requested = normalizeGigalodonResources(input.lostResources);
       const lostResources: Partial<GigalodonResources> = {};
       const remaining = normalizeGigalodonResources(inventory.resources);
@@ -1564,7 +1564,7 @@ export class PlatformStore {
     captainConfirmed: boolean;
   }): Promise<RaidState> {
     this.requireRole(actor, ["CAPTAIN"]);
-    if (!Number.isInteger(input.activeFights) || input.activeFights < 0 || input.activeFights > 20) throw new DomainError("INVALID_ACTIVE_FIGHTS", 400, "Ungültige Zahl aktiver Kämpfe.");
+    if (!Number.isInteger(input.activeFights) || input.activeFights < 0 || input.activeFights > 20) throw new DomainError("INVALID_ACTIVE_FIGHTS", 400, "Nombre de combats actifs invalide.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
       if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
@@ -1618,8 +1618,8 @@ export class PlatformStore {
       const row = (await tx.query<{ raid_state: RaidState; status: SessionRecord["status"]; timer_started_at: string | Date | null; timer_duration_seconds: number }>(`SELECT raid_state,status,timer_started_at,timer_duration_seconds FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
       if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const state = getGigalodonState(row.raid_state ?? {});
-      if (!state.finalReadiness.captainConfirmed) throw new DomainError("FINAL_NOT_CONFIRMED", 409, "Der Finalstartcheck wurde nicht bestätigt.");
-      if (state.finalReadiness.activeFightsRuleSourceStatus === "LIVE_CONFIRMED" && state.finalReadiness.activeFights > 0) throw new DomainError("ACTIVE_FIGHTS_BLOCK_FINAL", 409, "Aktive Kämpfe blockieren den live bestätigten Finalstart.");
+      if (!state.finalReadiness.captainConfirmed) throw new DomainError("FINAL_NOT_CONFIRMED", 409, "Le contrôle de départ final n’a pas été confirmé.");
+      if (state.finalReadiness.activeFightsRuleSourceStatus === "LIVE_CONFIRMED" && state.finalReadiness.activeFights > 0) throw new DomainError("ACTIVE_FIGHTS_BLOCK_FINAL", 409, "Les combats actifs bloquent le lancement final confirmé en jeu.");
       if (state.final.result) throw new DomainError("FINAL_ALREADY_COMPLETED", 409, "Nach einem abgeschlossenen Finalkampf ist kein weiterer Versuch erlaubt.");
       if (state.final.startedAt) throw new DomainError("FINAL_ALREADY_STARTED", 409, "Der Gigalodon-Finalversuch wurde bereits gestartet.");
       const remainingSeconds = row.timer_started_at ? row.timer_duration_seconds - Math.floor((Date.now() - new Date(row.timer_started_at).getTime()) / 1000) : row.timer_duration_seconds;
@@ -1653,7 +1653,7 @@ export class PlatformStore {
   }): Promise<RaidState> {
     if (actor.role === "SPECTATOR") throw new DomainError("FORBIDDEN", 403, "Zuschauer dürfen den Finalkampf nicht aktualisieren.");
     if (!Number.isInteger(input.combatRound) || input.combatRound < 1 || input.combatRound > 3) throw new DomainError("INVALID_COMBAT_ROUND", 400, "Runde muss zwischen 1 und 3 liegen.");
-    if (!Number.isInteger(input.totalDamage) || input.totalDamage < 0) throw new DomainError("INVALID_DAMAGE", 400, "Schaden ist ungültig.");
+    if (!Number.isInteger(input.totalDamage) || input.totalDamage < 0) throw new DomainError("INVALID_DAMAGE", 400, "Les dégâts sont invalides.");
     return this.db.transaction(async (tx) => {
       const definition = await this.getDefinitionForSession(tx, actor.sessionId);
       if (!isGigalodon(definition)) throw new DomainError("WRONG_RAID", 409, "Cette action n’est disponible que pour Gigalodon.");
@@ -1763,14 +1763,14 @@ export class PlatformStore {
 
   async confirmPlayerCorrection(actor: ActorContext, input: { reportId: string; note: string }): Promise<InformationReport> {
     this.requireRole(actor, ["CAPTAIN", "EDITOR"]);
-    if (!input.note.trim() || input.note.trim().length > 800) throw new DomainError("PLAYER_CORRECTION_NOTE_REQUIRED", 400, "PLAYER_CORRECTED benötigt eine Bestätigungsnotiz.");
+    if (!input.note.trim() || input.note.trim().length > 800) throw new DomainError("PLAYER_CORRECTION_NOTE_REQUIRED", 400, "La correction joueur nécessite une note de confirmation.");
     return this.db.transaction(async (tx) => {
       const row = (await tx.query<{ raid_state: RaidState }>(`SELECT raid_state FROM raid_sessions WHERE id=$1 FOR UPDATE`, [actor.sessionId])).rows[0];
       if (!row) throw new DomainError("SESSION_NOT_FOUND", 404, "Session introuvable.");
       const reports = getInformationReports(row.raid_state ?? {});
       const current = reports.find((report) => report.id === input.reportId);
       if (!current) throw new DomainError("INFORMATION_REPORT_NOT_FOUND", 404, "Abweichungsmeldung wurde nicht gefunden.");
-      if (current.sourceStatus === "PLAYER_CORRECTED") throw new DomainError("PLAYER_CORRECTION_ALREADY_CONFIRMED", 409, "Diese Korrektur wurde bereits bestätigt.");
+      if (current.sourceStatus === "PLAYER_CORRECTED") throw new DomainError("PLAYER_CORRECTION_ALREADY_CONFIRMED", 409, "Cette correction a déjà été confirmée.");
       const updated: InformationReport = {
         ...current,
         sourceStatus: "PLAYER_CORRECTED",
@@ -2370,7 +2370,7 @@ export class PlatformStore {
     if (!row) throw new DomainError("TASK_NOT_FOUND", 404, "Mission introuvable.");
     const allowedTask = !actor.scope.taskDefinitionIds?.length || actor.scope.taskDefinitionIds.includes(row.definition_id);
     const allowedTeam = !actor.scope.teamIds?.length || (row.assigned_team_id !== null && actor.scope.teamIds.includes(row.assigned_team_id));
-    if (!allowedTask || !allowedTeam) throw new DomainError("EDITOR_SCOPE_VIOLATION", 403, "Editor darf diese Aufgabe nicht verwalten.");
+    if (!allowedTask || !allowedTeam) throw new DomainError("EDITOR_SCOPE_VIOLATION", 403, "L’éditeur ne peut pas gérer cette mission.");
   }
 
   private requireRole(actor: ActorContext, roles: Role[]): void {

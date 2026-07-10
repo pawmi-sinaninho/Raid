@@ -25,7 +25,7 @@ export function isSoloTestEnabled(environment: SoloTestEnvironment = process.env
 
 export function assertSoloTestEnabled(environment: SoloTestEnvironment = process.env): void {
   if (!isSoloTestEnabled(environment)) {
-    throw new DomainError("SOLO_TEST_DISABLED", 404, "Solo-Testmodus ist nicht verfÃ¼gbar.");
+    throw new DomainError("SOLO_TEST_DISABLED", 404, "Le mode test solo n’est pas disponible.");
   }
 }
 
@@ -101,7 +101,7 @@ async function ensureTeams(
   const template = selectTeamTemplate(definition, participantCount);
   const desiredTeams = template?.teams ?? Array.from(
     { length: Math.max(1, Math.ceil(participantCount / 4)) },
-    (_, index) => ({ name: `Solo-Test ${index + 1}`, recommendedSize: 4 })
+    (_, index) => ({ name: `Test solo ${index + 1}`, recommendedSize: 4 })
   );
   const teams: TeamRecord[] = [];
   const capacities = new Map<string, number>();
@@ -142,7 +142,7 @@ async function distributeRoster(
 export async function startSoloTest(store: PlatformStore, actor: ActorContext): Promise<SoloTestResult> {
   assertSoloTestEnabled();
   if (actor.role !== "CAPTAIN") {
-    throw new DomainError("FORBIDDEN", 403, "Nur der Captain darf den Solo-Test starten.");
+    throw new DomainError("FORBIDDEN", 403, "Seul le capitaine peut lancer le test solo.");
   }
 
   let snapshot = await store.getSnapshot(actor.sessionId);
