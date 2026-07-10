@@ -465,7 +465,7 @@
         "en": null,
         "de": null
       },
-      "description": "Objekte, Fleurs et Endfarbe.",
+      "description": "objets, Fleurs et Endfarbe.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": "S1",
       "completionTaskId": "S1-OUV-040",
@@ -521,7 +521,7 @@
         "en": null,
         "de": null
       },
-      "description": "gardien avec sicheren Objekten.",
+      "description": "gardien avec sicheren objetsn.",
       "entryMode": "SEQUENTIAL",
       "parentPhaseId": "S2",
       "completionTaskId": "S2-GAR-030",
@@ -763,7 +763,7 @@
         }
       ],
       "instructions": [
-        "zones de départ Bateaux, Échecs, Objekte/couleur et jardins abdecken.",
+        "zones de départ Bateaux, Échecs, objets/couleur et jardins abdecken.",
         "Proposer les modèles pour 8, 12 et 16 joueurs.",
         "Suivre l indication en jeu et confirmer."
       ],
@@ -1061,7 +1061,7 @@
       ],
       "uiHints": {
         "primaryComponent": "BOARD",
-        "participantSummary": "Bootspositionen eintragen",
+        "participantSummary": "Suivre cette étape.",
         "captainSummary": "Controler cette etape.",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -1573,8 +1573,8 @@
         }
       ],
       "instructions": [
-        "Socles I et III in [11,21], II et IV in [12,20] ablesen.",
-        "Je Podest deux Objekte enregistrer."
+        "Relever les socles I et III en [11,21], puis les socles II et IV en [12,20].",
+        "Enregistrer deux objets pour chaque socle."
       ],
       "completion": {
         "mode": "FORM_SUBMIT",
@@ -1587,7 +1587,7 @@
       "effects": [
         {
           "type": "UNLOCK_TASK",
-          "description": "Papierblumen bestimmen.",
+          "description": "Mettre à jour l’état du raid.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "S1-OUV-020"
         }
@@ -1600,7 +1600,7 @@
       ],
       "uiHints": {
         "primaryComponent": "FORM",
-        "participantSummary": "Objekte je Podest choisir",
+        "participantSummary": "objets je Socle choisir",
         "captainSummary": "Huit Werte vérifier",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -1639,13 +1639,13 @@
         {
           "path": "sanctuaire.flowerSequence",
           "type": "array",
-          "description": "Quatre ausgewählte Objekte in Reihenfolge I–IV",
+          "description": "Quatre ausgewählte objets in Reihenfolge I–IV",
           "sourceStatus": "GUIDE_CONFIRMED",
           "required": true
         }
       ],
       "instructions": [
-        "Zu jedem Objekt die bekannte Ouvrage-Karte vérifier.",
+        "Zu jedem objet die bekannte Ouvrage-Karte vérifier.",
         "Choisir exactement un objet pour I–IV."
       ],
       "completion": {
@@ -1672,7 +1672,7 @@
       ],
       "uiHints": {
         "primaryComponent": "BOARD",
-        "participantSummary": "Papierblume je Podest choisir",
+        "participantSummary": "Papierblume je Socle choisir",
         "captainSummary": "séquence I–IV kontrollieren",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -1697,7 +1697,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Die quatre Fleurs zwingend in Podestreihenfolge activer.",
+      "description": "Die quatre Fleurs zwingend in Soclereihenfolge activer.",
       "location": null,
       "assignment": {
         "mode": "INDIVIDUAL",
@@ -1805,7 +1805,7 @@
         }
       ],
       "instructions": [
-        "couleur en jeu ablesen.",
+        "couleur en jeu relever.",
         "Deuxte Person confirmer lassen."
       ],
       "completion": {
@@ -2063,7 +2063,7 @@
         }
       ],
       "instructions": [
-        "Schlussstatue in [11,20] ablesen.",
+        "Suivre l’indication en jeu et confirmer.",
         "Deuxte Person confirmé den Typ."
       ],
       "completion": {
@@ -2601,7 +2601,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Quatre Fleursobjekte in Gardien-Karte charger.",
+      "description": "Étape du raid à suivre et à confirmer en jeu.",
       "location": null,
       "assignment": {
         "mode": "NONE",
@@ -2624,7 +2624,7 @@
       "effects": [
         {
           "type": "TRANSFER_DATA",
-          "description": "Quatre sichere Objekte afficher.",
+          "description": "Quatre sichere objets afficher.",
           "sourceStatus": "PRODUCT_RULE",
           "target": "sanctuaire.flowerSequence"
         }
@@ -2637,7 +2637,7 @@
       ],
       "uiHints": {
         "primaryComponent": "GATE",
-        "participantSummary": "Quatre sichere Objekte voir",
+        "participantSummary": "Quatre sichere objets voir",
         "captainSummary": "Vérifier la transmission",
         "showMechanicOnDemand": true,
         "criticalFields": [
@@ -2659,7 +2659,7 @@
       "priority": "P0",
       "optional": false,
       "initialStatus": "LOCKED",
-      "description": "Nur die quatre sicheren Objektglyphen auslösen.",
+      "description": "Nur die quatre sicheren objetglyphen auslösen.",
       "location": null,
       "assignment": {
         "mode": "TEAM",
@@ -2681,7 +2681,7 @@
         }
       ],
       "instructions": [
-        "Quatre sichere Objekte gross afficher.",
+        "Quatre sichere objets gross afficher.",
         "Beschwörungen können Glyphen auslösen.",
         "Suivre l indication en jeu et confirmer."
       ],
@@ -2719,7 +2719,7 @@
       "uiHints": {
         "primaryComponent": "BOSS_TRACKER",
         "participantSummary": "Nur sichere Glyphen auslösen",
-        "captainSummary": "Quatre sichere Objekte et Zähler voir",
+        "captainSummary": "Quatre sichere objets et Zähler voir",
         "showMechanicOnDemand": true,
         "criticalFields": [
           "sanctuaire.flowerSequence",
@@ -3342,7 +3342,7 @@
         }
       ],
       "instructions": [
-        "Im Spiel visible nombre cible ablesen.",
+        "Im Spiel visible nombre cible relever.",
         "salles et Monster pro salle dokumentieren.",
         "Versionner la définition après validation."
       ],
@@ -5550,7 +5550,7 @@
     },
     {
       "id": "SAN-Q-BATTLESHIP-FAIL",
-      "question": "Welche exakten variantes d’erreur et Resetfolgen gelten bei Bataille navale?",
+      "question": "Quelles variantes exactes d erreur et quelles suites de reinitialisation s appliquent a la Bataille navale ?",
       "impact": "Raid-Leben et Recovery-UX.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
       "configurationStrategy": "effet de l’erreur manuell consigner; keine automatische Lebensänderung sans confirmation.",
@@ -5560,7 +5560,7 @@
     },
     {
       "id": "SAN-Q-FINAL-TIME",
-      "question": "Wie verhält sich das Raidzeitende bei einem ou deux laufenden Finalkämpfen?",
+      "question": "Comment la fin du chronometre du raid se comporte-t-elle lorsqu un ou deux combats finaux sont encore en cours ?",
       "impact": "Timeranzeige et Sessionende.",
       "status": "CONFIGURABLE_UNTIL_VERIFIED",
       "configurationStrategy": "Timer zeigt 0 et markiert Ergebnis als en jeu-abhängig; capitaine confirme tatsächlichen Ausgang.",
@@ -5615,7 +5615,7 @@
     },
     {
       "id": "SAN-MONOCHROME-OBJECT-LOCATIONS",
-      "description": "Objektkarten pour die Papierblumenprüfung.",
+      "description": "objetkarten pour die Papierblumenprüfung.",
       "sourceStatus": "GUIDE_CONFIRMED",
       "values": {
         "Crayon": "[21,7]",

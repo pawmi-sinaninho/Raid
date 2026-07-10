@@ -222,7 +222,7 @@ export function SessionApp({ sessionId }: { sessionId: string }) {
         <div className="header-metrics">
           {isSanctuaire(snapshot.definition) && <div className="metric"><span>Vies</span><strong>{getSanctuaireState(snapshot.session.raidState).raidLife}/20</strong></div>}
           {isGigalodon(snapshot.definition) && <div className="metric"><span>Score</span><strong>{getGigalodonState(snapshot.session.raidState).confirmedScore.toLocaleString("fr-CH")}</strong></div>}
-          {isGigalodon(snapshot.definition) && <div className="metric"><span>Ã€ risque</span><strong>{getGigalodonState(snapshot.session.raidState).projectedUnbankedScore.toLocaleString("fr-CH")}</strong></div>}
+          {isGigalodon(snapshot.definition) && <div className="metric"><span>&Agrave; risque</span><strong>{getGigalodonState(snapshot.session.raidState).projectedUnbankedScore.toLocaleString("fr-CH")}</strong></div>}
           {isGigalodon(snapshot.definition) && <div className="metric"><span>Sel commun</span><strong>{getGigalodonState(snapshot.session.raidState).saltPool.amount}</strong></div>}
           <div className="metric"><span>Participants</span><strong>{snapshot.participants.filter((p) => p.role !== "SPECTATOR").length}/{snapshot.definition.participation.maximum}</strong></div>
           <div className={`connection ${connection}`}><span>{connection === "online" ? "Synchronisé" : connection === "reconnecting" ? "Synchronisation" : "Hors ligne"}</span></div>
@@ -564,7 +564,7 @@ function TaskDrawer({ snapshot, actor, task, onClose, command, onError }: {
       <aside ref={drawerRef} tabIndex={-1} className="drawer" role="dialog" aria-modal="true" aria-labelledby="task-title" data-testid="task-drawer">
         <div className="drawer-head">
           <div><span className={`status status-${task.status}`}>{STATUS_LABELS[task.status]}</span><h2 id="task-title">{definition.names.fr}</h2><p className="muted">{taskSummaryFr(definition.id, definition.names.fr)}</p></div>
-          <button className="ghost close" aria-label="Fermer" onClick={onClose}>Ã—</button>
+          <button className="ghost close" aria-label="Fermer" onClick={onClose}>&times;</button>
         </div>
         <div className="stack">
           <div className="card"><strong>Dépendance</strong><p className="muted">{task.status === "LOCKED" ? "Une tâche précédente doit être terminée." : "Cette tâche est disponible dans son état actuel."}</p></div>
