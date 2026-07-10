@@ -38,7 +38,7 @@ const STATUS_LABELS: Record<TaskStatus, string> = {
   ACTIVE: "Active",
   WAITING: "En attente",
   BLOCKED: "Bloquée",
-  FAILED: "Ã‰chouée",
+  FAILED: "Échouée",
   COMPLETED: "Terminée",
   SKIPPED: "Ignorée"
 };
@@ -257,7 +257,7 @@ export function SessionApp({ sessionId }: { sessionId: string }) {
         {(["mission","raid","team","messages"] as MainTab[]).map((item) => (
           <button key={item} className={tab === item ? "active" : ""} onClick={() => setTab(item)}>
             <RaidIcon name={({ mission: "mission", raid: "raid", team: "team", messages: "alerts" } satisfies Record<MainTab, RaidIconName>)[item]} />
-            {item === "mission" ? "Mission" : item === "raid" ? "Raid" : item === "team" ? "Ã‰quipe" : "Alertes"}
+            {item === "mission" ? "Mission" : item === "raid" ? "Raid" : item === "team" ? "Équipe" : "Alertes"}
           </button>
         ))}
       </nav>
@@ -288,7 +288,7 @@ function Lobby({ snapshot, actor, command, onSoloTest, onError }: {
   const hasEditor = activeParticipants.some((participant) => participant.role === "EDITOR");
   const allReady = activeParticipants.length > 0 && activeParticipants.every((participant) => participant.readyState === "READY");
   const enough = activeParticipants.length >= snapshot.definition.participation.minimum;
-  const blockers = [!enough && `Minimum ${snapshot.definition.participation.minimum} joueurs`, !hasEditor && "Ã‰diteur de secours manquant", !allReady && "Tous les joueurs ne sont pas prêts"].filter(Boolean) as string[];
+  const blockers = [!enough && `Minimum ${snapshot.definition.participation.minimum} joueurs`, !hasEditor && "Éditeur de secours manquant", !allReady && "Tous les joueurs ne sont pas prêts"].filter(Boolean) as string[];
 
   async function safe(body: Record<string, unknown>) {
     try { await command(body); } catch (cause) { onError(cause instanceof Error ? cause.message : "Commande refusée."); }
@@ -353,7 +353,7 @@ function CaptainView({ snapshot, actor, onSelectTask, now, tab, command, onError
       ) : (
         <section className="workspace">
           <div className="panel">
-            <div className="section-head"><div><div className="eyebrow">Raid path</div><h2>Ã‰tat de la mission</h2></div><span className="mono">{snapshot.tasks.filter((t) => t.status === "COMPLETED").length}/{snapshot.tasks.length}</span></div>
+            <div className="section-head"><div><div className="eyebrow">Raid path</div><h2>État de la mission</h2></div><span className="mono">{snapshot.tasks.filter((t) => t.status === "COMPLETED").length}/{snapshot.tasks.length}</span></div>
             <div className="phase-strip">
               {snapshot.definition.phases.slice(0, 8).map((phase) => <span className="phase-pill" key={phase.id}>{phase.names.fr}</span>)}
             </div>
@@ -372,7 +372,7 @@ function CaptainView({ snapshot, actor, onSelectTask, now, tab, command, onError
 function TeamView({ snapshot }: { snapshot: SessionSnapshot }) {
   return (
     <section className="panel stack" data-testid="team-view">
-      <div><div className="eyebrow">Vue des escouades</div><h2>Ã‰quipes et missions</h2></div>
+      <div><div className="eyebrow">Vue des escouades</div><h2>Équipes et missions</h2></div>
       <div className="grid-2">
         {snapshot.teams.map((team) => (
           <div className="card" key={team.id}>
@@ -417,7 +417,7 @@ function MissionView({ snapshot, actor, onSelectTask, command, onError }: {
       <MissionOrder status={mission.now?.status ?? "WAITING"} location={definition?.location || "Zone du raid"} team={teamName} title={actionTitle} description={definition ? taskSummaryFr(definition.id, definition.names.fr) : "La mission changera dès que la prochaine étape sera confirmée."} context={gigalodonContext}
         primaryAction={mission.now?.status === "READY" ? <button className="primary" onClick={async()=>{try{await command({type:"CLAIM_TASK",taskId:mission.now!.id,expectedRevision:mission.now!.revision});}catch(cause){onError(cause instanceof Error?cause.message:"Attribution refusée.");}}}><RaidIcon name="mission"/>Prendre cette mission</button> : mission.now ? <button className="primary" onClick={()=>onSelectTask(mission.now!.id)}><RaidIcon name="mission"/>Ouvrir la mission</button> : undefined}
         secondaryAction={mission.now?.status === "READY" ? <button className="secondary" onClick={()=>onSelectTask(mission.now!.id)}>Voir les détails</button> : undefined}/>
-      <div className="mission-quick-row">{isGigalodon(snapshot.definition)?gigalodonContext.slice(0,2).map((item,index)=><div className="mission-quick" key={item}><span>{index===0?"Votre situation":"Point de vigilance"}</span><strong>{item}</strong></div>):<><div className="mission-quick"><span>Escouade</span><strong>{teamName}</strong></div><div className="mission-quick"><span>Ã‰tat</span><strong>{mission.now?STATUS_LABELS[mission.now.status]:"En attente"}</strong></div></>}</div>
+      <div className="mission-quick-row">{isGigalodon(snapshot.definition)?gigalodonContext.slice(0,2).map((item,index)=><div className="mission-quick" key={item}><span>{index===0?"Votre situation":"Point de vigilance"}</span><strong>{item}</strong></div>):<><div className="mission-quick"><span>Escouade</span><strong>{teamName}</strong></div><div className="mission-quick"><span>État</span><strong>{mission.now?STATUS_LABELS[mission.now.status]:"En attente"}</strong></div></>}</div>
       <NextOrderSlip title={nextDefinition?.names.fr ?? "La prochaine mission sera donnée après confirmation"} waitingFor={mission.waitingFor}/>
       {isGigalodon(snapshot.definition) && actor.role !== "SPECTATOR" && <GigalodonParticipantPanel snapshot={snapshot} actor={actor} command={command} onError={onError} />}
     </div>
@@ -442,7 +442,7 @@ function ParticipantRaidView({ snapshot, onSelectTask }: {
         {sanctuaire && (
           <div className="grid-2 participant-raid-metrics">
             <div className="card"><div className="eyebrow">Vies</div><strong className="metric-value">{sanctuaire.raidLife}/20</strong></div>
-            <div className="card"><div className="eyebrow">Corridor</div><strong className="metric-value">{sanctuaire.corridorCompleted}/{sanctuaire.corridorTarget}</strong>{sanctuaire.corridorTargetSourceStatus !== "LIVE_CONFIRMED" && <span className="source-label">GUIDE CONFIRMÃ‰ · PAS ENCORE CONFIRMÃ‰ EN JEU</span>}</div>
+            <div className="card"><div className="eyebrow">Corridor</div><strong className="metric-value">{sanctuaire.corridorCompleted}/{sanctuaire.corridorTarget}</strong>{sanctuaire.corridorTargetSourceStatus !== "LIVE_CONFIRMED" && <span className="source-label">GUIDE CONFIRMÉ · PAS ENCORE CONFIRMÉ EN JEU</span>}</div>
           </div>
         )}
         {gigalodon && (
@@ -499,7 +499,7 @@ function InformationCorrectionPanel({ snapshot, actor, command, onError }: {
       <label>Règle ou affichage<input aria-label="Règle ou affichage concerné" value={reference} onChange={(event)=>setReference(event.target.value)}/></label>
       <label>Note courte<textarea aria-label="Note sur l’information incorrecte" value={note} onChange={(event)=>setNote(event.target.value)}/></label>
       <button className="secondary" disabled={!reference.trim()||!note.trim()} onClick={()=>void run({type:"REPORT_INFORMATION_INCORRECT",reference,note})}>Envoyer le signalement</button>
-      {reports.length>0&&<div className="information-report-list">{reports.slice(-5).reverse().map((report)=><div key={report.id} className="information-report"><strong>{report.reference}</strong><span className="source-label">{sourceStatusLabel(report.sourceStatus)}</span><p>{report.note}</p><small>{snapshot.participants.find((participant)=>participant.id===report.reportedByParticipantId)?.displayName??"Participant"} · {new Date(report.reportedAt).toLocaleString("fr-CH")}</small>{report.correction&&<small>Confirmé par {snapshot.participants.find((participant)=>participant.id===report.correction?.actorParticipantId)?.displayName??"Ã‰diteur"} · {report.correction.note}</small>}{canConfirm&&report.sourceStatus!=="PLAYER_CORRECTED"&&<div><input aria-label="Note de confirmation de correction joueur" value={confirmationNote} onChange={(event)=>setConfirmationNote(event.target.value)}/><button className="primary" disabled={!confirmationNote.trim()} onClick={()=>void run({type:"CONFIRM_PLAYER_CORRECTION",reportId:report.id,note:confirmationNote})}>Confirmer la correction</button></div>}</div>)}</div>}
+      {reports.length>0&&<div className="information-report-list">{reports.slice(-5).reverse().map((report)=><div key={report.id} className="information-report"><strong>{report.reference}</strong><span className="source-label">{sourceStatusLabel(report.sourceStatus)}</span><p>{report.note}</p><small>{snapshot.participants.find((participant)=>participant.id===report.reportedByParticipantId)?.displayName??"Participant"} · {new Date(report.reportedAt).toLocaleString("fr-CH")}</small>{report.correction&&<small>Confirmé par {snapshot.participants.find((participant)=>participant.id===report.correction?.actorParticipantId)?.displayName??"Éditeur"} · {report.correction.note}</small>}{canConfirm&&report.sourceStatus!=="PLAYER_CORRECTED"&&<div><input aria-label="Note de confirmation de correction joueur" value={confirmationNote} onChange={(event)=>setConfirmationNote(event.target.value)}/><button className="primary" disabled={!confirmationNote.trim()} onClick={()=>void run({type:"CONFIRM_PLAYER_CORRECTION",reportId:report.id,note:confirmationNote})}>Confirmer la correction</button></div>}</div>)}</div>}
     </details>
   </aside>;
 }
@@ -511,7 +511,7 @@ function TaskCard({ snapshot, task, onClick }: { snapshot: SessionSnapshot; task
       <span className={`status status-${task.status}`}>{STATUS_LABELS[task.status]}</span>
       <h3>{definition?.names.fr ?? task.definitionId}</h3>
       <div className="task-meta"><span>{definition?.priority}</span><span>{definition?.location ?? task.phaseId}</span></div>
-      {definition?.sourceStatus === "LIVE_REQUIRED" && <span className="source-label">NON CONFIRMÃ‰ EN JEU</span>}
+      {definition?.sourceStatus === "LIVE_REQUIRED" && <span className="source-label">NON CONFIRMÉ EN JEU</span>}
     </button>
   );
 }
@@ -583,7 +583,7 @@ function TaskDrawer({ snapshot, actor, task, onClose, command, onError }: {
           {task.status === "BLOCKED" && <div className="error">{task.blockedReason || "Blocage sans description"}</div>}
           {canManage && (
             <div className="form-field">
-              <label htmlFor="task-team">Ã‰quipe responsable</label>
+              <label htmlFor="task-team">Équipe responsable</label>
               <select id="task-team" value={task.assignedTeamId ?? ""} onChange={(event) => void safe({ type: "ASSIGN_TASK", taskId: task.id, teamId: event.target.value || null, participantIds: task.assignedParticipantIds })}>
                 <option value="">Non attribuée</option>
                 {snapshot.teams.map((team) => <option value={team.id} key={team.id}>{team.name}</option>)}
@@ -592,7 +592,7 @@ function TaskDrawer({ snapshot, actor, task, onClose, command, onError }: {
           )}
           {canEdit && <TaskActions actor={actor} definition={definition} task={task} resultData={resultData} blockedReason={blockedReason} setBlockedReason={setBlockedReason} run={safe} />}
           <div className="timeline">
-            <div className="eyebrow">Ã‰vénements</div>
+            <div className="eyebrow">Événements</div>
             {snapshot.events.filter((event) => event.entityId === task.id).slice(-5).reverse().map((event) => (
               <div className="timeline-row" key={event.id}><time>{new Date(event.createdAt).toLocaleTimeString("fr-CH", { hour: "2-digit", minute: "2-digit" })}</time><span>{event.type}</span></div>
             ))}
@@ -664,7 +664,7 @@ function DynamicField({ field, value, onChange }: {
       ) : (
         <input id={id} type={["integer","number"].includes(field.type) ? "number" : "text"} value={String(value ?? "")} onChange={(event) => onChange(["integer","number"].includes(field.type) ? Number(event.target.value) : event.target.value)} />
       )}
-      {field.sourceStatus === "LIVE_REQUIRED" && <span className="source-label">NON CONFIRMÃ‰ EN JEU</span>}
+      {field.sourceStatus === "LIVE_REQUIRED" && <span className="source-label">NON CONFIRMÉ EN JEU</span>}
     </div>
   );
 }

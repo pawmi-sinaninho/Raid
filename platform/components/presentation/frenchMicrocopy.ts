@@ -21,7 +21,7 @@ export function radarItemFr(item: RadarItem): RadarItem {
 
   const impactBySource: Record<string, string> = {
     "Kritischer Pfad kann nicht fortgesetzt werden.": "La progression ne peut pas continuer tant que ce blocage persiste.",
-    "Captain muss Team oder Person zuweisen.": "Le capitaine doit affecter une équipe ou une personne.",
+    "Le capitaine doit affecter une équipe ou une personne.": "Le capitaine doit affecter une équipe ou une personne.",
     "Abhängigkeit auf dem nächsten Pfad ist noch offen.": "Une dépendance de la prochaine étape reste ouverte.",
     "Aktuelle Aufgabe kann ohne Neuzuweisung blockieren.": "La mission en cours peut se bloquer sans nouvelle affectation.",
     "Teilnehmerstatus prüfen.": "Vérifier l’état de connexion de cette personne."
