@@ -33,6 +33,23 @@ describe("French presentation firewall", () => {
     expect(task?.inputFields[0]?.description).toBe("lumière étage -4");
   });
 
+  it("localizes strings found during the interactive drawer playthrough", () => {
+    const gigalodon = localizeRaidDefinitionFr(loadContract("gigalodon.v0.2.json"));
+    const swallow = gigalodon.tasks.find((candidate) => candidate.id === "GG-030");
+
+    expect(swallow?.instructions).toContain("Afficher la prochaine action de l’escouade.");
+    expect(swallow?.inputFields.find((field) => field.path === "gigalodon.final.swallowedParticipantId")?.description)
+      .toBe("Joueur englouti");
+
+    const sanctuaire = localizeRaidDefinitionFr(loadContract("sanctuaire.v0.2.json"));
+    const corridor = sanctuaire.tasks.find((candidate) => candidate.id === "S3-COR-010");
+
+    expect(corridor?.instructions).toContain("Relever dans le jeu le nombre cible visible.");
+    expect(corridor?.instructions).toContain("Documenter le nombre de salles et de monstres par salle.");
+    expect(corridor?.inputFields.find((field) => field.path === "sanctuaire.corridorSourceConflict")?.description)
+      .toBe("Conflit de sources");
+  });
+
   it("localizes lookup labels and values", () => {
     expect(displayContractKeyFr("raidChest")).toBe("Coffre du raid");
     expect(displayContractValueFr("Vorposten")).toBe("Avant-poste");

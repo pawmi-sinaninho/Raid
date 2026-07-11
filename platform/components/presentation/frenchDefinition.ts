@@ -52,7 +52,12 @@ const EXACT: Record<string, string> = {
   "Vorlage anwenden": "Appliquer le modèle",
   "combat verloren": "Combat perdu",
   "Anderen Wert saisir": "Saisir une autre valeur",
-  "Anderen Wert définir": "Définir une autre valeur"
+  "Anderen Wert définir": "Définir une autre valeur",
+  "Nächste escouadeaktion afficher.": "Afficher la prochaine action de l’escouade.",
+  "Verschluckter joueur": "Joueur englouti",
+  "Im Spiel visible nombre cible relever.": "Relever dans le jeu le nombre cible visible.",
+  "salles et Monster pro salle dokumentieren.": "Documenter le nombre de salles et de monstres par salle.",
+  "Quellenkonflikt": "Conflit de sources"
 };
 
 const REPLACEMENTS: Array<[RegExp, string]> = [

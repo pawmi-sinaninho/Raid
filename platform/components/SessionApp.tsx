@@ -570,7 +570,7 @@ function TaskDrawer({ snapshot, actor, task, onClose, command, onError }: {
         </div>
         <div className="stack">
           <div className="card"><strong>Dépendance</strong><p className="muted">{task.status === "LOCKED" ? "Une tâche précédente doit être terminée." : "Cette tâche est disponible dans son état actuel."}</p></div>
-          <ol className="instructions">{definition.instructions.map((instruction) => <li key={instruction}>{instruction}</li>)}</ol>
+          <ol className="instructions">{definition.instructions.map((instruction, instructionIndex) => <li key={`${task.id}-${instructionIndex}`}>{instruction}</li>)}</ol>
           {confirmation && <div className={`confirmation-box ${confirmation.status.toLowerCase()}`}>
             <strong>{confirmation.status === "PENDING" ? "Confirmation en attente" : "Résultat confirmé"}</strong>
             <span>{confirmation.policy === "SECOND_PERSON" ? "Une autre personne doit vérifier les données." : confirmation.policy === "CAPTAIN" ? "Validation du capitaine requise." : "Validation directe."}</span>
